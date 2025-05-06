@@ -19,7 +19,7 @@
 <!--                    <Button  label="Скачать для планшета" @click="getApk()" icon="pi pi-android" outlined class="mr-3"/>-->
             <Button  label="Info" icon="pi pi-info-circle" outlined class="mr-3" />
 
-            <div v-if="authenticated" class="mr-8">{{ user.name }}</div>
+            <div v-if="authenticated" class="mr-8">{{ user !== null ? user.name : '' }}</div>
 
             <button @click="onLogout()" class="cursor-pointer">
                 <i class="pi pi-sign-out"></i>
