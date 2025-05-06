@@ -133,7 +133,7 @@ const onFormSubmit = ({ valid }) => {
         console.log(password.value)
         console.log(userName.value)
 
-        axios.post('/api/register', {
+        axios.post('/register', {
             name: userName.value,
             email: email.value,
             password: password.value,
@@ -148,7 +148,7 @@ const onFormSubmit = ({ valid }) => {
             })
             .catch(err => {
                 toast.add({
-                    severity: 'success',
+                    severity: 'error',
                     summary: 'Регистрация провалилась',
                     life: 3000
                 });
