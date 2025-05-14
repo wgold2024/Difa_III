@@ -1,4 +1,4 @@
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive } from 'vue'
 import { User, Credentials, AuthState, ApiError } from "@/types";
 import axios, { AxiosError } from 'axios'
 
@@ -35,11 +35,14 @@ export default function useAuth() {
             })
     };
 
+    const inputObj = { op: '', city: '', company: '', field: '', cluster: '', well: '' }
+
     return {
         authenticated,
         user,
         attempt,
         setAuthenticated,
-        setUser
+        setUser,
+        inputObj
     }
 }

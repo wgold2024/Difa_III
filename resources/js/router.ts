@@ -6,6 +6,7 @@ import RegisterPage from "@/Pages/Auth/RegisterPage.vue";
 import ClassifierPage from "@/Pages/ClassifierPage.vue";
 import StatisticsPage from "@/Pages/StatisticsPage.vue";
 import HomePage from "@/Pages/Auth/HomePage.vue";
+import ActTabsPage from "@/Pages/TabsPage.vue";
 
 import useAuth from '@/composables/useAuth.js'
 const { authenticated, attempt, setAuthenticated, setUser } = useAuth();
@@ -39,6 +40,12 @@ const routes = [
                 name: 'classifier',
                 path: '/classifier',
                 component: ClassifierPage,
+                meta: { requiresAuth: true }
+            },
+            {
+                name: 'act-tabs',
+                path: '/act-tabs/:id?',
+                component: ActTabsPage,
                 meta: { requiresAuth: true }
             },
             {
