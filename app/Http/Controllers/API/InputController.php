@@ -8,6 +8,7 @@ use App\Http\Resources\Input\InputResource;
 use App\Models\Input;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class InputController extends Controller
 {
@@ -27,6 +28,17 @@ class InputController extends Controller
     public function store(StoreRequest $request)
     {
         $data = $request->validated();
+//        dd($data);
+
+        unset($data['installationDate']);
+        unset($data['startDate']);
+        unset($data['stopDate']);
+        unset($data['dismantlingDate']);
+        unset($data['operatingTime']);
+        unset($data['analysisDate']);
+        unset($data['stopReason']);
+        unset($data['slKey']);
+
         $data['user_id'] = auth()->user()->id;
 
         try {
@@ -42,7 +54,7 @@ class InputController extends Controller
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
-            return response()->json(['error' => $exception->getMessage()]);
+            return response()->json(['error' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return InputResource::make($input)->resolve();

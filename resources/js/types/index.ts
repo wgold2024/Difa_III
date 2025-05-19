@@ -29,6 +29,16 @@ export interface Input {
     field: string,
     cluster: string,
     well: string,
+    installationDateAt: Date | null,
+    startDateAt:  Date | null,
+    stopDateAt:  Date | null,
+    dismantlingDateAt:  Date | null,
+    operatingTime:  number | null,
+    analysisDateAt:  Date | null,
+    stopReason: string,
+    mode: string,
+    slKey: string,
+    note: string,
 }
 
 export interface InputError {
@@ -38,4 +48,16 @@ export interface InputError {
     field: string | boolean,
     cluster: string | boolean,
     well: string | boolean,
+    installationDateAt: string | boolean,
+    startDateAt: string | boolean,
+    stopDateAt: string | boolean,
+    dismantlingDateAt: string | boolean,
+    operatingTime: string | boolean,
+    analysisDateAt: string | boolean,
+    stopReason: string | boolean,
+    mode: string | boolean,
+    slKey: string | boolean,
+    note: string | boolean,
 }
+
+type DisabledKeys = 'startDate' | 'stopDate' | 'dismantlingDate' | 'analysisDate';

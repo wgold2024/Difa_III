@@ -9,9 +9,15 @@ class Input extends Model
     protected $table = 'inputs';
     protected $guarded = false;
 
-    protected $casts = [
-        'documents' => 'array'
+    protected $dates = [
+        'installation_date_at',
+        'start_date_at',
+        'stop_date_at',
     ];
+
+//    protected $casts = [
+//        'documents' => 'array'
+//    ];
 
 
     public function user() {

@@ -19,14 +19,14 @@ return new class extends Migration
             $table->string('field');
             $table->string('cluster');
             $table->string('well');
-//            $table->timestamp('installation_date_at');
-//            $table->timestamp('start_date_at');
-//            $table->timestamp('stop_date_at');
-//            $table->timestamp('dismantling_date_at');
-//            $table->timestamp('analysis_date_at');
-//            $table->integer('operating_time');
-//            $table->string('stop_reason');
-//            $table->string('mode');
+            $table->timestamp('installation_date_at');
+            $table->timestamp('start_date_at');
+            $table->timestamp('stop_date_at');
+            $table->timestamp('dismantling_date_at');
+            $table->timestamp('analysis_date_at');
+            $table->integer('operating_time');
+            $table->string('stop_reason');
+            $table->string('mode');
             $table->string('sl_key')->nullable();
             $table->text('note')->nullable();
 
