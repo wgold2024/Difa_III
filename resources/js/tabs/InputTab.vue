@@ -38,19 +38,19 @@
         <Fieldset legend="Этапы эксплуатации" class="m-flex">
             <div class="mb-3">
                 <div class="mb-1">Дата монтажа</div>
-                <DatePicker v-model="input.installationDateAt" @date-select="changeInstallationDate" dateFormat="dd.mm.yy" :minDate="minDate" :maxDate="maxDate" :manualInput="false" class="w-full" :invalid="Boolean(inputError.installationDateAt)"  placeholder="Выберите дату монтажа" />
+                <DatePicker v-model="input.installationDateAt" @value-change="changeInstallationDate" dateFormat="dd.mm.yy" :minDate="minDate" :maxDate="maxDate" showIcon class="w-full" :invalid="Boolean(inputError.installationDateAt)"  placeholder="Выберите дату монтажа" />
             </div>
             <div class="mb-3">
                 <div class="mb-1">Дата запуска</div>
-                <DatePicker v-model="input.startDateAt"  @date-select="changeStartDate" dateFormat="dd.mm.yy" :maxDate="maxDate" :manualInput="false" class="w-full" :invalid="Boolean(inputError.startDateAt)" placeholder="Выберите дату запуска" :disabled="isDisabled.startDateAt" :min-date="input.installationDateAt ? new Date(input.installationDateAt) : minDate" />
+                <DatePicker v-model="input.startDateAt"  @value-change="changeStartDate" dateFormat="dd.mm.yy" :maxDate="maxDate" showIcon class="w-full" :invalid="Boolean(inputError.startDateAt)" placeholder="Выберите дату запуска" :disabled="isDisabled.startDateAt" :min-date="input.installationDateAt ? new Date(input.installationDateAt) : minDate" />
             </div>
             <div class="mb-3">
                 <div class="mb-1">Дата остановки</div>
-                <DatePicker v-model="input.stopDateAt" @date-select="changeStopDate" dateFormat="dd.mm.yy" :maxDate="maxDate" :manualInput="false" class="w-full" :invalid="Boolean(inputError.stopDateAt)" placeholder="Выберите дату остановки" :disabled="isDisabled.stopDateAt" :min-date="input.startDateAt ? new Date(input.startDateAt) : minDate" />
+                <DatePicker v-model="input.stopDateAt" @value-change="changeStopDate" dateFormat="dd.mm.yy" :maxDate="maxDate" showIcon class="w-full" :invalid="Boolean(inputError.stopDateAt)" placeholder="Выберите дату остановки" :disabled="isDisabled.stopDateAt" :min-date="input.startDateAt ? new Date(input.startDateAt) : minDate" />
             </div>
             <div class="mb-3">
                 <div class="mb-1">Дата демонтажа</div>
-                <DatePicker v-model="input.dismantlingDateAt" @date-select="changeDismantlingDate" dateFormat="dd.mm.yy" :maxDate="maxDate" :manualInput="false" class="w-full" :invalid="Boolean(inputError.dismantlingDateAt)" placeholder="Выберите дату демонтажа" :disabled="isDisabled.dismantlingDateAt" :min-date="input.stopDateAt ? new Date(input.stopDateAt) : minDate" />
+                <DatePicker v-model="input.dismantlingDateAt" @value-change="changeDismantlingDate" dateFormat="dd.mm.yy" :maxDate="maxDate" showIcon class="w-full" :invalid="Boolean(inputError.dismantlingDateAt)" placeholder="Выберите дату демонтажа" :disabled="isDisabled.dismantlingDateAt" :min-date="input.stopDateAt ? new Date(input.stopDateAt) : minDate" />
             </div>
             <div class="mb-3">
                 <div class="mb-1">Наработка</div>
@@ -58,7 +58,7 @@
             </div>
             <div class="mb-3">
                 <div class="mb-1">Дата проведения разбора</div>
-                <DatePicker v-model="input.analysisDateAt" @date-select="changeAnalysisDate" dateFormat="dd.mm.yy" :maxDate="maxDate" :manualInput="false" class="w-full" :invalid="Boolean(inputError.analysisDateAt)" placeholder="Выберите дату разбора" :disabled="isDisabled.analysisDateAt" :min-date="input.dismantlingDateAt ? new Date(input.dismantlingDateAt) : minDate" />
+                <DatePicker v-model="input.analysisDateAt" @value-change="changeAnalysisDate" dateFormat="dd.mm.yy" :maxDate="maxDate" showIcon class="w-full" :invalid="Boolean(inputError.analysisDateAt)" placeholder="Выберите дату разбора" :disabled="isDisabled.analysisDateAt" :min-date="input.dismantlingDateAt ? new Date(input.dismantlingDateAt) : minDate" />
             </div>
         </Fieldset>
         <div class="flex flex-col">
@@ -76,13 +76,12 @@
                     <InputText v-model="input.slKey" placeholder="Введите ключ SyteLine" />
                 </div>
             </Fieldset>
-            <Fieldset legend="Примечание к разбору" class="h-full">
-                <textarea v-model="input.note" class="w-full p-2" style="resize: none; outline: none" rows="13" placeholder="Введите общее примечание к разбору"></textarea>
+            <Fieldset legend="Примечание к разбору">
+                <textarea v-model="input.note" class="w-full p-2" style="resize: none; outline: none" rows="12" placeholder="Введите общее примечание к разбору"></textarea>
             </Fieldset>
         </div>
     </div>
-    <Button label="Сохранить" @click="store" />
-<!--    <Button label="Сохранить" @click="store" :disabled="isBtnSaveDisabled" />-->
+    <Button label="Сохранить" @click="store" :disabled="isDisabled.btnSave"/>
 </template>
 
 
@@ -110,14 +109,15 @@ const toast = useToast();
 const input = ref<Input>(inputObj);
 const inputError = ref<InputError>(inputErrorObj);
 
-// Работа с датами
 const isDisabled = ref({
     startDateAt: true,
     stopDateAt: true,
     dismantlingDateAt: true,
-    analysisDateAt: true
+    analysisDateAt: true,
+    btnSave: true,
 })
 
+// Работа с датами
 const minDate = computed(() => {
     let dt = new Date();
     dt.setDate(1);
@@ -184,7 +184,11 @@ onMounted(() => {
             .then(res => {
                 input.value = convertCamelToSnake(res.data);
                 Object.keys(isDisabled.value).forEach((key) => {
-                    (isDisabled.value as Record<string, boolean>)[key] = false;
+                    if (key !== 'btnSave') {
+                        (isDisabled.value as Record<string, boolean>)[key] = false;
+                    }
+                    setTimeout(() => { isDisabled.value.btnSave = true; }, 0)
+
                 });
             })
             .catch(e => {
@@ -198,6 +202,8 @@ onMounted(() => {
             })
     }
 })
+
+
 const store = () => {
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -216,6 +222,7 @@ const store = () => {
                 detail: `Id: ${res.data.id}`,
                 life: 3000,
             })
+            isDisabled.value.btnSave = true;
         })
         .catch(e => {
             const serverError = e.response?.data?.error || e.response?.data?.message || JSON.stringify(e.response?.data?.errors) || e.message;
@@ -244,6 +251,7 @@ const store = () => {
         () => input.value[key],
         (newVal) => {
             inputError.value[key] = !newVal;
+            isDisabled.value.btnSave = false;
         }
     );
 });

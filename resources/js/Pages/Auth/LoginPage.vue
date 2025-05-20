@@ -1,8 +1,8 @@
 <template>
     <Toast />
-    <div class="flex flex-col w-full items-center">
+    <div class="flex flex-col w-full items-center" style="min-width: 320px">
         <!-- Кнопка "Регистрация" и "Домашняя страница" справа -->
-        <div class="flex justify-end w-full">
+        <div class="m-mobile_hide flex justify-end w-full">
             <RouterLink to="/home" class="self-end mr-5">
                 <Button class="hover:underline" variant="text" label="Гостевая страница" />
             </RouterLink>
@@ -13,24 +13,24 @@
 
         <!-- Остальной контент -->
         <div class="flex-col w-full items-center justify-items-center">
-            <img src="../../img/novomet-logo.png" class="mt-20" alt="Логотип">
-            <div class="block text-600 font-medium text-base mb-10">Программа анализа надежности "Novomet DIFA"</div>
+            <img src="../../img/novomet-logo.png" class="m-mobile_logo mt-20 max-w-lg" alt="Логотип">
+            <div class="m-mobile_font block text-600 font-medium text-base mb-10">Программа анализа надежности "Novomet DIFA"</div>
 
             <Form v-slot="$form" :initialValues :resolver @submit="onFormSubmit" class="flex-col w-full justify-items-center">
-                <div class="flex flex-col bg-white w-[50rem] p-8 border border-gray-100 items-center mb-5 rounded-xl">
-                    <FloatLabel class="mb-8">
-                        <InputText class="w-[25rem]" id="email" name="email" type="text" />
+                <div class="flex flex-col bg-white w-[90%] max-w-xl p-8 border border-gray-100 items-center mb-5 rounded-xl">
+                    <FloatLabel class="mb-8 w-full flex flex-col items-center">
+                        <InputText class="m-mobile_font w-full" id="email" name="email" type="text" />
                         <label for="email">Email</label>
                         <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{ $form.email.error?.message }}</Message>
                     </FloatLabel>
 
-                    <FloatLabel>
-                        <InputText class="w-[25rem]" id="password" name="password" type="password" />
+                    <FloatLabel class="w-full flex flex-col items-center">
+                        <InputText class="m-mobile_font w-full" id="password" name="password" type="password" />
                         <label for="password">Пароль</label>
                         <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{ $form.password.error?.message }}</Message>
                     </FloatLabel>
                 </div>
-                <Button class="w-[15rem]" type="submit" label="Войти"/>
+                <Button class="m-mobile_font w-[15rem]" type="submit" label="Войти"/>
             </Form>
         </div>
     </div>
@@ -111,6 +111,18 @@ const onFormSubmit = ({ valid }) => {
 <style scoped>
 .p-button-text {
     color: #0071CE !important;
+}
+
+@media (max-width: 600px) {
+    .m-mobile_hide {
+        display: none;
+    }
+    .m-mobile_logo {
+        width: 75%;
+    }
+    .m-mobile_font {
+        font-size: 12px;
+    }
 }
 
 

@@ -1,12 +1,12 @@
 <template>
 <!--    <Button severity="info" label="Создать акт комиссионного разбора" @click.prevent="" />-->
 <!--    <ToggleSwitch></ToggleSwitch>-->
-    <div class="items-start w-full px-1 py-10">
+    <div class="m-mobile_hide items-start w-full px-1 py-10">
         <div class="flex justify-center mb-10">
             <Button type="submit" @click="createAct" label="Создать акт комиссионного разбора" />
         </div>
         <div>
-            <DataTable :value="dataTable" stripedRows selectionMode="single" dataKey="id" @row-dblclick="onRowDblClick " showGridlines tableStyle="min-width: 50rem"
+            <DataTable v-model:selection="selectedProduct" :value="dataTable" stripedRows selectionMode="single" dataKey="id" @row-dblclick="onRowDblClick " showGridlines tableStyle="min-width: 50rem"
                        paginator :rows="rowNumbers" :rowsPerPageOptions="[rowNumbers]"
                        paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
                        currentPageReportTemplate="{first} to {last} of {totalRecords}"
@@ -22,6 +22,9 @@
                 <Column field="user_email" header="Email" ></Column>
             </DataTable>
         </div>
+    </div>
+    <div class="m-mobile_show hidden py-5 px-3 text-center">
+        Можно скачать версию для мобильного устройства. Нажмите кнопку с изображением Android в верхнем меню.
     </div>
 
 
@@ -58,6 +61,7 @@ const createAct = () => {
 }
 
 const dataTable = ref<Array<Input>>();
+const selectedProduct = ref();
 
 const rowNumbers = 12;
 
@@ -124,6 +128,24 @@ const onRowDblClick = (event: DataTableRowClickEvent) => {
     //display: flex;
     justify-content: center;
 }
+
+:deep(.p-datatable-row-selected) {
+    background-color: rgba(243, 112, 33, 0.6) !important;
+}
+
+:deep(.p-datatable) {
+    user-select: none;
+}
+
+@media (max-width: 600px) {
+    .m-mobile_hide {
+        display: none;
+    }
+    .m-mobile_show {
+        display: block;
+    }
+}
+
 </style>
 
 

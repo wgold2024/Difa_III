@@ -1,5 +1,5 @@
 <template>
-    <div class="flex h-full justify-center items-center">
+    <div class="m-mobile_font flex h-full justify-center items-center">
         ©2025 АО "Новомет-Пермь". Все права защищены
     </div>
 </template>
@@ -12,5 +12,10 @@
 
 
 <style scoped>
+@media (max-width: 600px) {
+    .m-mobile_font {
+        font-size: 14px;
+    }
+}
 
 </style>

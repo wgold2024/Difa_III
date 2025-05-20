@@ -1,25 +1,25 @@
 <template>
-    <div class="flex justify-between  h-full">
+    <div class="flex justify-between  h-full" style="min-width: 320px">
         <div class="flex items-center px-4 py-0 h-full" >
-            <img src="../img/novomet-logo.png" alt="logo" class="h-1/2 mr-4"/>
+            <img src="../img/novomet-logo.png" alt="logo" class="m-mobile_logo h-1/2 mr-4"/>
 
-            <router-link to="/classifier" class="mr-3">
+            <router-link to="/classifier" class="m-mobile_hide mr-3">
                 <Button label="Классификатор" icon="pi pi-th-large" outlined />
             </router-link>
 
-            <router-link to="/statistics" class="mr-3">
+            <router-link to="/statistics" class="m-mobile_hide mr-3">
                 <Button label="Стат. анализ" icon="pi pi-chart-bar" outlined />
             </router-link>
 
-            <Button label="/api/user" @click="apiUser" outlined />
+<!--            <Button label="/api/user" @click="apiUser" outlined />-->
         </div>
 
 
         <div class="flex items-center px-4 py-0 h-full">
-<!--                    <Button  label="Скачать для планшета" @click="getApk()" icon="pi pi-android" outlined class="mr-3"/>-->
-            <Button  label="Info" icon="pi pi-info-circle" outlined class="mr-3" />
+            <Button  label="Скачать д/планшета" @click="getApk()" icon="pi pi-android" outlined class="m-mobile_font mr-3"/>
+            <Button  label="Info" icon="pi pi-info-circle" outlined class="m-mobile_hide mr-3" />
 
-            <div v-if="authenticated" class="mr-8">{{ user !== null ? user.name : '' }}</div>
+            <div v-if="authenticated" class="m-mobile_hide mr-8">{{ user !== null ? user.name : '' }}</div>
 
             <button @click="onLogout()" class="cursor-pointer">
                 <i class="pi pi-sign-out"></i>
@@ -58,6 +58,26 @@ const apiUser = () => {
         })
 }
 
+const getApk = () => {
+    let  date = new Date().getTime();
+
+    axios.get(`/api/get-apk/?t=${date}`, {
+        responseType: 'blob'
+    })
+        .then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'apk.7z'); // имя файла для скачивания
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        })
+        .catch((error) => {
+            console.log('Ошибка при скачивании файла:', error);
+        });
+}
+
 </script>
 
 
@@ -76,6 +96,19 @@ const apiUser = () => {
 .p-button-outlined:focus {
     outline: 2px solid var(--primary-200) !important;
     outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+    .m-mobile_hide {
+        display: none;
+    }
+    .m-mobile_logo {
+        height: 40%;
+    }
+    .m-mobile_font {
+        font-size: 9px;
+        height: 75%;
+    }
 }
 
 </style>
