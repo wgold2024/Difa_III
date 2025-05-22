@@ -130,7 +130,7 @@ const onRowDblClick = (event: DataTableRowClickEvent) => {
 }
 
 :deep(.p-datatable-row-selected) {
-    background-color: rgba(243, 112, 33, 0.6) !important;
+    background-color: var(--novomet-orange-600) !important;
 }
 
 :deep(.p-datatable) {

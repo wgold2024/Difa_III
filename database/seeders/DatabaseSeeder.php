@@ -13,11 +13,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $this->call(DetailSeeder::class);
+        $this->call(GroupSeeder::class);
+        $this->call(DefectSeeder::class);
+        $this->call(DefectValueSeeder::class);
     }
 }
+
+// php artisan db:seed --class=DefectValueSeeder --force

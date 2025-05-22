@@ -61,3 +61,21 @@ export interface InputError {
 }
 
 type DisabledKeys = 'startDate' | 'stopDate' | 'dismantlingDate' | 'analysisDate';
+
+export interface Detail {
+    id: number;
+    name: string;
+    defects: Defect[];
+}
+
+export interface Defect {
+    id: number;
+    detail_id: number;
+    group_id: number | null;
+    name: string;
+    type: string;
+    is_option: boolean
+    measure_unit: string
+    values: []
+}
+

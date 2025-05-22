@@ -44,7 +44,6 @@
                         unit="Pump"
                         imagePath="../img/Pump.png"
                         :maxSections = 8
-                        :defects="defects"
                     />
                 </TabPanel>
                 <TabPanel value="tab2_motor">
@@ -92,7 +91,7 @@ import InputTab from "@/tabs/InputTab.vue";
 import UnitMultiTab from "@/tabs/UnitMultiTab.vue";
 import { ref } from "vue";
 
-const defects = ref([])
+// const defects = ref([])
 
 
 

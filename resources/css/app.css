@@ -47,6 +47,50 @@
     --p-inputtext-padding-y: 0.6rem !important;
 }
 
+:root {
+    --p-button-outlined-secondary-border-color: #6474A9 !important;
+    /*--p-button-secondary-border-color: green !important;*/
+    /*--p-surface-200: orange !important;*/
+}
+
+:root {
+    --novomet-blue-200: rgba(0, 113, 206, 0.2);
+    --novomet-blue-400: rgba(0, 113, 206, 0.6);
+    --novomet-blue-600: rgba(0, 113, 206, 0.6);
+    --novomet-blue-800: rgba(0, 113, 206, 0.8);
+    --novomet-blue-1000: rgba(0, 113, 206, 1);
+    --novomet-orange-200: rgba(243, 112, 33, 0.2);
+    --novomet-orange-400: rgba(243, 112, 33, 0.4);
+    --novomet-orange-600: rgba(243, 112, 33, 0.6);
+    --novomet-orange-800: rgba(243, 112, 33, 0.8);
+    --novomet-orange-1000: rgba(243, 112, 33, 1);
+    --novomet-black-200: rgba(0, 0, 0, 0.2);
+    --novomet-black-400: rgba(0, 0, 0, 0.4);
+    --novomet-black-600: rgba(0, 0, 0, 0.6);
+    --novomet-black-800: rgba(0, 0, 0, 0.8);
+    --novomet-black-1000: rgba(0, 0, 0, 1);
+    --novomet-dark-blue-200: rgba(0, 86, 150, 0.2);
+    --novomet-dark-blue-400: rgba(0, 86, 150, 0.4);
+    --novomet-dark-blue-600: rgba(0, 86, 150, 0.6);
+    --novomet-dark-blue-800: rgba(0, 86, 150, 0.8);
+    --novomet-dark-blue-1000: rgba(0, 86, 150, 1);
+    --novomet-navy-blue-200: rgba(0, 36, 146, 0.2);
+    --novomet-navy-blue-400: rgba(0, 36, 146, 0.4);
+    --novomet-navy-blue-600: rgba(0, 36, 146, 0.6);
+    --novomet-navy-blue-800: rgba(0, 36, 146, 0.8);
+    --novomet-navy-blue-1000: rgba(0, 36, 146, 1);
+    --novomet-blue-green-200: rgba(28, 212, 198, 0.2);
+    --novomet-blue-green-400: rgba(28, 212, 198, 0.4);
+    --novomet-blue-green-600: rgba(28, 212, 198, 0.6);
+    --novomet-blue-green-800: rgba(28, 212, 198, 0.8);
+    --novomet-blue-green-1000: rgba(28, 212, 198, 1);
+    --novomet-light-gray-blue-200: rgba(204, 212, 219, 0.2);
+    --novomet-light-gray-blue-400: rgba(204, 212, 219, 0.4);
+    --novomet-light-gray-blue-600: rgba(204, 212, 219, 0.6);
+    --novomet-light-gray-blue-800: rgba(204, 212, 219, 0.8);
+    --novomet-light-gray-blue-1000: rgba(204, 212, 219, 1);
+}
+
 /* Подключение других шрифтов */
 /*
 :root {

@@ -1,6 +1,6 @@
 <template>
 <!--    <Toast />-->
-    <Accordion value="0">
+    <Accordion value="-">
         <AccordionPanel value="0">
             <AccordionHeader>Схема</AccordionHeader>
             <AccordionContent>
@@ -23,8 +23,8 @@
         </TabList>
         <TabPanels>
             <TabPanel v-for="tab in tabs" :key="tab.content" :value="tab.value">
-                <p class="m-0">{{ tab.content }}</p>
-                <UnitMultiTabSec defects="defects" />
+<!--                <p class="m-0">{{ tab.content }}</p>-->
+                <UnitMultiTabSec :details="details" />
             </TabPanel>
         </TabPanels>
     </Tabs>
@@ -46,6 +46,7 @@ import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
 import UnitMultiTabSec from "@/tabs/UnitMultiTabSec.vue";
+import axios from "axios";
 
 
 const props = defineProps({
@@ -60,29 +61,19 @@ const props = defineProps({
         type: Number,
         required: true
     },
-    defects: {
-        type: Array,
-        required: true
-    }
+    // details: {
+    //     type: Array,
+    //     required: true
+    // }
 });
 
 const sections = ref(1)
-// const tabs = ref([]);
-
-// const tabs = ref([
-//     { title: 'Tab 1', content: 'Tab 1 Content', value: '0' },
-//     { title: 'Tab 2', content: 'Tab 2 Content', value: '1' },
-//     { title: 'Tab 3', content: 'Tab 3 Content', value: '2' }
-// ]);
-
 const tabActive = ref(0)
-
+const details = ref([])
 
 const getImagePath = computed(() => {
     return new URL(`${props.imagePath}`, import.meta.url)
 });
-
-
 
 const tabs = computed(() => {
     const arr = []
@@ -92,29 +83,23 @@ const tabs = computed(() => {
     tabActive.value = sections.value - 1;
 
     return arr
-
 })
 
 onMounted(() => {
-    getDefects();
-
-    // for (let i = 0; i < sections.value; i++) {
-    //     tabs.value.push({ title: `Секция ${i+1}`, value: i })
-    // }
-    //
-    // console.log(tabs.value)
+    getDetails();
 });
 
 const input = () => {
     console.log(sections.value)
 }
 
-const getDefects = () => {
-    return []
-    // axios.get(`/api/${props.unit}/defects/index`)
-    //     .then(res => {
-    //         defects.value = res.data.data;
-    //     })
+const getDetails = () => {
+    axios.get(`/api/esp?unit=${props.unit}`)
+        .then(res => {
+            details.value = res.data
+            // console.log(res.data)
+            // details.value = res.data.data;
+        })
 }
 
 </script>
