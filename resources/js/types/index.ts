@@ -74,8 +74,20 @@ export interface Defect {
     group_id: number | null;
     name: string;
     type: string;
+    description: string,
+    reason: string,
     is_option: boolean
     measure_unit: string
-    values: []
+    values: Value[]
+}
+
+export interface Value {
+    name: string,
+    visibility_defect_id: number,
+    visibility_defect_value: string
+}
+
+export interface DefectData {
+    [key: number]: string | number | boolean | null;
 }
 

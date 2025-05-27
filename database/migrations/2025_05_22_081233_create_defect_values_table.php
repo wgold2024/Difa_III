@@ -18,6 +18,8 @@ return new class extends Migration
 
             $table->string('name')->nullable();
             $table->string('measure_unit')->nullable();
+            $table->string('visibility_defect_id')->nullable();
+            $table->string('visibility_defect_value')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

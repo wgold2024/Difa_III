@@ -20,4 +20,7 @@ class DatabaseSeeder extends Seeder
     }
 }
 
+// php artisan db:seed --class=DetailSeeder --force
+// php artisan db:seed --class=GroupSeeder --force
+// php artisan db:seed --class=DefectSeeder --force
 // php artisan db:seed --class=DefectValueSeeder --force

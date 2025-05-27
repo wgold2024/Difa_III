@@ -22,6 +22,14 @@ class DefectResource extends JsonResource
             'group_id' => $this->group_id,
             'name' => $this->name,
             'type' => $this->type,
+            'description' => $this->when(
+                !is_null($this->description),
+                fn() => $this->description
+            ),
+            'reason' => $this->when(
+                !is_null($this->reason),
+                fn() => $this->reason
+            ),
             'is_option' => $this->is_option,
             'values' => $this->when(
                 $this->values->whereNotNull('name')->isNotEmpty(),

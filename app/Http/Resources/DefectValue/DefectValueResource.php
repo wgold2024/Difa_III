@@ -15,7 +15,9 @@ class DefectValueResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'name' => $this->name
+            'name' => $this->name,
+            'visibility_defect_id' => $this->whenNotNull($this->visibility_defect_id),
+            'visibility_defect_value' => $this->whenNotNull($this->visibility_defect_value),
         ];
     }
 }

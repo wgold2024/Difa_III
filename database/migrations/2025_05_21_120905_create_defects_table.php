@@ -19,7 +19,10 @@ return new class extends Migration
 
             $table->string('name');
             $table->string('type');
+            $table->text('description')->nullable();
+            $table->text('reason')->nullable();
             $table->boolean('is_option')->default(false);
+            $table->boolean('is_required')->default(false);
 
             $table->timestamps();
             $table->softDeletes();

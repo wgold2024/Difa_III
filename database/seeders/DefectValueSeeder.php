@@ -16,6 +16,7 @@ class DefectValueSeeder extends Seeder
     public function run(): void
     {
         $data = [
+            // --- Общая информация
             // Схема сборки
             [
                 'defect_id' => '4',
@@ -143,6 +144,329 @@ class DefectValueSeeder extends Seeder
                 'defect_id' => '20',
                 'measure_unit' => 'сут',
             ],
+            // --- Вал
+            // Расположение
+            [
+                'defect_id' => '29',
+                'name' => 'От головной части',
+            ],
+            [
+                'defect_id' => '29',
+                'name' => 'От основания',
+            ],
+            // Расстояние
+            [
+                'defect_id' => '30',
+                'measure_unit' => 'мм',
+            ],
+            // --- Корпус
+            // Область поражения
+            [
+                'defect_id' => '36',
+                'name' => 'Обширная',
+            ],
+            [
+                'defect_id' => '36',
+                'name' => 'Точечная',
+            ],
+            // Глубина поражения
+            [
+                'defect_id' => '37',
+                'name' => 'Менее 2мм',
+            ],
+            [
+                'defect_id' => '37',
+                'name' => 'Более 2мм',
+            ],
+            [
+                'defect_id' => '37',
+                'name' => 'Сквозная',
+            ],
+            // Область поражения
+            [
+                'defect_id' => '39',
+                'name' => 'Обширная',
+            ],
+            [
+                'defect_id' => '39',
+                'name' => 'Точечная',
+            ],
+            // Глубина поражения
+            [
+                'defect_id' => '40',
+                'name' => 'Менее 2мм',
+            ],
+            [
+                'defect_id' => '40',
+                'name' => 'Более 2мм',
+            ],
+            [
+                'defect_id' => '40',
+                'name' => 'Сквозная',
+            ],
+            // 41. Мех. повреждение корпуса.Расположение
+            [
+                'defect_id' => '42',
+                'name' => 'От головной части',
+            ],
+            [
+                'defect_id' => '42',
+                'name' => 'От основания',
+            ],
+            // 41. Мех. повреждение корпуса.Расстояние
+            [
+                'defect_id' => '43',
+                'measure_unit' => 'мм',
+            ],
+            // 44. Мех. повреждение резьбы.Расположение
+            [
+                'defect_id' => '45',
+                'name' => 'Головная часть',
+            ],
+            [
+                'defect_id' => '45',
+                'name' => 'Основание',
+            ],
+            // 46. Промыв корпуса.Глубина поражения
+            [
+                'defect_id' => '47',
+                'name' => 'Сквозная',
+            ],
+            [
+                'defect_id' => '47',
+                'name' => 'Несквозная',
+            ],
+            // 46. Промыв корпуса.Расположение
+            [
+                'defect_id' => '48',
+                'name' => 'От головной части',
+            ],
+            [
+                'defect_id' => '48',
+                'name' => 'От основания',
+            ],
+            // 46. Промыв корпуса.Расстояние
+            [
+                'defect_id' => '49',
+                'measure_unit' => 'мм',
+            ],
+            // 50. Промыв резьбы.Глубина поражения
+            [
+                'defect_id' => '51',
+                'name' => 'Головная часть',
+            ],
+            [
+                'defect_id' => '51',
+                'name' => 'Основание',
+            ],
+            // 50. Промыв резьбы.Расположение
+            [
+                'defect_id' => '52',
+                'name' => 'Сквозная',
+            ],
+            [
+                'defect_id' => '52',
+                'name' => 'Несквозная',
+            ],
+            // 57. Износ верхнего диска.Характер износа
+            [
+                'defect_id' => '58',
+                'name' => 'Износ',
+            ],
+            [
+                'defect_id' => '58',
+                'name' => 'Слом',
+            ],
+            [
+                'defect_id' => '58',
+                'name' => 'Смятие',
+            ],
+            [
+                'defect_id' => '58',
+                'name' => 'Промыв',
+            ],
+            // 57. Износ верхнего диска.Степень износа
+            [
+                'defect_id' => '59',
+                'name' => '0-10%',
+                'visibility_defect_id' => '58',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '59',
+                'name' => '10-30%',
+                'visibility_defect_id' => '58',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '59',
+                'name' => '30-50%',
+                'visibility_defect_id' => '58',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '59',
+                'name' => '50-70%',
+                'visibility_defect_id' => '58',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '59',
+                'name' => '70%-90%',
+                'visibility_defect_id' => '58',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '59',
+                'name' => '100%',
+                'visibility_defect_id' => '58',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '59',
+                'name' => 'Сквозной',
+                'visibility_defect_id' => '58',
+                'visibility_defect_value' => 'Промыв'
+            ],
+            [
+                'defect_id' => '59',
+                'name' => 'Несквозной',
+                'visibility_defect_id' => '58',
+                'visibility_defect_value' => 'Промыв'
+            ],
+            // 60. Износ верхнего диска.Характер износа
+            [
+                'defect_id' => '61',
+                'name' => 'Износ',
+            ],
+            [
+                'defect_id' => '61',
+                'name' => 'Слом',
+            ],
+            [
+                'defect_id' => '61',
+                'name' => 'Смятие',
+            ],
+            [
+                'defect_id' => '61',
+                'name' => 'Промыв',
+            ],
+            // 60. Износ верхнего диска.Степень износа
+            [
+                'defect_id' => '62',
+                'name' => '0-10%',
+                'visibility_defect_id' => '61',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '62',
+                'name' => '10-30%',
+                'visibility_defect_id' => '61',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '62',
+                'name' => '30-50%',
+                'visibility_defect_id' => '61',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '62',
+                'name' => '50-70%',
+                'visibility_defect_id' => '61',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '62',
+                'name' => '70%-90%',
+                'visibility_defect_id' => '61',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '62',
+                'name' => '100%',
+                'visibility_defect_id' => '61',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '62',
+                'name' => 'Сквозной',
+                'visibility_defect_id' => '61',
+                'visibility_defect_value' => 'Промыв'
+            ],
+            [
+                'defect_id' => '62',
+                'name' => 'Несквозной',
+                'visibility_defect_id' => '61',
+                'visibility_defect_value' => 'Промыв'
+            ],
+            // 63. Износ внутреннего диаметра ступицы.Характер износа
+            [
+                'defect_id' => '64',
+                'name' => 'Износ',
+            ],
+            [
+                'defect_id' => '64',
+                'name' => 'Слом',
+            ],
+            [
+                'defect_id' => '64',
+                'name' => 'Смятие',
+            ],
+            [
+                'defect_id' => '64',
+                'name' => 'Промыв',
+            ],
+            // 63. Износ внутреннего диаметра ступицы.Степень износа
+            [
+                'defect_id' => '65',
+                'name' => '0-10%',
+                'visibility_defect_id' => '64',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '65',
+                'name' => '10-30%',
+                'visibility_defect_id' => '64',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '65',
+                'name' => '30-50%',
+                'visibility_defect_id' => '64',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '65',
+                'name' => '50-70%',
+                'visibility_defect_id' => '64',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '65',
+                'name' => '70%-90%',
+                'visibility_defect_id' => '64',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '65',
+                'name' => '100%',
+                'visibility_defect_id' => '64',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '65',
+                'name' => 'Сквозной',
+                'visibility_defect_id' => '64',
+                'visibility_defect_value' => 'Промыв'
+            ],
+            [
+                'defect_id' => '65',
+                'name' => 'Несквозной',
+                'visibility_defect_id' => '64',
+                'visibility_defect_value' => 'Промыв'
+            ],
+
         ];
 
         foreach ($data as $item) {

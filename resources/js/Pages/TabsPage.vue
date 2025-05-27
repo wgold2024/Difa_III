@@ -99,7 +99,7 @@ import { ref } from "vue";
 
 <style scoped>
 :deep(.p-tabpanels) {
-    padding: 20px 5px;
+    padding: 10px 5px;
 }
 
 </style>
