@@ -203,7 +203,8 @@ watch(dataSectionUnit, () => {
     console.log(dataSectionUnit.value)
     // console.log(dataSectionUnit.value[28])
     // Скрыитие отображение доп. полей для Слома вала
-    const el28 = document.getElementById('28')
+    const el93 = document.getElementById('93')
+    // el93.classList.add('mr-9')
     // if (el28 === null) return
     // if (dataSectionUnit.value[28] === true) {
     //     el28.classList.remove('m-hidden')
@@ -246,6 +247,7 @@ watchEffect(() => {
 .m-hidden {
     display: none;
 }
+
 
 </style>
 

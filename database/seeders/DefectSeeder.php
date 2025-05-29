@@ -483,6 +483,219 @@ class DefectSeeder extends Seeder
                 'type' => 'select',
                 'is_option' => true
             ],
+            [
+                'id' => '66',
+                'detail_id' => '4',
+                'group_id' => 15,
+                'name' => 'Износ наружного диаметра ступицы',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '67',
+                'detail_id' => '4',
+                'group_id' => 15,
+                'name' => 'Характер износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '68',
+                'detail_id' => '4',
+                'group_id' => 15,
+                'name' => 'Степень износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '69',
+                'detail_id' => '4',
+                'group_id' => 16,
+                'name' => 'Износ диспергирующих лопаток',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '70',
+                'detail_id' => '4',
+                'group_id' => 16,
+                'name' => 'Характер износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '71',
+                'detail_id' => '4',
+                'group_id' => 16,
+                'name' => 'Степень износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '72',
+                'detail_id' => '4',
+                'group_id' => 17,
+                'name' => 'Износ юбки',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '73',
+                'detail_id' => '4',
+                'group_id' => 17,
+                'name' => 'Характер износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '74',
+                'detail_id' => '4',
+                'group_id' => 17,
+                'name' => 'Степень износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '75',
+                'detail_id' => '4',
+                'name' => 'Износ шпоночного паза',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '76',
+                'detail_id' => '4',
+                'group_id' => 18,
+                'name' => 'Износ посадочного места под опорные шайбы (верхние)',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '77',
+                'detail_id' => '4',
+                'group_id' => 18,
+                'name' => 'Степень износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '78',
+                'detail_id' => '4',
+                'group_id' => 19,
+                'name' => 'Износ посадочного места под опорные шайбы (средние)',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '79',
+                'detail_id' => '4',
+                'group_id' => 19,
+                'name' => 'Степень износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '80',
+                'detail_id' => '4',
+                'group_id' => 20,
+                'name' => 'Износ посадочного места под опорные шайбы (нижние)',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '81',
+                'detail_id' => '4',
+                'group_id' => 20,
+                'name' => 'Степень износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '82',
+                'detail_id' => '4',
+                'name' => 'Разрушение',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '83',
+                'detail_id' => '4',
+                'group_id' => 21,
+                'name' => 'Износ текстолитовых шайб (верхние)',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '84',
+                'detail_id' => '4',
+                'group_id' => 21,
+                'name' => 'Степень износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '85',
+                'detail_id' => '4',
+                'group_id' => 22,
+                'name' => 'Износ текстолитовых шайб (средние)',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '86',
+                'detail_id' => '4',
+                'group_id' => 22,
+                'name' => 'Степень износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '87',
+                'detail_id' => '4',
+                'group_id' => 23,
+                'name' => 'Износ текстолитовых шайб (нижние)',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '88',
+                'detail_id' => '4',
+                'group_id' => 23,
+                'name' => 'Степень износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '89',
+                'detail_id' => '4',
+                'name' => 'Коррозия',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '90',
+                'detail_id' => '4',
+                'name' => 'Твердый налет',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '91',
+                'detail_id' => '4',
+                'name' => 'Цвета побежалости',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '92',
+                'detail_id' => '4',
+                'group_id' => 24,
+                'name' => 'Засорение',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '93',
+                'detail_id' => '4',
+                'group_id' => 24,
+//                'name' => 'Степень перекрытия проточных каналов',
+                'name' => 'Перекрытие проточных каналов',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '94',
+                'detail_id' => '4',
+                'group_id' => 24,
+                'name' => 'Тип засорения',
+                'type' => 'select',
+                'is_option' => true
+            ],
 
         ];
 
