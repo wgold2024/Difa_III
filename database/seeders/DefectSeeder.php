@@ -696,6 +696,272 @@ class DefectSeeder extends Seeder
                 'type' => 'select',
                 'is_option' => true
             ],
+            // Направляющие аппараты
+            [
+                'id' => '95',
+                'detail_id' => '5',
+                'name' => 'В норме',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '96',
+                'detail_id' => '5',
+                'group_id' => 25,
+                'name' => 'Износ верхнего диска',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '97',
+                'detail_id' => '5',
+                'group_id' => 25,
+                'name' => 'Характер износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '98',
+                'detail_id' => '5',
+                'group_id' => 25,
+                'name' => 'Степень износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '99',
+                'detail_id' => '5',
+                'group_id' => 26,
+                'name' => 'Износ нижнего диска',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '100',
+                'detail_id' => '5',
+                'group_id' => 26,
+                'name' => 'Характер износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '101',
+                'detail_id' => '5',
+                'group_id' => 26,
+                'name' => 'Степень износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '102',
+                'detail_id' => '5',
+                'group_id' => 27,
+                'name' => 'Износ лопаток',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '103',
+                'detail_id' => '5',
+                'group_id' => 27,
+                'name' => 'Характер износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '104',
+                'detail_id' => '5',
+                'group_id' => 27,
+                'name' => 'Степень износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '105',
+                'detail_id' => '5',
+                'group_id' => 28,
+                'name' => 'Износ ступиц',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '106',
+                'detail_id' => '5',
+                'group_id' => 28,
+                'name' => 'Характер износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '107',
+                'detail_id' => '5',
+                'group_id' => 28,
+                'name' => 'Степень износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '108',
+                'detail_id' => '5',
+                'group_id' => 29,
+                'name' => 'Износ опорного бурта',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '109',
+                'detail_id' => '5',
+                'group_id' => 29,
+                'name' => 'Характер износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '110',
+                'detail_id' => '5',
+                'group_id' => 29,
+                'name' => 'Степень износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '111',
+                'detail_id' => '5',
+                'group_id' => 30,
+                'name' => 'Износ втулки внутреннего диаметра',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '112',
+                'detail_id' => '5',
+                'group_id' => 30,
+                'name' => 'Характер износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '113',
+                'detail_id' => '5',
+                'group_id' => 30,
+                'name' => 'Степень износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '114',
+                'detail_id' => '5',
+                'group_id' => 31,
+                'name' => 'Износ стакана',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '115',
+                'detail_id' => '5',
+                'group_id' => 31,
+                'name' => 'Характер износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '116',
+                'detail_id' => '5',
+                'group_id' => 31,
+                'name' => 'Степень износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '117',
+                'detail_id' => '5',
+                'group_id' => 32,
+                'name' => 'Засорение',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '118',
+                'detail_id' => '5',
+                'group_id' => 32,
+//                'name' => 'Степень перекрытия проточных каналов',
+                'name' => 'Перекрытие проточных каналов',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '119',
+                'detail_id' => '5',
+                'group_id' => 32,
+                'name' => 'Тип засорения',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '120',
+                'detail_id' => '5',
+                'name' => 'Проворот',
+                'type' => 'select',
+            ],
+            [
+                'id' => '121',
+                'detail_id' => '5',
+                'name' => 'Разрушение',
+                'type' => 'select',
+            ],
+            [
+                'id' => '122',
+                'detail_id' => '5',
+                'name' => 'Коррозия',
+                'type' => 'select',
+            ],
+            [
+                'id' => '123',
+                'detail_id' => '5',
+                'name' => 'Твердый налет',
+                'type' => 'select',
+            ],
+            [
+                'id' => '124',
+                'detail_id' => '5',
+                'name' => 'Цвета побежалости',
+                'type' => 'select',
+            ],
+            // Втулка защитная вала
+            [
+                'id' => '125',
+                'detail_id' => '6',
+                'name' => 'В норме',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '126',
+                'detail_id' => '6',
+                'group_id' => 33,
+                'name' => 'Износ',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '127',
+                'detail_id' => '6',
+                'group_id' => 33,
+                'name' => 'Характер износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '128',
+                'detail_id' => '6',
+                'group_id' => 33,
+                'name' => 'Тип износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '129',
+                'detail_id' => '6',
+                'name' => 'Коррозия',
+                'type' => 'boolean',
+            ],
+            [
+                'id' => '130',
+                'detail_id' => '6',
+                'name' => 'Мех. повреждение',
+                'type' => 'boolean',
+            ],
+
+
 
         ];
 
