@@ -19,21 +19,18 @@ class DefectSeeder extends Seeder
             [
                 'id' => '1',
                 'detail_id' => '1',
-                'group_id' => 1,
                 'name' => 'Наименование',
                 'type' => 'string',
             ],
             [
                 'id' => '2',
                 'detail_id' => '1',
-                'group_id' => 1,
                 'name' => 'Серийный номер',
                 'type' => 'string',
             ],
             [
                 'id' => '3',
                 'detail_id' => '1',
-                'group_id' => 1,
                 'name' => 'Производитель',
                 'type' => 'string',
             ],
@@ -84,14 +81,12 @@ class DefectSeeder extends Seeder
                 'detail_id' => '1',
                 'name' => 'Номер вала',
                 'type' => 'string',
-                'is_option' => true
             ],
             [
                 'id' => '12',
                 'detail_id' => '1',
                 'name' => 'Номер муфты ',
                 'type' => 'string',
-                'is_option' => true
             ],
             [
                 'id' => '13',
@@ -117,40 +112,35 @@ class DefectSeeder extends Seeder
                 'id' => '16',
                 'detail_id' => '1',
                 'group_id' => 3,
-                'name' => 'Вылет вала',
+                'name' => 'Вылет вала (верхнее положение)',
                 'type' => 'number',
-                'is_option' => true
             ],
             [
                 'id' => '17',
                 'detail_id' => '1',
                 'group_id' => 3,
-                'name' => 'Норматив',
+                'name' => 'Норматив (верхнее положение)',
                 'type' => 'number',
-                'is_option' => true
             ],
             [
                 'id' => '18',
                 'detail_id' => '1',
                 'group_id' => 4,
-                'name' => 'Вылет вала',
+                'name' => 'Вылет вала (нижнее положение)',
                 'type' => 'number',
-                'is_option' => true
             ],
             [
                 'id' => '19',
                 'detail_id' => '1',
                 'group_id' => 4,
-                'name' => 'Норматив',
+                'name' => 'Норматив (нижнее положение)',
                 'type' => 'number',
-                'is_option' => true
             ],
             [
                 'id' => '20',
                 'detail_id' => '1',
                 'name' => 'Суммарная наработка вала',
                 'type' => 'number',
-                'is_option' => true
             ],
             // Вал
             [
@@ -960,9 +950,364 @@ class DefectSeeder extends Seeder
                 'name' => 'Мех. повреждение',
                 'type' => 'boolean',
             ],
-
-
-
+            // Муфта шлицевая
+            [
+                'id' => '131',
+                'detail_id' => '7',
+                'name' => 'В норме',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '132',
+                'detail_id' => '7',
+                'name' => 'Отсутствует',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '133',
+                'detail_id' => '7',
+                'group_id' => 34,
+                'name' => 'Износ',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '134',
+                'detail_id' => '7',
+                'group_id' => 34,
+                'name' => 'Место износа',
+                'type' => 'select',
+                'is_option' => true
+            ],
+            [
+                'id' => '135',
+                'detail_id' => '7',
+                'name' => 'Разрушение',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '136',
+                'detail_id' => '7',
+                'name' => 'Отсутствие перегородки',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '137',
+                'detail_id' => '7',
+                'name' => 'Налет',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '138',
+                'detail_id' => '7',
+                'name' => 'Коррозия',
+                'type' => 'boolean'
+            ],
+            // Концевые детали: голова
+            [
+                'id' => '139',
+                'detail_id' => '8',
+                'name' => 'В норме',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '140',
+                'detail_id' => '8',
+                'name' => 'Срыв витков резьбы',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '141',
+                'detail_id' => '8',
+                'name' => 'Промыв витков резьбы',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '142',
+                'detail_id' => '8',
+                'name' => 'Механическое повреждение',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '143',
+                'detail_id' => '8',
+                'name' => 'Налет',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '144',
+                'detail_id' => '8',
+                'name' => 'Коррозия',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '145',
+                'detail_id' => '8',
+                'name' => 'Износ посадочного места под подшипник',
+                'type' => 'boolean'
+            ],
+            // Концевые детали: основание
+            [
+                'id' => '146',
+                'detail_id' => '9',
+                'name' => 'В норме',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '147',
+                'detail_id' => '9',
+                'name' => 'Срыв витков резьбы',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '148',
+                'detail_id' => '9',
+                'name' => 'Промыв витков резьбы',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '149',
+                'detail_id' => '9',
+                'name' => 'Механическое повреждение',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '150',
+                'detail_id' => '9',
+                'name' => 'Налет',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '151',
+                'detail_id' => '9',
+                'name' => 'Коррозия',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '152',
+                'detail_id' => '9',
+                'name' => 'Износ посадочного места под подшипник',
+                'type' => 'boolean'
+            ],
+            // Концевые детали: верхний подшипник
+            [
+                'id' => '153',
+                'detail_id' => '10',
+                'name' => 'В норме',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '154',
+                'detail_id' => '10',
+                'name' => 'Износ внутреннего диаметра',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '155',
+                'detail_id' => '10',
+                'name' => 'Износ наружного диаметра',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '156',
+                'detail_id' => '10',
+                'name' => 'Трещины стенок',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '157',
+                'detail_id' => '10',
+                'name' => 'Скол/механическое повреждение',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '158',
+                'detail_id' => '10',
+                'name' => 'Разрушение',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '159',
+                'detail_id' => '10',
+                'name' => 'Твердый налет',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '160',
+                'detail_id' => '10',
+                'name' => 'Коррозия',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '161',
+                'detail_id' => '10',
+                'name' => 'Заклинивание',
+                'type' => 'boolean'
+            ],
+            // Концевые детали: верхний подшипник
+            [
+                'id' => '162',
+                'detail_id' => '11',
+                'name' => 'В норме',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '163',
+                'detail_id' => '11',
+                'name' => 'Износ внутреннего диаметра',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '164',
+                'detail_id' => '11',
+                'name' => 'Износ наружного диаметра',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '165',
+                'detail_id' => '11',
+                'name' => 'Трещины стенок',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '166',
+                'detail_id' => '11',
+                'name' => 'Скол/механическое повреждение',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '167',
+                'detail_id' => '11',
+                'name' => 'Разрушение',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '168',
+                'detail_id' => '11',
+                'name' => 'Твердый налет',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '169',
+                'detail_id' => '11',
+                'name' => 'Коррозия',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '170',
+                'detail_id' => '11',
+                'name' => 'Заклинивание',
+                'type' => 'boolean'
+            ],
+            // Осевые опоры
+            [
+                'id' => '171',
+                'detail_id' => '12',
+                'name' => 'В норме',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '172',
+                'detail_id' => '12',
+                'name' => 'Износ внутреннего диаметра',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '173',
+                'detail_id' => '12',
+                'name' => 'Износ наружного диаметра',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '174',
+                'detail_id' => '12',
+                'name' => 'Трещины стенок',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '175',
+                'detail_id' => '12',
+                'name' => 'Скол/механическое повреждение',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '176',
+                'detail_id' => '12',
+                'name' => 'Разрушение',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '177',
+                'detail_id' => '12',
+                'name' => 'Твердый налет',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '178',
+                'detail_id' => '12',
+                'name' => 'Коррозия',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '179',
+                'detail_id' => '12',
+                'name' => 'Заклинивание',
+                'type' => 'boolean'
+            ],
+            // Промежуточные подшипники
+            [
+                'id' => '180',
+                'detail_id' => '13',
+                'name' => 'В норме',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '181',
+                'detail_id' => '13',
+                'name' => 'Износ внутреннего диаметра',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '182',
+                'detail_id' => '13',
+                'name' => 'Износ наружного диаметра',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '183',
+                'detail_id' => '13',
+                'name' => 'Трещины стенок',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '184',
+                'detail_id' => '13',
+                'name' => 'Скол/механическое повреждение',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '185',
+                'detail_id' => '13',
+                'name' => 'Разрушение',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '186',
+                'detail_id' => '13',
+                'name' => 'Твердый налет',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '187',
+                'detail_id' => '13',
+                'name' => 'Коррозия',
+                'type' => 'boolean'
+            ],
+            [
+                'id' => '188',
+                'detail_id' => '13',
+                'name' => 'Заклинивание',
+                'type' => 'boolean'
+            ],
         ];
 
 

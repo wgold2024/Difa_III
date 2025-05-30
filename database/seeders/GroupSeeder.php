@@ -149,6 +149,10 @@ class GroupSeeder extends Seeder
                 'id' => '33',
                 'name' => 'Износ',
             ],
+            [
+                'id' => '34',
+                'name' => 'Износ',
+            ],
 
 
         ];

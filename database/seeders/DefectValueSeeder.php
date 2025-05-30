@@ -1371,6 +1371,15 @@ class DefectValueSeeder extends Seeder
                 'visibility_defect_id' => '127',
                 'visibility_defect_value' => 'Износ'
             ],
+            // 133. Износ.Место износа
+            [
+                'defect_id' => '134',
+                'name' => 'По наружной поверхности',
+            ],
+            [
+                'defect_id' => '134',
+                'name' => 'По внутренней поверхности',
+            ],
 
 
 

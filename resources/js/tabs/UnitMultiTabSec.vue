@@ -34,9 +34,11 @@
 
     <div class="flex justify-between">
         <div class="flex flex-col w-1/4 p-1">
-            <div v-for="(detail, index) in buttons" :key="index">
-                <Button :label="detail.name" severity="secondary" variant="outlined" class="w-full mb-1" :class="{ 'active': activeBtn === index }" @click="btnDetailChange(index)"/>
-            </div>
+            <ScrollPanel class="mr-3 pr-4" style="width: 100%; height: 57vh; z-index: 0">
+                <div v-for="(detail, index) in buttons" :key="index">
+                    <Button :label="detail.name" severity="secondary" variant="outlined" class="w-full mb-1" :class="{ 'active': activeBtn === index }" @click="btnDetailChange(index)"/>
+                </div>
+            </ScrollPanel>
         </div>
         <div class="w-3/4 p-1">
             <ScrollPanel class="mr-3" style="width: 100%; height: 57vh; z-index: 0">
@@ -127,6 +129,7 @@ import Checkbox from 'primevue/checkbox';
 import Dialog from 'primevue/dialog';
 import Textarea from 'primevue/textarea';
 import { Detail, Defect, DefectData, Value } from "@/types";
+import Fieldset from 'primevue/fieldset';
 // import {locations} from "@/data";
 
 
