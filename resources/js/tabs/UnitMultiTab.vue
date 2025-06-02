@@ -1,6 +1,6 @@
 <template>
 <!--    <Toast />-->
-    <Accordion value="-">
+    <Accordion value="-" class="mb-1">
         <AccordionPanel value="0">
             <AccordionHeader>Схема</AccordionHeader>
             <AccordionContent>
@@ -17,19 +17,21 @@
             </AccordionContent>
         </AccordionPanel>
     </Accordion>
-    <Tabs :value="tabActive">
-        <TabList>
-            <Tab v-for="tab in tabs" :key="tab.title" :value="tab.value">{{ tab.title }}</Tab>
+    <Tabs :value="tabActive" class="w-full">
+        <TabList class="w-full relative">
+            <div class="flex">
+                <Tab v-for="tab in tabs" :key="tab.title" :value="tab.value">{{ tab.title }}</Tab>
+            </div>
+            <div class="absolute right-3 top-1">
+                <Button label="Cохранить" @click="store"/>
+            </div>
         </TabList>
         <TabPanels>
             <TabPanel v-for="tab in tabs" :key="tab.content" :value="tab.value">
-<!--                <p class="m-0">{{ tab.content }}</p>-->
-                <UnitMultiTabSec :details="details" />
+                <UnitMultiTabSec :details="details" v-model="defectData"/>
             </TabPanel>
         </TabPanels>
     </Tabs>
-
-
 </template>
 
 
@@ -47,6 +49,8 @@ import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
 import UnitMultiTabSec from "@/tabs/UnitMultiTabSec.vue";
 import axios from "axios";
+import Button from "primevue/button";
+import { DefectData } from "@/types";
 
 
 const props = defineProps({
@@ -70,6 +74,8 @@ const props = defineProps({
 const sections = ref(1)
 const tabActive = ref(0)
 const details = ref([])
+
+const defectData = ref<DefectData[]>([]);
 
 const getImagePath = computed(() => {
     return new URL(`${props.imagePath}`, import.meta.url)
@@ -102,6 +108,25 @@ const getDetails = () => {
         })
 }
 
+const store = () => {
+    console.log(defectData.value);
+    return;
+    axios.post('/api/defect-data',{
+        input_id: 1,
+        unit: 'Pump',
+        section_number: 1,
+        defect_id: 1,
+        value: '1',
+    } )
+        .then(res => {
+
+        })
+        .catch(e => {
+            const serverError = e.response?.data?.error || e.response?.data?.message || JSON.stringify(e.response?.data?.errors) || e.message;
+
+        })
+}
+
 </script>
 
 <style scoped>
@@ -129,10 +154,7 @@ const getDetails = () => {
     padding: 25px;
 }
 
-
-
-
-
-
 </style>
+
+// https://ru.vuejs.org/guide/components/v-model
 

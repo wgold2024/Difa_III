@@ -23,4 +23,14 @@ class Input extends Model
     public function user() {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function pumps()
+    {
+        return $this->hasMany(DefectData::class)->where('unit', 'Pump');
+    }
+
+    public function motors()
+    {
+        return $this->hasMany(DefectData::class)->where('unit', 'Motor');
+    }
 }

@@ -40,7 +40,7 @@
                 </div>
             </ScrollPanel>
         </div>
-        <div class="w-3/4 p-1">
+        <div  v-if="true" class="w-3/4 p-1">
             <ScrollPanel class="mr-3" style="width: 100%; height: 57vh; z-index: 0">
                 <Card  v-for="(component, index) in btnComponents as Defect[]" :key="index" class="mb-1" style="overflow: hidden">
                     <template #content>
@@ -112,7 +112,6 @@
     </div>
 </template>
 
-
 <script lang="ts" setup>
 import {ref, defineProps, onMounted, computed, PropType, watch, watchEffect} from "vue";
 import Accordion from 'primevue/accordion';
@@ -130,7 +129,11 @@ import Dialog from 'primevue/dialog';
 import Textarea from 'primevue/textarea';
 import { Detail, Defect, DefectData, Value } from "@/types";
 import Fieldset from 'primevue/fieldset';
+import axios from "axios";
+import {toRaw} from "vue/dist/vue";
 // import {locations} from "@/data";
+
+// const model = defineModel()
 
 
 const props = defineProps<{
@@ -147,7 +150,11 @@ const activeBtn = ref<number>(0);
 const btnComponents = ref<Defect[] | null>(null);
 // const optionComponents = ref<Defect[]>([]);
 const isReasonVisible = ref<boolean[]>([]);
-const dataSectionUnit = ref<DefectData[]>([]);
+// const dataSectionUnit = ref<DefectData[]>([]);
+const dataSectionUnit = defineModel<DefectData[]>({
+    default: () => [] as DefectData[]
+})
+
 
 const buttons = computed<Detail[]>(() => {
     return props.details?.filter((res: Detail) => res.name !== 'Общая информация') ?? [];
@@ -161,7 +168,7 @@ const commonComponents = computed<Defect[]>(() => {
 const filteredOptions = (item: Value[]) => {
     return item.filter(res =>
         res.visibility_defect_id === 0 ||
-        res.visibility_defect_value === dataSectionUnit.value[res.visibility_defect_id])
+        res.visibility_defect_value === dataSectionUnit.value[res.visibility_defect_id] )
 }
 
 
@@ -220,6 +227,8 @@ watch(dataSectionUnit, () => {
 watchEffect(() => {
     btnDetailChange(0);
 });
+
+
 
 </script>
 
