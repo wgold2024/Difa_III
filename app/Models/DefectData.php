@@ -14,5 +14,7 @@ class DefectData extends Model
         return $this->belongsTo(Input::class);
     }
 
-
+    public function detail() {
+        return $this->belongsTo(Detail::class);
+    }
 }

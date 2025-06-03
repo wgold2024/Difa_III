@@ -67,18 +67,48 @@ class DefectDataController extends Controller
     {
         $data = $request->validated();
 
+        $inputId = $data['input_id'];
+        $unit = $data['unit'];
+        $sections = $data['sections'];
+
+//        dd($inputId, $unit, $sections);
+
         try {
             DB::beginTransaction();
 
-            $defectData = DefectData::create($data);
+            foreach ($sections as $section) {
+                $sectionId = $section['section_id'];
+                $defects = $section['defects'];
+                foreach ($defects as $defect) {
+                    $detailId = Defect::find($defect['defect_id'])->detail->id;
+                    $defectData[] = DefectData::updateOrCreate(
+                        [
+                            'input_id' => $inputId,
+                            'unit' => $unit,
+                            'section_number' => $sectionId,
+                            'detail_id' => $detailId,
+                            'defect_id' => $defect['defect_id'],
+                        ],
+                        [
+                            'value' => $defect['value'],
+                        ]
+                    );
+                }
+            }
 
             DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Данные успешно сохранены',
+                'data' => DefectDataResource::collection($defectData),
+            ], Response::HTTP_CREATED); // 201 статус для созданных ресурсов
         } catch (\Exception $exception) {
             DB::rollBack();
             return response()->json(['error' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return DefectDataResource::make($defectData)->resolve();
+
     }
 
     /**

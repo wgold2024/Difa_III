@@ -8,15 +8,15 @@
                     <div v-for="(component, index) in commonComponents" :key="index" class="mr-5">
                         <div v-if="component.type=='string'" >
                             <div class="mb-1">{{ component.name }}</div>
-                            <InputText v-model="dataSectionUnit[component.id] as unknown as string" @input="console.log(dataSectionUnit)" placeholder="Введите значение" class="w-full"/>
+                            <InputText v-model="defectData[component.id] as unknown as string" placeholder="Введите значение" class="w-full"/>
                         </div>
                         <div v-if="component.type=='number'"  class="w-full text-center">
                             <div class="mb-1">{{ component.name }}, {{ component.measure_unit }}</div>
-                            <InputNumber v-model="dataSectionUnit[component.id] as unknown as number" :min="0" placeholder="Введите число" class="w-1/2"/>
+                            <InputNumber v-model="defectData[component.id] as unknown as number" :min="0" placeholder="Введите число" class="w-1/2"/>
                         </div>
                         <div v-if="component.type=='select'" >
                             <div class="mb-1">{{ component.name }}</div>
-                            <Select v-model="dataSectionUnit[component.id]" :options="component.values" optionLabel="name" optionValue="name" placeholder="Выберите значение" class="w-full" />
+                            <Select v-model="defectData[component.id]" :options="component.values" optionLabel="name" optionValue="name" placeholder="Выберите значение" class="w-full" />
                         </div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                                     <div>
                                         <div class="flex justify-between items-center">
                                             <div class="mb-3">
-                                                <Checkbox v-model="dataSectionUnit[component.id]" :binary="true" :value="component.id" :id="'label' + String(component.id)" name="defect" />
+                                                <Checkbox v-model="defectData[component.id]" :binary="true" :value="component.id" :id="'label' + String(component.id)" name="defect" />
                                                 <label :for="'label' + String(component.id)" class="ml-2">{{ component.name }}</label>
                                             </div>
                                             <Button label="Возможные причины" text raised severity="secondary" @click="isReasonVisible[component.id] = !isReasonVisible[component.id]" class="mb-2"/>
@@ -59,27 +59,27 @@
                                         <p class="mb-2">
                                             {{ component.description }}
                                         </p>
-                                        <div :id="String(component.id)" v-if="component.group_id && optionComponents.filter(res => res.group_id === component.group_id).length > 0" :class="{ 'm-hidden': !dataSectionUnit[component.id] }" class="p-2 mb-2 border border-r rounded-lg" style="border-color: var(--novomet-light-gray-blue-1000)">
+                                        <div :id="String(component.id)" v-if="component.group_id && optionComponents.filter(res => res.group_id === component.group_id).length > 0" :class="{ 'm-hidden': !defectData[component.id] }" class="p-2 mb-2 border border-r rounded-lg" style="border-color: var(--novomet-light-gray-blue-1000)">
                                             <div class="grid grid-cols-3 gap-x-10 gap-y-2">
                                                 <div v-for="(item, index) in optionComponents.filter(res => res.group_id === component.group_id)" :key="index">
                                                     <div v-if="item.type=='string'" >
                                                         <div class="mb-1">{{ item.name }}</div>
-                                                        <InputText v-model="dataSectionUnit[item.id] as unknown as string" placeholder="Введите значение" class="w-full"/>
+                                                        <InputText v-model="defectData[item.id] as unknown as string" placeholder="Введите значение" class="w-full"/>
                                                     </div>
                                                     <div v-if="item.type=='number'"  class="w-full text-center">
                                                         <div class="mb-1">{{ item.name }}, {{ item.measure_unit }}</div>
-                                                        <InputNumber v-model="dataSectionUnit[item.id] as unknown as number" :min="0" placeholder="Введите число" class="w-full"/>
+                                                        <InputNumber v-model="defectData[item.id] as unknown as number" :min="0" placeholder="Введите число" class="w-full"/>
                                                     </div>
                                                     <div v-if="item.type=='select' && filteredOptions(item.values).length > 0" >
                                                         <div class="mb-1">{{ item.name }}</div>
 <!--                                                        <Select
-                                                            v-model="dataSectionUnit[item.id]"
-                                                            :options="item.values.filter(res => res.visibility_defect_id === '0' || res.visibility_defect_value === dataSectionUnit[res.visibility_defect_id])"
+                                                            v-model="defectData[item.id]"
+                                                            :options="item.values.filter(res => res.visibility_defect_id === '0' || res.visibility_defect_value === defectData[res.visibility_defect_id])"
                                                             optionLabel="name" optionValue="name"
                                                             placeholder="Выберите значение" class="w-full"
                                                         />-->
                                                         <Select
-                                                            v-model="dataSectionUnit[item.id]"
+                                                            v-model="defectData[item.id]"
                                                             :options = filteredOptions(item.values)
                                                             optionLabel="name" optionValue="name"
                                                             placeholder="Выберите значение" class="w-full"
@@ -113,7 +113,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, defineProps, onMounted, computed, PropType, watch, watchEffect} from "vue";
+import {ref, defineProps, onMounted, computed, PropType, watch, watchEffect, defineEmits} from "vue";
 import Accordion from 'primevue/accordion';
 import AccordionPanel from 'primevue/accordionpanel';
 import AccordionHeader from 'primevue/accordionheader';
@@ -127,7 +127,7 @@ import ScrollPanel from 'primevue/scrollpanel';
 import Checkbox from 'primevue/checkbox';
 import Dialog from 'primevue/dialog';
 import Textarea from 'primevue/textarea';
-import { Detail, Defect, DefectData, Value } from "@/types";
+import { Detail, Defect, DefectData, Value, Data, SectionData, DefectData2 } from "@/types";
 import Fieldset from 'primevue/fieldset';
 import axios from "axios";
 import {toRaw} from "vue/dist/vue";
@@ -138,23 +138,30 @@ import {toRaw} from "vue/dist/vue";
 
 const props = defineProps<{
     details?: Detail[];
+    sectionId: number
 }>();
 
 
 
 onMounted(() => {
-    // console.log(props.details);
+    // console.log(props.sectionId);
 })
 
 const activeBtn = ref<number>(0);
 const btnComponents = ref<Defect[] | null>(null);
 // const optionComponents = ref<Defect[]>([]);
 const isReasonVisible = ref<boolean[]>([]);
-// const dataSectionUnit = ref<DefectData[]>([]);
-const dataSectionUnit = defineModel<DefectData[]>({
-    default: () => [] as DefectData[]
+const defectData = ref<DefectData[]>([]);
+// const defectData = defineModel<DefectData[]>({
+//     default: () => [] as DefectData[]
+// })
+
+const data = defineModel<Data[]>({
+    default: () => [] as Data[]
 })
 
+const sectionData = ref<SectionData>()
+const sectionId = ref<number>(props.sectionId)
 
 const buttons = computed<Detail[]>(() => {
     return props.details?.filter((res: Detail) => res.name !== 'Общая информация') ?? [];
@@ -168,7 +175,7 @@ const commonComponents = computed<Defect[]>(() => {
 const filteredOptions = (item: Value[]) => {
     return item.filter(res =>
         res.visibility_defect_id === 0 ||
-        res.visibility_defect_value === dataSectionUnit.value[res.visibility_defect_id] )
+        res.visibility_defect_value === defectData.value[res.visibility_defect_id] )
 }
 
 
@@ -209,18 +216,44 @@ const btnDetailChange = (index: number) => {
     }
 }
 
-watch(dataSectionUnit, () => {
-    console.log(dataSectionUnit.value)
-    // console.log(dataSectionUnit.value[28])
+const emit = defineEmits(['updateData'])
+
+watch(defectData, () => {
+    // console.log(defectData.value)
+    // console.log(props.details)
+
+    // console.log(defectData.value[28])
     // Скрыитие отображение доп. полей для Слома вала
     const el93 = document.getElementById('93')
     // el93.classList.add('mr-9')
     // if (el28 === null) return
-    // if (dataSectionUnit.value[28] === true) {
+    // if (defectData.value[28] === true) {
     //     el28.classList.remove('m-hidden')
     // } else {
     //     el28.classList.add('m-hidden')
     // }
+
+    const arr: DefectData2[] = [];
+
+    for (const [key, value] of Object.entries(defectData.value)) {
+        // Проверяем, что ключ и значение существуют и имеют правильный тип
+        if (typeof key !== 'undefined' && typeof value !== 'undefined' && !isNaN(Number(key))) {
+                arr.push({
+                    defect_id: Number(key),
+                    value: String(value)
+                });
+        } else {
+            console.warn(`Invalid defect data: key=${key}, value=${value}`);
+        }
+    }
+
+    sectionData.value = {
+        section_id: sectionId.value,
+        defects: arr
+    }
+
+    emit('updateData', sectionData.value)
+    // console.log(sectionId.value)
 
 }, { deep: true })
 

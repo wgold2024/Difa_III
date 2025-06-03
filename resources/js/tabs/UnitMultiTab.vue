@@ -28,7 +28,11 @@
         </TabList>
         <TabPanels>
             <TabPanel v-for="tab in tabs" :key="tab.content" :value="tab.value">
-                <UnitMultiTabSec :details="details" v-model="defectData"/>
+                <UnitMultiTabSec
+                    :details="details"
+                    :section-id="tabActive + 1"
+                    @updateData="updateData"
+                />
             </TabPanel>
         </TabPanels>
     </Tabs>
@@ -37,6 +41,7 @@
 
 <script lang="ts" setup>
 import { computed, defineProps, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router'
 import Accordion from 'primevue/accordion';
 import AccordionPanel from 'primevue/accordionpanel';
 import AccordionHeader from 'primevue/accordionheader';
@@ -50,7 +55,7 @@ import TabPanel from 'primevue/tabpanel';
 import UnitMultiTabSec from "@/tabs/UnitMultiTabSec.vue";
 import axios from "axios";
 import Button from "primevue/button";
-import { DefectData } from "@/types";
+import {DefectData, EspData, SectionData} from "@/types";
 
 
 const props = defineProps({
@@ -75,7 +80,13 @@ const sections = ref(1)
 const tabActive = ref(0)
 const details = ref([])
 
-const defectData = ref<DefectData[]>([]);
+// const defectData = ref<DefectData[]>([]);
+const data = ref<DefectData[]>([]);
+const espData = ref<EspData>({
+    Pump: []
+});
+
+const route = useRoute()
 
 const getImagePath = computed(() => {
     return new URL(`${props.imagePath}`, import.meta.url)
@@ -96,7 +107,7 @@ onMounted(() => {
 });
 
 const input = () => {
-    console.log(sections.value)
+    // console.log(sections.value)
 }
 
 const getDetails = () => {
@@ -109,14 +120,11 @@ const getDetails = () => {
 }
 
 const store = () => {
-    console.log(defectData.value);
-    return;
+    console.log(espData.value[props.unit]);
     axios.post('/api/defect-data',{
-        input_id: 1,
-        unit: 'Pump',
-        section_number: 1,
-        defect_id: 1,
-        value: '1',
+        input_id: route.params.id,
+        unit: props.unit,
+        sections: espData.value[props.unit],
     } )
         .then(res => {
 
@@ -125,6 +133,30 @@ const store = () => {
             const serverError = e.response?.data?.error || e.response?.data?.message || JSON.stringify(e.response?.data?.errors) || e.message;
 
         })
+}
+
+const updateData = (sectionData: SectionData) => {
+    // console.log('sectionData', sectionData.section_id)
+    const existingIndex = espData.value.Pump.findIndex(
+        item => item.section_id === sectionData.section_id
+    );
+    if (existingIndex !== -1) {
+        espData.value.Pump[existingIndex] = sectionData;
+    } else {
+        espData.value.Pump.push(sectionData);
+    }
+
+
+
+
+    // const arr: SectionData[] = []
+    // arr.push(sectionData)
+    //
+    // espData.value = {
+    //     Pump: arr
+    // }
+    //
+    // console.log(espData.value);
 }
 
 </script>

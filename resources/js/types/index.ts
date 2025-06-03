@@ -91,3 +91,32 @@ export interface DefectData {
     [key: number]: string | number | boolean | null;
 }
 
+// Для данных:
+export interface Data {
+    data: EspData[];
+}
+
+export interface EspData {
+    Input?: {
+        id: number;
+    };
+    Pump: SectionData[];
+    Motor?: SectionData[];
+}
+
+export interface SectionData {
+    section_id: number;
+    defects: DefectData2[];
+}
+export interface DefectData2 {
+    // detail_id: number;
+    defect_id: number;
+    value: string;
+}
+
+
+
+
+
+
+

@@ -12,4 +12,8 @@ class Defect extends Model
     public function values() {
         return $this->hasMany(DefectValue::class);
     }
+
+    public function detail() {
+        return $this->belongsTo(Detail::class);
+    }
 }

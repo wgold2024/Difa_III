@@ -24,9 +24,10 @@ class StoreRequest extends FormRequest
         return [
             'input_id' => 'required|integer|exists:inputs,id',
             'unit' => 'required|string',
-            'section_number' => 'required|integer',
-            'defect_id' => 'required|integer|exists:defects,id',
-            'value' => 'required|string',
+            'sections' => 'array',
+//            'section_number' => 'required|integer',
+//            'defect_id' => 'required|integer|exists:defects,id',
+//            'value' => 'required|string',
         ];
     }
 
