@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DefectData\StoreRequest;
 use App\Http\Resources\DefectData\DefectDataResource;
+use App\Http\Resources\DefectData\GroupedDefectDataResource;
 use App\Http\Resources\DefectData\UnitDataResource;
 use App\Http\Resources\Input\InputResource;
 use App\Models\Defect;
@@ -21,40 +22,28 @@ class DefectDataController extends Controller
      */
     public function index()
     {
-        $inputs = Input::with(['pumps', 'motors'])->get();
+        $defectData = DefectData::all()
+            ->groupBy(['input_id', 'unit', 'section_number']);
 
-        $data = $inputs->map(function ($input) {
-            return [
-                'Input' => ['id' => $input->id],
-                'Pump' => $input->pumps
-                    ->groupBy('section_number')
-                    ->map(function ($items, $sectionNumber) {
-                        return [
-                            'section_id' => $sectionNumber,
-                            'defects' => $items->map(function ($item) {
-                                return [
-                                    'detail_id' => $item->detail_id,
-                                    'defect_id' => $item->defect_id,
-                                    'value' => $item->value,
-                                ];
-                            })->values()
-                        ];
-                    })->values(),
-                'Motor' => $input->motors
-                    ->groupBy('section_number')
-                    ->map(function ($items, $sectionNumber) {
-                        return [
-                            'section_id' => $sectionNumber,
-                            'defects' => $items->map(function ($item) {
-                                return [
-                                    'detail_id' => $item->detail_id,
-                                    'defect_id' => $item->defect_id,
-                                    'value' => $item->value,
-                                ];
-                            })->values()
-                        ];
-                    })->values(),
+        $inputs = Input::all();
+
+        $data = $inputs->map(function ($input) use ($defectData) {
+            $result = [
+                'Input' => InputResource::make($input)->resolve()
             ];
+
+            if (isset($defectData[$input->id])) {
+                foreach ($defectData[$input->id] as $unitType => $sections) {
+                    $result[$unitType] = $sections->map(function ($items, $sectionNumber) {
+                        return new GroupedDefectDataResource((object) [
+                            'section_number' => $sectionNumber,
+                            'items' => $items
+                        ]);
+                    })->values();
+                }
+            }
+
+            return $result;
         });
 
         return response()->json(['data' => $data]);
@@ -70,8 +59,6 @@ class DefectDataController extends Controller
         $inputId = $data['input_id'];
         $unit = $data['unit'];
         $sections = $data['sections'];
-
-//        dd($inputId, $unit, $sections);
 
         try {
             DB::beginTransaction();
@@ -101,22 +88,46 @@ class DefectDataController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Данные успешно сохранены',
-                'data' => DefectDataResource::collection($defectData),
+                'data' => DefectDataResource::collection($defectData)->resolve(),
             ], Response::HTTP_CREATED); // 201 статус для созданных ресурсов
         } catch (\Exception $exception) {
             DB::rollBack();
             return response()->json(['error' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request, string $id)
     {
-        //
+        $unit = $request->unit;
+
+        // Базовый запрос
+        $query = DefectData::where('input_id', $id);
+
+        if ($unit) {
+            $query->where('unit', $unit);
+        }
+
+        // Получаем данные и группируем
+        $groupedData = $query->get()
+            ->groupBy(['unit', 'section_number'])
+            ->map(function ($units) {
+                return $units->map(function ($items, $sectionNumber) {
+                    return new GroupedDefectDataResource((object) [
+                        'section_number' => $sectionNumber,
+                        'items' => $items
+                    ]);
+                })->values();
+            });
+
+        // Форматируем ответ в зависимости от наличия unit
+        $responseData = $unit
+            ? [$unit => $groupedData->first() ?? []]
+            : $groupedData->toArray();
+
+        return response()->json($responseData);
     }
 
     /**

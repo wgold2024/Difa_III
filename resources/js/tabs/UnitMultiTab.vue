@@ -105,6 +105,7 @@ const tabs = computed(() => {
 
 onMounted(() => {
     getDetails();
+    show();
 });
 
 const input = () => {
@@ -128,6 +129,17 @@ const store = () => {
         sections: espData.value[props.unit],
     } )
         .then(res => {
+
+
+
+
+
+
+
+
+
+
+
 
         })
         .catch(e => {
@@ -158,6 +170,23 @@ const updateData = (sectionData: SectionData) => {
     // }
     //
     // console.log(espData.value);
+}
+
+const show = () => {
+    axios.get(`/api/defect-data/2?unit=${props.unit}`)
+        .then(res => {
+            const data = res.data[props.unit];
+            console.log(data);
+
+
+            sections.value = data.length > 0
+                ? Math.max(...data.map(item => item.section_number))
+                : 1;
+
+            //details.value = res.data
+            // console.log(maxSectionNumber)
+            // details.value = res.data.data;
+        })
 }
 
 </script>
