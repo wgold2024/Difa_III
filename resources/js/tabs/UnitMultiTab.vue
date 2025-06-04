@@ -40,7 +40,7 @@
 
 
 <script lang="ts" setup>
-import { computed, defineProps, onMounted, ref } from 'vue';
+import { computed, defineProps, onMounted, ref, PropType } from 'vue';
 import { useRoute } from 'vue-router'
 import Accordion from 'primevue/accordion';
 import AccordionPanel from 'primevue/accordionpanel';
@@ -55,12 +55,13 @@ import TabPanel from 'primevue/tabpanel';
 import UnitMultiTabSec from "@/tabs/UnitMultiTabSec.vue";
 import axios from "axios";
 import Button from "primevue/button";
-import {DefectData, EspData, SectionData} from "@/types";
+import { DefectData, EspData, SectionData } from "@/types";
 
 
 const props = defineProps({
     unit: {
-        type: String
+        type: String as PropType<'Input' | 'Pump' | 'Motor'>,
+        required: true
     },
     imagePath: {
         type: String,
