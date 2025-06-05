@@ -64,7 +64,7 @@ class DefectDataController extends Controller
             DB::beginTransaction();
 
             foreach ($sections as $section) {
-                $sectionId = $section['section_id'];
+                $sectionId = $section['section_number'];
                 $defects = $section['defects'];
                 foreach ($defects as $defect) {
                     $detailId = Defect::find($defect['defect_id'])->detail->id;

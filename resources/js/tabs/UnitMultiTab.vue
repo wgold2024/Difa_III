@@ -27,11 +27,12 @@
             </div>
         </TabList>
         <TabPanels>
-            <TabPanel v-for="tab in tabs" :key="tab.content" :value="tab.value">
+            <TabPanel v-for="(tab, index) in tabs" :key="index" :value="tab.value">
                 <UnitMultiTabSec
                     :details="details"
-                    :section-id="tabActive + 1"
+                    :section-number="index + 1"
                     @updateData="updateData"
+                    :section-data="sectionData"
                 />
             </TabPanel>
         </TabPanels>
@@ -55,7 +56,7 @@ import TabPanel from 'primevue/tabpanel';
 import UnitMultiTabSec from "@/tabs/UnitMultiTabSec.vue";
 import axios from "axios";
 import Button from "primevue/button";
-import { DefectData, EspData, SectionData } from "@/types";
+import { DefectDataMap, DefectData, EspData, SectionData } from "@/types";
 
 
 const props = defineProps({
@@ -80,9 +81,12 @@ const props = defineProps({
 const sections = ref(1)
 const tabActive = ref(0)
 const details = ref([])
+const defectData = ref<DefectData | null>(null)
+
+const sectionData = ref<SectionData[] | null>(null)
 
 // const defectData = ref<DefectData[]>([]);
-const data = ref<DefectData[]>([]);
+const data = ref<DefectDataMap[]>([]);
 const espData = ref<EspData>({
     Pump: []
 });
@@ -149,9 +153,9 @@ const store = () => {
 }
 
 const updateData = (sectionData: SectionData) => {
-    // console.log('sectionData', sectionData.section_id)
+    // console.log('sectionData', sectionData.section_number)
     const existingIndex = espData.value.Pump.findIndex(
-        item => item.section_id === sectionData.section_id
+        item => item.section_number === sectionData.section_number
     );
     if (existingIndex !== -1) {
         espData.value.Pump[existingIndex] = sectionData;
@@ -173,19 +177,20 @@ const updateData = (sectionData: SectionData) => {
 }
 
 const show = () => {
-    axios.get(`/api/defect-data/2?unit=${props.unit}`)
+    axios.get(`/api/defect-data/${route.params.id}?unit=${props.unit}`)
         .then(res => {
-            const data = res.data[props.unit];
-            console.log(data);
+            const data: SectionData[] = res.data[props.unit];
+
+            if(data.length > 0) {
+                console.log(data);
 
 
-            sections.value = data.length > 0
-                ? Math.max(...data.map(item => item.section_number))
-                : 1;
+                sections.value = data.length > 0
+                    ? Math.max(...data.map((item: SectionData) => item.section_number))
+                    : 1;
 
-            //details.value = res.data
-            // console.log(maxSectionNumber)
-            // details.value = res.data.data;
+                sectionData.value = data
+            }
         })
 }
 

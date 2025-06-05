@@ -87,7 +87,7 @@ export interface Value {
     visibility_defect_value: string
 }
 
-export interface DefectData {
+export interface DefectDataMap {
     [key: number]: string | number | boolean | null;
 }
 
@@ -105,13 +105,15 @@ export interface EspData {
 }
 
 export interface SectionData {
-    section_id: number;
-    defects: DefectData2[];
+    section_number: number;
+    defects: DefectData[];
 }
-export interface DefectData2 {
+export interface DefectData {
     // detail_id: number;
     defect_id: number;
+    type?: string;
     value: string;
+    comment?: string
 }
 
 

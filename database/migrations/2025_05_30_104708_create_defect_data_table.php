@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('detail_id')->index()->constrained('details')->onDelete('cascade');
             $table->foreignId('defect_id')->index()->constrained('defects')->onDelete('cascade');
             $table->string('value')->nullable();
+            $table->text('comment')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

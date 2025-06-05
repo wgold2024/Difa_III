@@ -17,4 +17,8 @@ class DefectData extends Model
     public function detail() {
         return $this->belongsTo(Detail::class);
     }
+
+    public function defect() {
+        return $this->belongsTo(Defect::class, 'defect_id', 'id');
+    }
 }
