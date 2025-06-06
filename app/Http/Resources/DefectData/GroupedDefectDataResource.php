@@ -22,7 +22,8 @@ class GroupedDefectDataResource extends JsonResource
                     'detail_id' => $item->detail_id,
                     'defect_id' => $item->defect_id,
                     'type' => $item->defect->type,
-                    'value' => $item->value
+                    'value' => $item->value,
+                    'comment' => $item->comment
                 ];
             })
         ];

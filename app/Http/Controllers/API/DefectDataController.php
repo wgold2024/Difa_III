@@ -78,6 +78,7 @@ class DefectDataController extends Controller
                         ],
                         [
                             'value' => $defect['value'],
+                            'comment' => $defect['comment'],
                         ]
                     );
                 }

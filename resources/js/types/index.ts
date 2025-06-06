@@ -112,8 +112,8 @@ export interface DefectData {
     // detail_id: number;
     defect_id: number;
     type?: string;
-    value: string;
-    comment?: string
+    value: string | null;
+    comment: string | null;
 }
 
 

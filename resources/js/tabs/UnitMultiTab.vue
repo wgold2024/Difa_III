@@ -184,7 +184,6 @@ const show = () => {
             if(data.length > 0) {
                 console.log(data);
 
-
                 sections.value = data.length > 0
                     ? Math.max(...data.map((item: SectionData) => item.section_number))
                     : 1;

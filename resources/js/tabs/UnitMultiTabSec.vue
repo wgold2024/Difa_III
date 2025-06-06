@@ -96,7 +96,7 @@
                                     </div>
                                     <div class="flex-1 min-h-[100px]" >
 <!--                                        <Textarea autoResize placeholder="Добавьте комментарий" class="w-full h-full " />-->
-                                        <textarea class="w-full h-full p-2 border border-r rounded-lg" style="resize: none; outline: none; border-color: var(--novomet-light-gray-blue-1000)" rows="3" placeholder="Введите общее примечание к разбору"></textarea>
+                                        <textarea v-model="defectDataMapComment[component.id]" class="w-full h-full p-2 border border-r rounded-lg" style="resize: none; outline: none; border-color: var(--novomet-light-gray-blue-1000)" rows="3" placeholder="Введите общее примечание к разбору"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -153,6 +153,7 @@ const btnComponents = ref<Defect[] | null>(null);
 // const optionComponents = ref<Defect[]>([]);
 const isReasonVisible = ref<boolean[]>([]);
 const defectDataMap = ref<DefectDataMap[]>([]);
+const defectDataMapComment = ref<DefectDataMap[]>([]);
 // const defectDataMap = defineModel<defectDataMap[]>({
 //     default: () => [] as defectDataMap[]
 // })
@@ -219,8 +220,8 @@ const btnDetailChange = (index: number) => {
 
 const emit = defineEmits(['updateData'])
 
-watch(defectDataMap, () => {
-    console.log(defectDataMap.value)
+watch([defectDataMap, defectDataMapComment], () => {
+    //console.log(defectDataMap.value)
     // console.log(props.details)
 
     // console.log(defectDataMap.value[28])
@@ -237,12 +238,32 @@ watch(defectDataMap, () => {
     const arr: DefectData[] = [];
 
     for (const [key, value] of Object.entries(defectDataMap.value)) {
-        // Проверяем, что ключ и значение существуют и имеют правильный тип
         if (typeof key !== 'undefined' && typeof value !== 'undefined' && !isNaN(Number(key))) {
                 arr.push({
                     defect_id: Number(key),
-                    value: String(value)
+                    value: String(value),
+                    comment: defectDataMapComment.value?.[key] !== undefined ? String(defectDataMapComment.value[key]) : null,
                 });
+        } else {
+            console.warn(`Invalid defect data: key=${key}, value=${value}`);
+        }
+    }
+
+    for (const [key, value] of Object.entries(defectDataMapComment.value)) {
+        if (typeof key !== 'undefined' && typeof value !== 'undefined' && !isNaN(Number(key))) {
+            const existingIndex = arr.findIndex(
+                item => item.defect_id === Number(key)
+            );
+            if (existingIndex !== -1) {
+                arr[existingIndex].comment = String(value);
+            } else {
+                arr.push({
+                    defect_id: Number(key),
+                    value: defectDataMap.value?.[key] !== undefined ? String(defectDataMap.value[key]) : null,
+                    comment: String(value)
+                });
+            }
+
         } else {
             console.warn(`Invalid defect data: key=${key}, value=${value}`);
         }
@@ -254,25 +275,26 @@ watch(defectDataMap, () => {
     }
 
     emit('updateData', sectionData.value)
-    // console.log(sectionNumber.value)
+    console.log(sectionData.value)
 
 }, { deep: true })
 
 watchEffect(() => {
     btnDetailChange(0);
-    console.log('props.sectionData: ', props.sectionData)
+    //console.log('props.sectionData: ', props.sectionData)
 
     if (props.sectionData !== null) {
         const data = props.sectionData.filter(res => res.section_number === sectionNumber.value)
-        console.log('data', data[0].defects)
+        // console.log('data', data[0].defects)
 
         const result: DefectDataMap[] = [];
+        const comments: DefectDataMap[] = [];
 
         for (const item of data) {
            item.defects.forEach(item => {
-               console.log('item.type', item.type)
+               console.log('item', item)
                let convertedValue;
-               switch(item.type) { // предполагаем, что defect.type доступен
+               switch(item.type) {
                    case 'boolean':
                        convertedValue = item.value === 'true' || item.value === '1';
                        break;
@@ -285,10 +307,12 @@ watchEffect(() => {
                }
 
                 result[item.defect_id] = convertedValue;
+                comments[item.defect_id] = item.comment !== null ? String(item.comment) : '';
             });
         }
 
         defectDataMap.value = result
+        defectDataMapComment.value = comments
 
         // const result = Object.fromEntries(
         //     data[0].defects.map(item => {
