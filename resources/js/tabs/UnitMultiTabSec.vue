@@ -96,7 +96,7 @@
                                     </div>
                                     <div class="flex-1 min-h-[100px]" >
 <!--                                        <Textarea autoResize placeholder="Добавьте комментарий" class="w-full h-full " />-->
-                                        <textarea v-model="defectDataMapComment[component.id]" class="w-full h-full p-2 border border-r rounded-lg" style="resize: none; outline: none; border-color: var(--novomet-light-gray-blue-1000)" rows="3" placeholder="Введите общее примечание к разбору"></textarea>
+                                        <textarea v-model="defectDataMapComment[component.id]  as unknown as string" class="w-full h-full p-2 border border-r rounded-lg" style="resize: none; outline: none; border-color: var(--novomet-light-gray-blue-1000)" rows="3" placeholder="Введите общее примечание к разбору"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -242,7 +242,7 @@ watch([defectDataMap, defectDataMapComment], () => {
                 arr.push({
                     defect_id: Number(key),
                     value: String(value),
-                    comment: defectDataMapComment.value?.[key] !== undefined ? String(defectDataMapComment.value[key]) : null,
+                    comment: defectDataMapComment.value?.[Number(key)] !== undefined ? String(defectDataMapComment.value[Number(key)]) : null,
                 });
         } else {
             console.warn(`Invalid defect data: key=${key}, value=${value}`);
@@ -259,7 +259,7 @@ watch([defectDataMap, defectDataMapComment], () => {
             } else {
                 arr.push({
                     defect_id: Number(key),
-                    value: defectDataMap.value?.[key] !== undefined ? String(defectDataMap.value[key]) : null,
+                    value: defectDataMap.value?.[Number(key)] !== undefined ? String(defectDataMap.value[Number(key)]) : null,
                     comment: String(value)
                 });
             }
@@ -303,10 +303,10 @@ watchEffect(() => {
                        break;
                    case 'string':
                    default:
-                       convertedValue = item.value.toString();
+                       convertedValue = String(item.value);
                }
 
-                result[item.defect_id] = convertedValue;
+                result[item.defect_id] = convertedValue as DefectDataMap;
                 comments[item.defect_id] = item.comment !== null ? String(item.comment) : '';
             });
         }
