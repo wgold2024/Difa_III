@@ -171,7 +171,9 @@ const props = defineProps<{
 onMounted(() => {
     // console.log(props.sectionNumber);
     // PhotoService.getImages().then((data: ImageData[]) => ((defectDataMapImages.value[21] as unknown as ImageData[]) = data));
-    PhotoService.getImages().then((data: ImageData[]) => ((defectDataMapImages.value[21]) = data));
+    // PhotoService.getImages().then((data: ImageData[]) => ((defectDataMapImages.value[21]) = data));
+    // console.log('onMounted', defectDataMapImages.value)
+
 })
 
 const activeBtn = ref<number>(0);
@@ -274,7 +276,8 @@ const setImages = (defectId: number, event: Event) => {
         // }
 
         let obj = {
-            itemImageSrc: URL.createObjectURL(file)
+            itemImageSrc: URL.createObjectURL(file),
+            file: file
         }
 
         if (!defectDataMapImages.value[defectId]) {
@@ -311,7 +314,7 @@ const deleteImage = (defectId: number) => {
 
 const emit = defineEmits(['updateData'])
 
-watch([defectDataMap, defectDataMapComment], () => {
+watch([defectDataMap, defectDataMapComment, defectDataMapImages], () => {
     //console.log(defectDataMap.value)
     // console.log(props.details)
 
@@ -334,6 +337,7 @@ watch([defectDataMap, defectDataMapComment], () => {
                     defect_id: Number(key),
                     value: String(value),
                     comment: defectDataMapComment.value?.[Number(key)] !== undefined ? String(defectDataMapComment.value[Number(key)]) : null,
+                    images: defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map(item => item.file) : null,
                 });
         } else {
             console.warn(`Invalid defect data: key=${key}, value=${value}`);
@@ -351,7 +355,7 @@ watch([defectDataMap, defectDataMapComment], () => {
                 arr.push({
                     defect_id: Number(key),
                     value: defectDataMap.value?.[Number(key)] !== undefined ? String(defectDataMap.value[Number(key)]) : null,
-                    comment: String(value)
+                    comment: String(value),
                 });
             }
 
@@ -367,6 +371,7 @@ watch([defectDataMap, defectDataMapComment], () => {
 
     emit('updateData', sectionData.value)
     console.log(sectionData.value)
+    console.log('defectDataMapImages',defectDataMapImages.value);
 
 }, { deep: true })
 
@@ -383,7 +388,7 @@ watchEffect(() => {
 
         for (const item of data) {
            item.defects.forEach(item => {
-               console.log('item', item)
+               // console.log('item', item)
                let convertedValue;
                switch(item.type) {
                    case 'boolean':

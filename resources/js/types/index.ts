@@ -96,6 +96,7 @@ export interface  ImageData {
     thumbnailImageSrc: string;
     alt: string;
     title: string;
+    file: File;
 }
 export interface DefectDataMapImages {
     [key: number]: ImageData[];
@@ -124,6 +125,7 @@ export interface DefectData {
     type?: string;
     value: string | null;
     comment: string | null;
+    images?: []
 }
 
 

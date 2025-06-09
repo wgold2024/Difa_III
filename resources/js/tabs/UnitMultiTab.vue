@@ -131,7 +131,11 @@ const store = () => {
         input_id: route.params.id,
         unit: props.unit,
         sections: espData.value[props.unit],
-    } )
+    }, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
         .then(res => {
 
 
