@@ -21,4 +21,8 @@ class DefectData extends Model
     public function defect() {
         return $this->belongsTo(Defect::class, 'defect_id', 'id');
     }
+
+    public function images() {
+        return $this->hasMany(ImageData::class);
+    }
 }

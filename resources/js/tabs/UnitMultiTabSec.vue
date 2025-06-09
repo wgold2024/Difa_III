@@ -190,6 +190,7 @@ const fileInputs = ref<{[key: string]: HTMLInputElement | null}>({});
 // })
 
 const galleryIndex = ref([])
+const isImagesUpdating = ref(false)
 
 const data = defineModel<Data[]>({
     default: () => [] as Data[]
@@ -295,6 +296,7 @@ const setImages = (defectId: number, event: Event) => {
 }
 
 const deleteImage = (defectId: number) => {
+    isImagesUpdating.value = true;
     let index = 0
     if (galleryIndex.value[defectId] !== undefined) {
         index = galleryIndex.value[defectId];
@@ -385,10 +387,13 @@ watchEffect(() => {
 
         const result: DefectDataMap[] = [];
         const comments: DefectDataMap[] = [];
+        const images = [];
 
         for (const item of data) {
            item.defects.forEach(item => {
-               // console.log('item', item)
+               if (item.id == 40) {
+                   console.log('item', item)
+               }
                let convertedValue;
                switch(item.type) {
                    case 'boolean':
@@ -404,11 +409,39 @@ watchEffect(() => {
 
                 result[item.defect_id] = convertedValue as DefectDataMap;
                 comments[item.defect_id] = item.comment !== null ? String(item.comment) : '';
+
+               if (!isImagesUpdating.value) {
+                   for (const image of item.images) {
+                       let obj = {
+                           itemImageSrc: '/storage/' + image.path
+                       }
+                       if (!defectDataMapImages.value[item.defect_id]) {
+                           defectDataMapImages.value[item.defect_id] = [];
+                       }
+                       (defectDataMapImages.value[item.defect_id] as Array<any>).push(obj);
+                   }
+                   // images[item.defect_id] = item.images !== null ? String(item.images) : '';
+                   // console.log('item.images', item.images);
+               }
+
             });
         }
 
         defectDataMap.value = result
         defectDataMapComment.value = comments
+
+
+
+
+        // let obj = {
+        //     itemImageSrc: '/storage/' + 'img/defect-data/T7GWEKTiJZaELmuPAQck7v5Ow4zgMBha8iyOiN3K.png'
+        // }
+        // if (!defectDataMapImages.value[22]) {
+        //     defectDataMapImages.value[22] = [];
+        // }
+        // (defectDataMapImages.value[22] as Array<any>).push(obj);
+
+        // console.log('images', images);
 
         // const result = Object.fromEntries(
         //     data[0].defects.map(item => {

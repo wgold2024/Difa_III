@@ -121,6 +121,7 @@ export interface SectionData {
 }
 export interface DefectData {
     // detail_id: number;
+    id: number;
     defect_id: number;
     type?: string;
     value: string | null;

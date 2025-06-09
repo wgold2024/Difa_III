@@ -79,13 +79,22 @@ class DefectDataController extends Controller
                         ],
                         [
                             'value' => $defect['value'],
-                            'comment' => $defect['comment'],
+                            'comment' => $defect['comment'] ?? '',
                         ]
                     );
                     $defectData[] = $defectDataEl;
 
 
-
+//                    if (is_array($defect['images'])) {
+//                        dump('Обновление изобраожений, defect_data_id:', $defectDataEl->id);
+//
+//                        // Удаление изображений
+//                        $images = ImageData::where('defect_data_id', $defectDataEl->id)->get();
+//                        foreach ($images as $image) {
+//                            Storage::disk('public')->delete($image->path);
+//                            $image->delete();
+//                        }
+//                    }
 
                     if (isset($defect['images'])) {
                         dump('Обновление изобраожений, defect_data_id:', $defectDataEl->id);
@@ -98,7 +107,9 @@ class DefectDataController extends Controller
                         }
 //                        $images->delete;
 //                        dd($images);
+                    }
 
+                    if (isset($defect['images'])) {
                         // Сохренение изображений
                         foreach ($defect['images'] as $image) {
                             ImageData::create([
