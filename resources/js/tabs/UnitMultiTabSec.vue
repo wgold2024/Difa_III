@@ -1,6 +1,6 @@
 <template>
 <!--    <Toast />-->
-    <Accordion value="0" class="mb-4">
+    <Accordion value="-1" class="mb-4">
         <AccordionPanel value="0">
             <AccordionHeader>Общая информация</AccordionHeader>
             <AccordionContent>
@@ -95,14 +95,25 @@
                                         </Dialog>
                                     </div>
                                     <div class="flex-1 min-h-[100px]" >
-<!--                                        <Textarea autoResize placeholder="Добавьте комментарий" class="w-full h-full " />-->
                                         <textarea v-model="defectDataMapComment[component.id]  as unknown as string" class="w-full h-full p-2 border border-r rounded-lg" style="resize: none; outline: none; border-color: var(--novomet-light-gray-blue-1000)" rows="3" placeholder="Введите общее примечание к разбору"></textarea>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="">
-                                <img src="#" alt="adsf" style="width: 200px; height: 200px; border: 1px solid green">
+                            <div class="w-[400px] min-h-[200px] border border-green-500 flex flex-col justify-between">
+                                <Galleria :value="defectDataMapImages[component.id] as unknown as any[] || []"
+                                          v-model:active-index="galleryIndex[component.id]"
+                                          :numVisible="5" containerStyle="max-width: 640px"
+                                          :showItemNavigators="true" :showThumbnails="false">
+                                    <template #item="slotProps">
+                                        <img :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt" style="width: 100%; display: block;" />
+                                    </template>
+                                </Galleria>
+                                <div class="flex justify-between p-1">
+                                    <input type="file"  :ref="(el) => fileInputs['fileInput' + String(component.id)] = el as HTMLInputElement | null"   multiple class="file-upload-button" @change="setImages(component.id, $event)" style="display: none">
+                                    <Button icon="pi pi-plus" class="w-[35%]" severity="primary" @click="addImages(component.id)" outlined/>
+                                    <Button icon="pi pi-minus" class="w-[35%]" severity="primary" @click="deleteImage(component.id)" outlined/>
+                                </div>
                             </div>
                         </div>
                     </template>
@@ -127,7 +138,20 @@ import ScrollPanel from 'primevue/scrollpanel';
 import Checkbox from 'primevue/checkbox';
 import Dialog from 'primevue/dialog';
 import Textarea from 'primevue/textarea';
-import { Detail, Defect, DefectDataMap, Value, Data, SectionData, DefectData } from "@/types";
+import {
+    Detail,
+    Defect,
+    DefectDataMap,
+    Value,
+    Data,
+    SectionData,
+    DefectData,
+    DefectDataMapImages,
+    ImageData
+} from "@/types";
+import Galleria from 'primevue/galleria';
+import { PhotoService } from "@/servicies/PhotoService";
+
 import Fieldset from 'primevue/fieldset';
 import axios from "axios";
 import {toRaw} from "vue/dist/vue";
@@ -146,6 +170,8 @@ const props = defineProps<{
 
 onMounted(() => {
     // console.log(props.sectionNumber);
+    // PhotoService.getImages().then((data: ImageData[]) => ((defectDataMapImages.value[21] as unknown as ImageData[]) = data));
+    PhotoService.getImages().then((data: ImageData[]) => ((defectDataMapImages.value[21]) = data));
 })
 
 const activeBtn = ref<number>(0);
@@ -154,9 +180,14 @@ const btnComponents = ref<Defect[] | null>(null);
 const isReasonVisible = ref<boolean[]>([]);
 const defectDataMap = ref<DefectDataMap[]>([]);
 const defectDataMapComment = ref<DefectDataMap[]>([]);
+const defectDataMapImages = ref<DefectDataMapImages[]>([[]]);
+const fileInputs = ref<{[key: string]: HTMLInputElement | null}>({});
+
 // const defectDataMap = defineModel<defectDataMap[]>({
 //     default: () => [] as defectDataMap[]
 // })
+
+const galleryIndex = ref([])
 
 const data = defineModel<Data[]>({
     default: () => [] as Data[]
@@ -217,6 +248,66 @@ const btnDetailChange = (index: number) => {
         btnComponents.value = props.details[index + 1].defects.filter(res => !res.is_option)
     }
 }
+
+
+
+const addImages = (defectId: number) => {
+    // Иммитируем клик для скрытого элемента Input - file, и, соотвественно вызываем другую функцию setImages()
+    const fileInput = fileInputs.value['fileInput' + String(defectId)];
+
+    if (!fileInput) return
+
+    fileInput.value = '' // Сбрасываем значение, чтобы можно было выбирать те же файлы повторно
+    fileInput.click() // Триггерим клик по скрытому input
+};
+
+const setImages = (defectId: number, event: Event) => {
+    const files = (event.target as HTMLInputElement).files
+
+    if (files === null) return;
+
+    for (const file of files ) {
+        // console.log(file)
+
+        // if (!Array.isArray(defectDataMapImages.value[defectId])) {
+        //     defectDataMapImages.value[defectId] = []; // Инициализируем как массив, если это не так
+        // }
+
+        let obj = {
+            itemImageSrc: URL.createObjectURL(file)
+        }
+
+        if (!defectDataMapImages.value[defectId]) {
+            defectDataMapImages.value[defectId] = [];
+        }
+        (defectDataMapImages.value[defectId] as Array<any>).push(obj);
+
+
+        console.log(defectDataMapImages.value)
+
+        // this.dbData.images[defectId].push(obj)
+    }
+
+
+}
+
+const deleteImage = (defectId: number) => {
+    let index = 0
+    if (galleryIndex.value[defectId] !== undefined) {
+        index = galleryIndex.value[defectId];
+        index !== 0 ? galleryIndex.value[defectId] = index - 1 : null;
+    }
+
+    defectDataMapImages.value[defectId] = defectDataMapImages.value[defectId].filter((_, key) => key != index);
+    console.log('defectDataMapImages',defectDataMapImages.value[defectId]);
+}
+
+
+// const galleryUpdate = (index: number) => {
+//     console.log(index);
+//     console.log(galleryIndex.value);
+// }
+
 
 const emit = defineEmits(['updateData'])
 

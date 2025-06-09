@@ -91,6 +91,16 @@ export interface DefectDataMap {
     [key: number]: string | number | boolean | null;
 }
 
+export interface  ImageData {
+    itemImageSrc: string;
+    thumbnailImageSrc: string;
+    alt: string;
+    title: string;
+}
+export interface DefectDataMapImages {
+    [key: number]: ImageData[];
+}
+
 // Для данных:
 export interface Data {
     data: EspData[];
