@@ -84,33 +84,20 @@ class DefectDataController extends Controller
                     );
                     $defectData[] = $defectDataEl;
 
-
-//                    if (is_array($defect['images'])) {
-//                        dump('Обновление изобраожений, defect_data_id:', $defectDataEl->id);
-//
-//                        // Удаление изображений
-//                        $images = ImageData::where('defect_data_id', $defectDataEl->id)->get();
-//                        foreach ($images as $image) {
-//                            Storage::disk('public')->delete($image->path);
-//                            $image->delete();
-//                        }
-//                    }
-
-                    if (isset($defect['images'])) {
-                        dump('Обновление изобраожений, defect_data_id:', $defectDataEl->id);
-
-                        // Удаление изображений
-                        $images = ImageData::where('defect_data_id', $defectDataEl->id)->get();
-                        foreach ($images as $image) {
-                            Storage::disk('public')->delete($image->path);
-                            $image->delete();
+                    // Удаление изображений
+                    if (isset($defect['deletedImages'])) {
+                        dump($defect['deletedImages']);
+                        foreach ($defect['deletedImages'] as $path) {
+                            $image = ImageData::where('path', $path)->first();
+                            if ($image) {
+                                Storage::disk('public')->delete($image->path);
+                                $image->delete();
+                            }
                         }
-//                        $images->delete;
-//                        dd($images);
                     }
 
+                    // Сохренение изображений
                     if (isset($defect['images'])) {
-                        // Сохренение изображений
                         foreach ($defect['images'] as $image) {
                             ImageData::create([
                                 'defect_data_id' => $defectDataEl->id,
@@ -118,30 +105,51 @@ class DefectDataController extends Controller
                             ]);
                         }
                     }
-
-
-
-
-
-
-
-//                    if($defect['images'] !== null && isArray($defect['images'])) {
-//                        dump($defect['images']);
-//                        foreach ($defect['images'] as $key => $image) {
-//                            dump($image);
-//                        }
-//                    }
-
                 }
             }
 
             DB::commit();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Данные успешно сохранены',
-                'data' => DefectDataResource::collection($defectData)->resolve(),
-            ], Response::HTTP_CREATED); // 201 статус для созданных ресурсов
+//            return response()->json([
+//                'success' => true,
+//                'message' => 'Данные успешно сохранены',
+//                'data' => DefectDataResource::collection($defectData)->resolve(),
+//            ], Response::HTTP_CREATED); // 201 статус для созданных ресурсов
+
+            $query = DefectData::where('input_id', $inputId);
+
+            if ($unit) {
+                $query->where('unit', $unit);
+            }
+
+            // Получаем данные и группируем
+            $groupedData = $query->get()
+                ->groupBy(['unit', 'section_number'])
+                ->map(function ($units) {
+                    return $units->map(function ($items, $sectionNumber) {
+                        return new GroupedDefectDataResource((object) [
+                            'section_number' => $sectionNumber,
+                            'items' => $items
+                        ]);
+                    })->values();
+                });
+
+            // Форматируем ответ в зависимости от наличия unit
+            $responseData = $unit
+                ? [$unit => $groupedData->first() ?? []]
+                : $groupedData->toArray();
+
+            return response()->json($responseData);
+
+
+
+
+
+
+
+
+
+
         } catch (\Exception $exception) {
             DB::rollBack();
             return response()->json(['error' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);

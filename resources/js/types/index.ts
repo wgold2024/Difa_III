@@ -93,10 +93,10 @@ export interface DefectDataMap {
 
 export interface  ImageData {
     itemImageSrc: string;
-    thumbnailImageSrc: string;
-    alt: string;
-    title: string;
-    file: File;
+    // thumbnailImageSrc: string;
+    // alt: string;
+    // title: string;
+    file?: File;
 }
 export interface DefectDataMapImages {
     [key: number]: ImageData[];
@@ -121,12 +121,13 @@ export interface SectionData {
 }
 export interface DefectData {
     // detail_id: number;
-    id: number;
+    id?: number;
     defect_id: number;
     type?: string;
     value: string | null;
     comment: string | null;
-    images?: []
+    images?: [];
+    deletedImages?: [];
 }
 
 

@@ -126,7 +126,8 @@ const getDetails = () => {
 }
 
 const store = () => {
-    console.log(espData.value[props.unit]);
+    //console.log(espData.value[props.unit]);
+    console.log(espData.value[props.unit][3].defects[1]);
     axios.post('/api/defect-data',{
         input_id: route.params.id,
         unit: props.unit,
@@ -138,15 +139,9 @@ const store = () => {
     })
         .then(res => {
 
+            console.log(res.data[props.unit]);
 
-
-
-
-
-
-
-
-
+            // sectionData.value = res.data[props.unit]
 
 
         })

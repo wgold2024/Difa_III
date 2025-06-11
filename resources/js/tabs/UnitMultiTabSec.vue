@@ -182,7 +182,8 @@ const btnComponents = ref<Defect[] | null>(null);
 const isReasonVisible = ref<boolean[]>([]);
 const defectDataMap = ref<DefectDataMap[]>([]);
 const defectDataMapComment = ref<DefectDataMap[]>([]);
-const defectDataMapImages = ref<DefectDataMapImages[]>([[]]);
+const defectDataMapImages = ref<DefectDataMapImages[]>([]);
+const defectDataMapDelImages = ref<DefectDataMapImages[]>([]);
 const fileInputs = ref<{[key: string]: HTMLInputElement | null}>({});
 
 // const defectDataMap = defineModel<defectDataMap[]>({
@@ -287,7 +288,10 @@ const setImages = (defectId: number, event: Event) => {
         (defectDataMapImages.value[defectId] as Array<any>).push(obj);
 
 
-        console.log(defectDataMapImages.value)
+        // console.log(defectDataMapImages.value)
+
+        // Установка индекса галереи для отображения последнего добавленного изображения
+        galleryIndex.value[defectId] = defectDataMapImages.value[defectId].length - 1
 
         // this.dbData.images[defectId].push(obj)
     }
@@ -303,8 +307,33 @@ const deleteImage = (defectId: number) => {
         index !== 0 ? galleryIndex.value[defectId] = index - 1 : null;
     }
 
+
+
+    const deletedImages = defectDataMapImages.value[defectId][index]
+    console.log('deletedImages', deletedImages)
+    if (deletedImages !== undefined && !deletedImages.itemImageSrc.startsWith('blob:')) {
+        console.log('пишем массив')
+        // deletedImages.itemImageSrc = deletedImages.itemImageSrc.replace('/storage/', '');
+        if (!defectDataMapDelImages.value[defectId]) {
+            defectDataMapDelImages.value[defectId] = [];
+        }
+        (defectDataMapDelImages.value[defectId] as Array<any>).push({ itemImageSrc: deletedImages.itemImageSrc.replace('/storage/', '') });
+    }
+
     defectDataMapImages.value[defectId] = defectDataMapImages.value[defectId].filter((_, key) => key != index);
-    console.log('defectDataMapImages',defectDataMapImages.value[defectId]);
+
+    // console.log('defectDataMapImages', defectDataMapImages.value);
+    // console.log('defectDataMapDelImages', defectDataMapDelImages.value[defectId]);
+
+
+
+
+    //console.log('defectDataMapImages',defectDataMapImages.value[defectId]);
+
+
+    // let obj = { itemImageSrc: defectDataMapImages.value[defectId] }
+    //
+
 }
 
 
@@ -316,9 +345,10 @@ const deleteImage = (defectId: number) => {
 
 const emit = defineEmits(['updateData'])
 
-watch([defectDataMap, defectDataMapComment, defectDataMapImages], () => {
+watch([defectDataMap, defectDataMapComment, defectDataMapImages, defectDataMapDelImages], () => {
     //console.log(defectDataMap.value)
     // console.log(props.details)
+    console.log(1)
 
     // console.log(defectDataMap.value[28])
     // Скрыитие отображение доп. полей для Слома вала
@@ -340,6 +370,7 @@ watch([defectDataMap, defectDataMapComment, defectDataMapImages], () => {
                     value: String(value),
                     comment: defectDataMapComment.value?.[Number(key)] !== undefined ? String(defectDataMapComment.value[Number(key)]) : null,
                     images: defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map(item => item.file) : null,
+                    deletedImages: defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map(item => item.itemImageSrc) : null,
                 });
         } else {
             console.warn(`Invalid defect data: key=${key}, value=${value}`);
@@ -358,6 +389,8 @@ watch([defectDataMap, defectDataMapComment, defectDataMapImages], () => {
                     defect_id: Number(key),
                     value: defectDataMap.value?.[Number(key)] !== undefined ? String(defectDataMap.value[Number(key)]) : null,
                     comment: String(value),
+                    images: defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map(item => item.file) : null,
+                    deletedImages: defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map(item => item.itemImageSrc) : null,
                 });
             }
 
@@ -366,14 +399,61 @@ watch([defectDataMap, defectDataMapComment, defectDataMapImages], () => {
         }
     }
 
+    for (const [key, value] of Object.entries(defectDataMapImages.value)) {
+        if (typeof key !== 'undefined' && typeof value !== 'undefined' && !isNaN(Number(key))) {
+            // console.log('key', key, 'value', value)
+            const existingIndex = arr.findIndex(
+                item => item.defect_id === Number(key)
+            );
+            if (existingIndex !== -1) {
+                arr[existingIndex].images =defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map(item => item.file) : null;
+            } else {
+                arr.push({
+                    defect_id: Number(key),
+                    value: defectDataMap.value?.[Number(key)] !== undefined ? String(defectDataMap.value[Number(key)]) : null,
+                    comment: String(value),
+                    images: defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map(item => item.file) : null,
+                    deletedImages: defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map(item => item.itemImageSrc) : null,
+                });
+            }
+
+        } else {
+            console.warn(`Invalid defect data: key=${key}, value=${value}`);
+        }
+    }
+
+    for (const [key, value] of Object.entries(defectDataMapDelImages.value)) {
+        if (typeof key !== 'undefined' && typeof value !== 'undefined' && !isNaN(Number(key))) {
+            const existingIndex = arr.findIndex(
+                item => item.defect_id === Number(key)
+            );
+            if (existingIndex !== -1) {
+                arr[existingIndex].deletedImages = defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map(item => item.itemImageSrc) : null;
+            } else {
+                arr.push({
+                    defect_id: Number(key),
+                    value: defectDataMap.value?.[Number(key)] !== undefined ? String(defectDataMap.value[Number(key)]) : null,
+                    comment: String(value),
+                    images: defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map(item => item.file) : null,
+                    deletedImages: defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map(item => item.itemImageSrc) : null,
+                });
+            }
+
+        } else {
+            console.warn(`Invalid defect data: key=${key}, value=${value}`);
+        }
+    }
+
+
+
     sectionData.value = {
         section_number: sectionNumber.value,
         defects: arr
     }
 
     emit('updateData', sectionData.value)
-    console.log(sectionData.value)
-    console.log('defectDataMapImages',defectDataMapImages.value);
+    // console.log(sectionData.value)
+    //console.log('defectDataMapImages',defectDataMapImages.value);
 
 }, { deep: true })
 
@@ -391,9 +471,9 @@ watchEffect(() => {
 
         for (const item of data) {
            item.defects.forEach(item => {
-               if (item.id == 40) {
-                   console.log('item', item)
-               }
+               // if (item.id == 40) {
+               //     console.log('item', item)
+               // }
                let convertedValue;
                switch(item.type) {
                    case 'boolean':
@@ -429,6 +509,8 @@ watchEffect(() => {
 
         defectDataMap.value = result
         defectDataMapComment.value = comments
+
+         console.log('defectDataMapImages', defectDataMapImages.value)
 
 
 
