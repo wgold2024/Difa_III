@@ -1,5 +1,5 @@
 <template>
-<!--    <Toast />-->
+    <Toast />
     <Accordion value="-" class="mb-1">
         <AccordionPanel value="0">
             <AccordionHeader>Схема</AccordionHeader>
@@ -32,7 +32,7 @@
                     :details="details"
                     :section-number="index + 1"
                     @updateData="updateData"
-                    :section-data="sectionData"
+                    :section-data="sectionData || null"
                 />
             </TabPanel>
         </TabPanels>
@@ -57,6 +57,8 @@ import UnitMultiTabSec from "@/tabs/UnitMultiTabSec.vue";
 import axios from "axios";
 import Button from "primevue/button";
 import { DefectDataMap, DefectData, EspData, SectionData } from "@/types";
+import Toast from "primevue/toast";
+import { useToast } from 'primevue/usetoast';
 
 
 const props = defineProps({
@@ -92,6 +94,7 @@ const espData = ref<EspData>({
 });
 
 const route = useRoute()
+const toast = useToast();
 
 const getImagePath = computed(() => {
     return new URL(`${props.imagePath}`, import.meta.url)
@@ -127,7 +130,7 @@ const getDetails = () => {
 
 const store = () => {
     //console.log(espData.value[props.unit]);
-    console.log(espData.value[props.unit][3].defects[1]);
+    // console.log(espData.value[props.unit][3].defects[1]);
     axios.post('/api/defect-data',{
         input_id: route.params.id,
         unit: props.unit,
@@ -138,16 +141,33 @@ const store = () => {
         }
     })
         .then(res => {
-
-            console.log(res.data[props.unit]);
-
-            // sectionData.value = res.data[props.unit]
-
-
+            // console.log('res.data[props.unit]', res.data[props.unit]);
+            console.log('res', res);
+            if (res.status >= 200 && res.status < 300) {
+                sectionData.value = res.data[props.unit];
+                toast.add({
+                    severity: 'info',
+                    summary: 'Данные успешно сохранены',
+                    detail: `Id: ${route.params.id}`,
+                    life: 3000,
+                });
+            } else {
+                toast.add({
+                    severity: 'error',
+                    summary: 'Ошибка при сохранении',
+                    detail: `Код ошибки: ${res.status}`,
+                    life: 3000,
+                });
+            }
         })
         .catch(e => {
             const serverError = e.response?.data?.error || e.response?.data?.message || JSON.stringify(e.response?.data?.errors) || e.message;
-
+            toast.add({
+                severity: 'error',
+                summary: 'Ошибка на сервере',
+                detail: `${serverError}`,
+                life: 3000,
+            });
         })
 }
 
@@ -172,7 +192,7 @@ const updateData = (sectionData: SectionData) => {
     //     Pump: arr
     // }
     //
-    // console.log(espData.value);
+    console.log(espData.value);
 }
 
 const show = () => {

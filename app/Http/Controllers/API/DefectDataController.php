@@ -78,11 +78,11 @@ class DefectDataController extends Controller
                             'defect_id' => $defect['defect_id'],
                         ],
                         [
-                            'value' => $defect['value'],
+                            'value' => $defect['value'] ?? '',
                             'comment' => $defect['comment'] ?? '',
                         ]
                     );
-                    $defectData[] = $defectDataEl;
+//                    $defectData[] = $defectDataEl;
 
                     // Удаление изображений
                     if (isset($defect['deletedImages'])) {
@@ -90,8 +90,11 @@ class DefectDataController extends Controller
                         foreach ($defect['deletedImages'] as $path) {
                             $image = ImageData::where('path', $path)->first();
                             if ($image) {
-                                Storage::disk('public')->delete($image->path);
-                                $image->delete();
+                                if (Storage::disk('public')->delete($image->path)) {
+                                    $image->delete();
+                                } else {
+                                    return response()->json(['error' => "Ошибка удаления фото: $path"],Response::HTTP_BAD_REQUEST);
+                                }
                             }
                         }
                     }
@@ -99,10 +102,15 @@ class DefectDataController extends Controller
                     // Сохренение изображений
                     if (isset($defect['images'])) {
                         foreach ($defect['images'] as $image) {
-                            ImageData::create([
-                                'defect_data_id' => $defectDataEl->id,
-                                'path' => Storage::disk('public')->put('img/defect-data', $image),
-                            ]);
+                            $path = Storage::disk('public')->put('img/defect-data', $image);
+                            if ($path) {
+                                ImageData::create([
+                                    'defect_data_id' => $defectDataEl->id,
+                                    'path' => $path,
+                                ]);
+                            } else {
+                                return response()->json(['error' => "Ошибка сохранения фото"],Response::HTTP_BAD_REQUEST);
+                            }
                         }
                     }
                 }
