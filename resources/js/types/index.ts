@@ -91,15 +91,23 @@ export interface DefectDataMap {
     [key: number]: string | number | boolean | null;
 }
 
+export interface DefectDataMapImages {
+    [key: number]: ImageData[];
+}
+
 export interface  ImageData {
     itemImageSrc: string;
     // thumbnailImageSrc: string;
     // alt: string;
     // title: string;
-    file?: File;
+    file: File;
+    path?: string
 }
-export interface DefectDataMapImages {
-    [key: number]: ImageData[];
+
+export interface  Image {
+    path: string;
+    defect_data_id: number;
+    id: number;
 }
 
 // Для данных:
@@ -126,8 +134,8 @@ export interface DefectData {
     type?: string;
     value: string | null;
     comment: string | null;
-    images?: [];
-    deletedImages?: [];
+    images?: File[] | Image[] | null;
+    deletedImages?: string[] | null;
 }
 
 

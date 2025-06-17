@@ -147,7 +147,8 @@ import {
     SectionData,
     DefectData,
     DefectDataMapImages,
-    ImageData
+    ImageData,
+    Image
 } from "@/types";
 import Galleria from 'primevue/galleria';
 import { PhotoService } from "@/servicies/PhotoService";
@@ -182,15 +183,15 @@ const btnComponents = ref<Defect[] | null>(null);
 const isReasonVisible = ref<boolean[]>([]);
 const defectDataMap = ref<DefectDataMap[]>([]);
 const defectDataMapComment = ref<DefectDataMap[]>([]);
-const defectDataMapImages = ref<DefectDataMapImages[]>([]);
-const defectDataMapDelImages = ref<DefectDataMapImages[]>([]);
+const defectDataMapImages = ref<DefectDataMapImages>({});
+const defectDataMapDelImages = ref<DefectDataMapImages>({});
 const fileInputs = ref<{[key: string]: HTMLInputElement | null}>({});
 
 // const defectDataMap = defineModel<defectDataMap[]>({
 //     default: () => [] as defectDataMap[]
 // })
 
-const galleryIndex = ref([])
+const galleryIndex = ref<number[]>([])
 const isImagesUpdating = ref(false)
 
 const data = defineModel<Data[]>({
@@ -301,7 +302,7 @@ const setImages = (defectId: number, event: Event) => {
 
 const deleteImage = (defectId: number) => {
     isImagesUpdating.value = true;
-    let index = 0
+    let index: number = 0
     if (galleryIndex.value[defectId] !== undefined) {
         index = galleryIndex.value[defectId];
         index !== 0 ? galleryIndex.value[defectId] = index - 1 : null;
@@ -368,10 +369,8 @@ watch([defectDataMap, defectDataMapComment, defectDataMapImages], () => {
                     value: defectDataMap.value?.[Number(key)] !== undefined ? String(defectDataMap.value[Number(key)]) : null,
                     comment: defectDataMapComment.value?.[Number(key)] !== undefined ? String(defectDataMapComment.value[Number(key)]) : null,
                     images: defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map(item => item.file) : null,
-                    deletedImages: defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map(item => item.itemImageSrc) : null,
+                    deletedImages: defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map((item: ImageData) => item.itemImageSrc) : null,
                 });
-        } else {
-            console.warn(`Invalid defect data: key=${key}, value=${value}`);
         }
     }
 
@@ -388,12 +387,10 @@ watch([defectDataMap, defectDataMapComment, defectDataMapImages], () => {
                     value: defectDataMap.value?.[Number(key)] !== undefined ? String(defectDataMap.value[Number(key)]) : null,
                     comment: defectDataMapComment.value?.[Number(key)] !== undefined ? String(defectDataMapComment.value[Number(key)]) : null,
                     images: defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map(item => item.file) : null,
-                    deletedImages: defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map(item => item.itemImageSrc) : null,
+                    deletedImages: defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map((item: ImageData) => item.itemImageSrc) : null,
                 });
             }
 
-        } else {
-            console.warn(`Invalid defect data: key=${key}, value=${value}`);
         }
     }
 
@@ -404,46 +401,19 @@ watch([defectDataMap, defectDataMapComment, defectDataMapImages], () => {
                 item => item.defect_id === Number(key)
             );
             if (existingIndex !== -1) {
-                arr[existingIndex].images =defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map(item => item.file) : null;
+                arr[existingIndex].images = value.map((item: ImageData) => item.file) ;
             } else {
                 arr.push({
                     defect_id: Number(key),
                     value: defectDataMap.value?.[Number(key)] !== undefined ? String(defectDataMap.value[Number(key)]) : null,
                     comment: defectDataMapComment.value?.[Number(key)] !== undefined ? String(defectDataMapComment.value[Number(key)]) : null,
-                    images: defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map(item => item.file) : null,
-                    deletedImages: defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map(item => item.itemImageSrc) : null,
+                    images: defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map((item: ImageData) => item.file) : null,
+                    deletedImages: defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map((item: ImageData) => item.itemImageSrc) : null,
                 });
             }
 
-        } else {
-            console.warn(`Invalid defect data: key=${key}, value=${value}`);
         }
     }
-
-    // for (const [key, value] of Object.entries(defectDataMapDelImages.value)) {
-    //     if (typeof key !== 'undefined' && typeof value !== 'undefined' && !isNaN(Number(key))) {
-    //         const existingIndex = arr.findIndex(
-    //             item => item.defect_id === Number(key)
-    //         );
-    //         if (existingIndex !== -1) {
-    //             arr[existingIndex].deletedImages = defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map(item => item.itemImageSrc) : null;
-    //         } else {
-    //             arr.push({
-    //                 defect_id: Number(key),
-    //                 value: defectDataMap.value?.[Number(key)] !== undefined ? String(defectDataMap.value[Number(key)]) : null,
-    //                 comment: defectDataMapComment.value?.[Number(key)] !== undefined ? String(defectDataMapComment.value[Number(key)]) : null,
-    //                 images: defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map(item => item.file) : null,
-    //                 deletedImages: defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map(item => item.itemImageSrc) : null,
-    //             });
-    //         }
-    //
-    //     } else {
-    //         console.warn(`Invalid defect data: key=${key}, value=${value}`);
-    //     }
-    // }
-
-
-
     sectionData.value = {
         section_number: sectionNumber.value,
         defects: arr
@@ -457,17 +427,18 @@ watch([defectDataMap, defectDataMapComment, defectDataMapImages], () => {
 
 
 watch(
-    () => props.sectionData, // Геттер-функция
+    () => [...props.sectionData || []],
     (newVal) => {
         if (props.sectionData !== null) {
-            const data = props.sectionData.filter(res => res.section_number === sectionNumber.value)
+            // console.log('props.sectionData', props.sectionData);
+            const data: SectionData[] = props.sectionData.filter(res => res.section_number === sectionNumber.value)
             // console.log('data', data[0].defects)
 
             const result: DefectDataMap[] = [];
             const comments: DefectDataMap[] = [];
             const images = [];
 
-            for (const item of data) {
+            for (const item of data as SectionData[]) {
                 item.defects.forEach(item => {
                     // if (item.id == 40) {
                     //     console.log('item', item)
@@ -489,15 +460,25 @@ watch(
                     comments[item.defect_id] = item.comment !== null ? String(item.comment) : '';
 
                     defectDataMapImages.value[item.defect_id] = [];
-                    if (!isImagesUpdating.value) {
-                        for (const image of item.images) {
-                            let obj = {
-                                itemImageSrc: '/storage/' + image.path
-                            };
+                    defectDataMapDelImages.value[item.defect_id] = [];
+                    // if (!isImagesUpdating.value) {
+                    if(true){
+                        const images = item.images as (File | Image)[] | undefined;
+                        images?.forEach(image => {
+                            if ('path' in image) { // Проверяем, что это Image
+                                const obj = {
+                                    itemImageSrc: '/storage/' + image.path
+                                };
+                                (defectDataMapImages.value[item.defect_id] as Array<any>).push(obj);
+                            }
+                        });
 
-
-                            (defectDataMapImages.value[item.defect_id] as Array<any>).push(obj);
-                        }
+                        // for (const image of item.images) {
+                        //     let obj = {
+                        //         itemImageSrc: '/storage/' + (image as Image).path
+                        //     };
+                        //     (defectDataMapImages.value[item.defect_id] as Array<any>).push(obj);
+                        // }
                         // images[item.defect_id] = item.images !== null ? String(item.images) : '';
                         // console.log('item.images', item.images);
                     }
@@ -508,7 +489,7 @@ watch(
             defectDataMap.value = result
             defectDataMapComment.value = comments
 
-            // console.log('defectDataMapImages', defectDataMapImages.value)
+            console.log('defectDataMapImages', sectionNumber.value, defectDataMapImages.value)
 
 
 

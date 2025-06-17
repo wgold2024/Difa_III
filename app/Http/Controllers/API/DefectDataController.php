@@ -86,13 +86,14 @@ class DefectDataController extends Controller
 
                     // Удаление изображений
                     if (isset($defect['deletedImages'])) {
-                        dump($defect['deletedImages']);
+//                        dump($defect['deletedImages']);
                         foreach ($defect['deletedImages'] as $path) {
                             $image = ImageData::where('path', $path)->first();
                             if ($image) {
                                 if (Storage::disk('public')->delete($image->path)) {
                                     $image->delete();
                                 } else {
+                                    dump('deletedImages', $defect['deletedImages']);
                                     return response()->json(['error' => "Ошибка удаления фото: $path"],Response::HTTP_BAD_REQUEST);
                                 }
                             }

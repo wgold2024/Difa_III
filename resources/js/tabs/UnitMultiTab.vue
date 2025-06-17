@@ -142,7 +142,7 @@ const store = () => {
     })
         .then(res => {
             // console.log('res.data[props.unit]', res.data[props.unit]);
-            console.log('res', res);
+            console.log('res', res.data[props.unit]);
             if (res.status >= 200 && res.status < 300) {
                 sectionData.value = res.data[props.unit];
                 toast.add({
@@ -192,7 +192,7 @@ const updateData = (sectionData: SectionData) => {
     //     Pump: arr
     // }
     //
-    console.log(espData.value);
+    // console.log(espData.value);
 }
 
 const show = () => {
