@@ -345,12 +345,6 @@ const deleteImage = (defectId: number) => {
 const emit = defineEmits(['updateData'])
 
 watch([defectDataMap, defectDataMapComment, defectDataMapImages], () => {
-    //console.log(defectDataMap.value)
-    // console.log(props.details)
-    // console.log(1)
-
-    // console.log(defectDataMap.value[28])
-    // Скрыитие отображение доп. полей для Слома вала
     const el93 = document.getElementById('93')
     // el93.classList.add('mr-9')
     // if (el28 === null) return
@@ -360,70 +354,156 @@ watch([defectDataMap, defectDataMapComment, defectDataMapImages], () => {
     //     el28.classList.add('m-hidden')
     // }
 
-    const arr: DefectData[] = [];
+    const arrMap = new Map<number, DefectData>();
 
-    for (const [key, value] of Object.entries(defectDataMap.value)) {
-        if (typeof key !== 'undefined' && typeof value !== 'undefined' && !isNaN(Number(key))) {
-                arr.push({
-                    defect_id: Number(key),
-                    value: defectDataMap.value?.[Number(key)] !== undefined ? String(defectDataMap.value[Number(key)]) : null,
-                    comment: defectDataMapComment.value?.[Number(key)] !== undefined ? String(defectDataMapComment.value[Number(key)]) : null,
-                    images: defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map(item => item.file) : null,
-                    deletedImages: defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map((item: ImageData) => item.itemImageSrc) : null,
-                });
+    // Обработка defectDataMap
+    Object.entries(defectDataMap.value).forEach(([key, value]) => {
+        const numKey = Number(key);
+        if (!isNaN(numKey)) {
+            arrMap.set(numKey, {
+                defect_id: numKey,
+                value: value !== undefined ? String(value) : null,
+                comment: defectDataMapComment.value?.[numKey] !== undefined
+                    ? String(defectDataMapComment.value[numKey])
+                    : null,
+                images: defectDataMapImages.value?.[numKey]?.map(item => item.file) ?? null,
+                deletedImages: defectDataMapDelImages.value?.[numKey]?.map(item => item.itemImageSrc) ?? null
+            });
         }
-    }
+    });
 
-    for (const [key, value] of Object.entries(defectDataMapComment.value)) {
-        if (typeof key !== 'undefined' && typeof value !== 'undefined' && !isNaN(Number(key))) {
-            const existingIndex = arr.findIndex(
-                item => item.defect_id === Number(key)
-            );
-            if (existingIndex !== -1) {
-                arr[existingIndex].comment = String(value);
+    // Обработка defectDataMapComment
+    Object.entries(defectDataMapComment.value).forEach(([key, value]) => {
+        const numKey = Number(key);
+        if (!isNaN(numKey)) {
+            const existing = arrMap.get(numKey);
+            if (existing) {
+                existing.comment = String(value);
             } else {
-                arr.push({
-                    defect_id: Number(key),
-                    value: defectDataMap.value?.[Number(key)] !== undefined ? String(defectDataMap.value[Number(key)]) : null,
-                    comment: defectDataMapComment.value?.[Number(key)] !== undefined ? String(defectDataMapComment.value[Number(key)]) : null,
-                    images: defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map(item => item.file) : null,
-                    deletedImages: defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map((item: ImageData) => item.itemImageSrc) : null,
+                arrMap.set(numKey, {
+                    defect_id: numKey,
+                    value: defectDataMap.value?.[numKey] !== undefined
+                        ? String(defectDataMap.value[numKey])
+                        : null,
+                    comment: String(value),
+                    images: defectDataMapImages.value?.[numKey]?.map(item => item.file) ?? null,
+                    deletedImages: defectDataMapDelImages.value?.[numKey]?.map(item => item.itemImageSrc) ?? null
                 });
             }
-
         }
-    }
+    });
 
-    for (const [key, value] of Object.entries(defectDataMapImages.value)) {
-        if (typeof key !== 'undefined' && typeof value !== 'undefined' && !isNaN(Number(key))) {
-            // console.log('key', key, 'value', value)
-            const existingIndex = arr.findIndex(
-                item => item.defect_id === Number(key)
-            );
-            if (existingIndex !== -1) {
-                arr[existingIndex].images = value.map((item: ImageData) => item.file) ;
+    // Обработка defectDataMapImages
+    Object.entries(defectDataMapImages.value).forEach(([key, value]) => {
+        const numKey = Number(key);
+        if (!isNaN(numKey)) {
+            const existing = arrMap.get(numKey);
+            if (existing) {
+                existing.images = value.map(item => item.file);
             } else {
-                arr.push({
-                    defect_id: Number(key),
-                    value: defectDataMap.value?.[Number(key)] !== undefined ? String(defectDataMap.value[Number(key)]) : null,
-                    comment: defectDataMapComment.value?.[Number(key)] !== undefined ? String(defectDataMapComment.value[Number(key)]) : null,
-                    images: defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map((item: ImageData) => item.file) : null,
-                    deletedImages: defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map((item: ImageData) => item.itemImageSrc) : null,
+                arrMap.set(numKey, {
+                    defect_id: numKey,
+                    value: defectDataMap.value?.[numKey] !== undefined
+                        ? String(defectDataMap.value[numKey])
+                        : null,
+                    comment: defectDataMapComment.value?.[numKey] !== undefined
+                        ? String(defectDataMapComment.value[numKey])
+                        : null,
+                    images: value.map(item => item.file),
+                    deletedImages: defectDataMapDelImages.value?.[numKey]?.map(item => item.itemImageSrc) ?? null
                 });
             }
-
         }
-    }
+    });
+
     sectionData.value = {
         section_number: sectionNumber.value,
-        defects: arr
-    }
+        defects: Array.from(arrMap.values())
+    };
 
-    emit('updateData', sectionData.value)
-    // console.log(sectionData.value)
-    // console.log('defectDataMapImages',defectDataMapImages.value);
+    emit('updateData', sectionData.value);
+}, { deep: true });
 
-}, { deep: true })
+// watch([defectDataMap, defectDataMapComment, defectDataMapImages], () => {
+//     //console.log(defectDataMap.value)
+//     // console.log(props.details)
+//     // console.log(1)
+//
+//     // console.log(defectDataMap.value[28])
+//     // Скрыитие отображение доп. полей для Слома вала
+//     const el93 = document.getElementById('93')
+//     // el93.classList.add('mr-9')
+//     // if (el28 === null) return
+//     // if (defectDataMap.value[28] === true) {
+//     //     el28.classList.remove('m-hidden')
+//     // } else {
+//     //     el28.classList.add('m-hidden')
+//     // }
+//
+//     const arr: DefectData[] = [];
+//
+//     for (const [key, value] of Object.entries(defectDataMap.value)) {
+//         if (typeof key !== 'undefined' && typeof value !== 'undefined' && !isNaN(Number(key))) {
+//                 arr.push({
+//                     defect_id: Number(key),
+//                     value: defectDataMap.value?.[Number(key)] !== undefined ? String(defectDataMap.value[Number(key)]) : null,
+//                     comment: defectDataMapComment.value?.[Number(key)] !== undefined ? String(defectDataMapComment.value[Number(key)]) : null,
+//                     images: defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map(item => item.file) : null,
+//                     deletedImages: defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map((item: ImageData) => item.itemImageSrc) : null,
+//                 });
+//         }
+//     }
+//
+//     for (const [key, value] of Object.entries(defectDataMapComment.value)) {
+//         if (typeof key !== 'undefined' && typeof value !== 'undefined' && !isNaN(Number(key))) {
+//             const existingIndex = arr.findIndex(
+//                 item => item.defect_id === Number(key)
+//             );
+//             if (existingIndex !== -1) {
+//                 arr[existingIndex].comment = String(value);
+//             } else {
+//                 arr.push({
+//                     defect_id: Number(key),
+//                     value: defectDataMap.value?.[Number(key)] !== undefined ? String(defectDataMap.value[Number(key)]) : null,
+//                     comment: defectDataMapComment.value?.[Number(key)] !== undefined ? String(defectDataMapComment.value[Number(key)]) : null,
+//                     images: defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map(item => item.file) : null,
+//                     deletedImages: defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map((item: ImageData) => item.itemImageSrc) : null,
+//                 });
+//             }
+//
+//         }
+//     }
+//
+//     for (const [key, value] of Object.entries(defectDataMapImages.value)) {
+//         if (typeof key !== 'undefined' && typeof value !== 'undefined' && !isNaN(Number(key))) {
+//             // console.log('key', key, 'value', value)
+//             const existingIndex = arr.findIndex(
+//                 item => item.defect_id === Number(key)
+//             );
+//             if (existingIndex !== -1) {
+//                 arr[existingIndex].images = value.map((item: ImageData) => item.file) ;
+//             } else {
+//                 arr.push({
+//                     defect_id: Number(key),
+//                     value: defectDataMap.value?.[Number(key)] !== undefined ? String(defectDataMap.value[Number(key)]) : null,
+//                     comment: defectDataMapComment.value?.[Number(key)] !== undefined ? String(defectDataMapComment.value[Number(key)]) : null,
+//                     images: defectDataMapImages.value?.[Number(key)] !== undefined ? defectDataMapImages.value[Number(key)].map((item: ImageData) => item.file) : null,
+//                     deletedImages: defectDataMapDelImages.value?.[Number(key)] !== undefined ? defectDataMapDelImages.value[Number(key)].map((item: ImageData) => item.itemImageSrc) : null,
+//                 });
+//             }
+//
+//         }
+//     }
+//     sectionData.value = {
+//         section_number: sectionNumber.value,
+//         defects: arr
+//     }
+//
+//     emit('updateData', sectionData.value)
+//     // console.log(sectionData.value)
+//     // console.log('defectDataMapImages',defectDataMapImages.value);
+//
+// }, { deep: true })
 
 
 watch(
