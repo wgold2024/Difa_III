@@ -11,6 +11,7 @@ use App\Models\Defect;
 use App\Models\DefectData;
 use App\Models\ImageData;
 use App\Models\Input;
+use App\Services\DefectDataService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,36 +19,54 @@ use Illuminate\Support\Facades\Storage;
 
 class DefectDataController extends Controller
 {
+    protected $defectDataService;
+
+    public function __construct(DefectDataService $defectDataService) {
+        $this->defectDataService = $defectDataService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $defectData = DefectData::all()
-            ->groupBy(['input_id', 'unit', 'section_number']);
+//        $defectData = DefectData::all()
+//            ->groupBy(['input_id', 'unit', 'section_number']);
+//
+//        $inputs = Input::all();
+//
+//        $data = $inputs->map(function ($input) use ($defectData) {
+//            $result = [
+//                'Input' => InputResource::make($input)->resolve()
+//            ];
+//
+//            if (isset($defectData[$input->id])) {
+//                foreach ($defectData[$input->id] as $unitType => $sections) {
+//                    $result[$unitType] = $sections->map(function ($items, $sectionNumber) {
+//                        return new GroupedDefectDataResource((object) [
+//                            'section_number' => $sectionNumber,
+//                            'items' => $items
+//                        ]);
+//                    })->values();
+//                }
+//            }
+//
+//            return $result;
+//        });
+//
+//        return response()->json(['data' => $data]);
 
         $inputs = Input::all();
 
-        $data = $inputs->map(function ($input) use ($defectData) {
-            $result = [
-                'Input' => InputResource::make($input)->resolve()
-            ];
-
-            if (isset($defectData[$input->id])) {
-                foreach ($defectData[$input->id] as $unitType => $sections) {
-                    $result[$unitType] = $sections->map(function ($items, $sectionNumber) {
-                        return new GroupedDefectDataResource((object) [
-                            'section_number' => $sectionNumber,
-                            'items' => $items
-                        ]);
-                    })->values();
-                }
-            }
-
-            return $result;
+        $responseData = $inputs->map(function ($input) {
+            $groupedData = $this->defectDataService->getGroupedData($input->id);
+            return array_merge(
+                ['Input' => InputResource::make($input)->resolve()],
+                $groupedData
+            );
         });
 
-        return response()->json(['data' => $data]);
+        return response()->json(['data' => $responseData]);
     }
 
     /**
@@ -82,6 +101,10 @@ class DefectDataController extends Controller
                             'comment' => $defect['comment'] ?? '',
                         ]
                     );
+
+
+
+
 //                    $defectData[] = $defectDataEl;
 
                     // Удаление изображений
@@ -114,6 +137,28 @@ class DefectDataController extends Controller
                             }
                         }
                     }
+
+
+//                    if ($defectDataEl->id === 63) {
+//                        dump($defectDataEl->value);
+//                        dump($defectDataEl->comment);
+//                        dump(count($defectDataEl->images));
+//                    }
+
+//                    if ($defectDataEl->value === false && $defectDataEl->comment === '' && count($defectDataEl->images) === 0) {
+//                        dump('Deleting');
+//                        $defectDataEl->delete();
+//                    }
+
+                    // Удаление записи для которой нет фактических значений (value, comment. images)
+                    if (
+                        ($defectDataEl->value === false || $defectDataEl->value === 'false' || $defectDataEl->value === 0 || $defectDataEl->value === '0') &&
+                        empty($defectDataEl->comment) &&
+                        $defectDataEl->images->isEmpty()
+                    ) {
+                        dump('Deleting record:', $defectDataEl->id);
+                        $defectDataEl->delete();
+                    }
                 }
             }
 
@@ -125,28 +170,30 @@ class DefectDataController extends Controller
 //                'data' => DefectDataResource::collection($defectData)->resolve(),
 //            ], Response::HTTP_CREATED); // 201 статус для созданных ресурсов
 
-            $query = DefectData::where('input_id', $inputId);
+//            $query = DefectData::where('input_id', $inputId);
+//
+//            if ($unit) {
+//                $query->where('unit', $unit);
+//            }
+//
+//            // Получаем данные и группируем
+//            $groupedData = $query->get()
+//                ->groupBy(['unit', 'section_number'])
+//                ->map(function ($units) {
+//                    return $units->map(function ($items, $sectionNumber) {
+//                        return new GroupedDefectDataResource((object) [
+//                            'section_number' => $sectionNumber,
+//                            'items' => $items
+//                        ]);
+//                    })->values();
+//                });
+//
+//            // Форматируем ответ в зависимости от наличия unit
+//            $responseData = $unit
+//                ? [$unit => $groupedData->first() ?? []]
+//                : $groupedData->toArray();
 
-            if ($unit) {
-                $query->where('unit', $unit);
-            }
-
-            // Получаем данные и группируем
-            $groupedData = $query->get()
-                ->groupBy(['unit', 'section_number'])
-                ->map(function ($units) {
-                    return $units->map(function ($items, $sectionNumber) {
-                        return new GroupedDefectDataResource((object) [
-                            'section_number' => $sectionNumber,
-                            'items' => $items
-                        ]);
-                    })->values();
-                });
-
-            // Форматируем ответ в зависимости от наличия unit
-            $responseData = $unit
-                ? [$unit => $groupedData->first() ?? []]
-                : $groupedData->toArray();
+            $responseData = $this->defectDataService->getGroupedData($inputId,  $unit);
 
             return response()->json($responseData);
 
@@ -170,31 +217,33 @@ class DefectDataController extends Controller
      */
     public function show(Request $request, string $id)
     {
-        $unit = $request->unit;
+//        $unit = $request->unit;
+//
+//        // Базовый запрос
+//        $query = DefectData::where('input_id', $id);
+//
+//        if ($unit) {
+//            $query->where('unit', $unit);
+//        }
+//
+//        // Получаем данные и группируем
+//        $groupedData = $query->get()
+//            ->groupBy(['unit', 'section_number'])
+//            ->map(function ($units) {
+//                return $units->map(function ($items, $sectionNumber) {
+//                    return new GroupedDefectDataResource((object) [
+//                        'section_number' => $sectionNumber,
+//                        'items' => $items
+//                    ]);
+//                })->values();
+//            });
+//
+//        // Форматируем ответ в зависимости от наличия unit
+//        $responseData = $unit
+//            ? [$unit => $groupedData->first() ?? []]
+//            : $groupedData->toArray();
 
-        // Базовый запрос
-        $query = DefectData::where('input_id', $id);
-
-        if ($unit) {
-            $query->where('unit', $unit);
-        }
-
-        // Получаем данные и группируем
-        $groupedData = $query->get()
-            ->groupBy(['unit', 'section_number'])
-            ->map(function ($units) {
-                return $units->map(function ($items, $sectionNumber) {
-                    return new GroupedDefectDataResource((object) [
-                        'section_number' => $sectionNumber,
-                        'items' => $items
-                    ]);
-                })->values();
-            });
-
-        // Форматируем ответ в зависимости от наличия unit
-        $responseData = $unit
-            ? [$unit => $groupedData->first() ?? []]
-            : $groupedData->toArray();
+        $responseData = $this->defectDataService->getGroupedData($id,  $request->unit);
 
         return response()->json($responseData);
     }

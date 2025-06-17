@@ -23,6 +23,6 @@ class DefectData extends Model
     }
 
     public function images() {
-        return $this->hasMany(ImageData::class);
+        return $this->hasMany(ImageData::class, 'defect_data_id');
     }
 }
