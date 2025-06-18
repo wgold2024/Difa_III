@@ -94,7 +94,7 @@ const espData = ref<EspData>({
 });
 
 const route = useRoute()
-const toast = useToast();
+const toast = useToast()
 
 const getImagePath = computed(() => {
     return new URL(`${props.imagePath}`, import.meta.url)

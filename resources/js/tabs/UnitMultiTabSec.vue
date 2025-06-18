@@ -46,7 +46,7 @@
                     <template #content>
                         <div class="flex justify-between p-1">
                             <div class="flex justify-between w-full">
-                                <img src="#" alt="adsf" class="mr-3" style="width: 200px; height: 300px; border: 1px solid green">
+                                <img src="#" alt="Ждем фото от ОБ" class="border border-r rounded-lg mr-3" style="width: 400px; height: 300px; border-color: var(--novomet-light-gray-blue-1000)">
                                 <div class="mr-3 flex flex-col justify-stretch w-full">
                                     <div>
                                         <div class="flex justify-between items-center">
@@ -100,18 +100,40 @@
                                 </div>
                             </div>
 
-                            <div class="w-[400px] min-h-[200px] border border-green-500 flex flex-col justify-between">
-                                <Galleria :value="defectDataMapImages[component.id] as unknown as any[] || []"
-                                          v-model:active-index="galleryIndex[component.id]"
-                                          :numVisible="5" containerStyle="max-width: 640px"
-                                          :showItemNavigators="true" :showThumbnails="false">
-                                    <template #item="slotProps">
-                                        <img :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt" style="width: 100%; display: block;" />
-                                    </template>
-                                </Galleria>
-                                <div class="flex justify-between p-1">
-                                    <input type="file"  :ref="(el) => fileInputs['fileInput' + String(component.id)] = el as HTMLInputElement | null"   multiple class="file-upload-button" @change="setImages(component.id, $event)" style="display: none">
-                                    <Button icon="pi pi-plus" class="w-[35%]" severity="primary" @click="addImages(component.id)" outlined/>
+                            <div class="w-[400px] min-h-[200px] flex flex-col justify-between" >
+                                <div v-if="Object.keys(defectDataMapImages[component.id] ?? {}).length > 0">
+                                    <Galleria :value="defectDataMapImages[component.id] as unknown as any[] || []"
+                                              v-model:active-index="galleryIndex[component.id]"
+                                              :numVisible="5" containerStyle="max-width: 640px"
+                                              :showItemNavigators="true" :showThumbnails="false">
+                                        <template #item="slotProps">
+                                            <img :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt" style="width: 100%; max-height: 240px; object-position: center; object-fit: cover; display: block;" />
+                                        </template>
+                                    </Galleria>
+                                </div>
+                                <div v-else class="flex justify-center items-center h-full text-gray-700 border border-r rounded-lg mb-2" style="color: var(--novomet-black-400); border-color: var(--novomet-light-gray-blue-1000)">
+                                    <div class="w-1/2 text-center">Добавьте изображения дефектов</div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <input type="file"  :ref="(el) => fileInputs['fileInput' + String(component.id)] = el as HTMLInputElement | null" multiple class="file-upload-button" @change="setImages(component.id, $event)" style="display: none">
+                                    <input type="file"  :ref="(el) => fileInputs['fileInputAI' + String(component.id)] = el as HTMLInputElement | null" class="file-upload-button" @change="setImagesAI(component.id, $event)" style="display: none">
+                                    <div>
+                                        <Button icon="pi pi-plus" class="w-[35%] mr-1" severity="primary" @click="addImages(component.id)" outlined />
+                                        <Button
+                                            v-if="component.detail_id === 2 || component.detail_id === 4 || component.detail_id === 5 || component.detail_id === 6  || component.detail_id === 7"
+                                            class="w-[50%]" severity="primary" @click="addImagesAI(component.id)" outlined style="padding-left: 5px;"
+                                        >
+                                            <span style="position: relative; left: 7px; top: -10px;">+</span>
+                                            AI
+                                        </Button>
+                                    </div>
+                                    <div
+                                        v-if="Object.keys(defectDataMapImages[component.id] ?? {}).length > 0"
+                                        class="text-gray-700 font-bold"
+                                        style="color: var(--novomet-navy-blue-600)"
+                                    >
+                                        {{ (galleryIndex[component.id] ?? 0) + 1 }} / {{ Object.keys(defectDataMapImages[component.id] ?? {}).length }}
+                                    </div>
                                     <Button icon="pi pi-minus" class="w-[35%]" severity="primary" @click="deleteImage(component.id)" outlined/>
                                 </div>
                             </div>
@@ -254,8 +276,6 @@ const btnDetailChange = (index: number) => {
     }
 }
 
-
-
 const addImages = (defectId: number) => {
     // Иммитируем клик для скрытого элемента Input - file, и, соотвественно вызываем другую функцию setImages()
     const fileInput = fileInputs.value['fileInput' + String(defectId)];
@@ -296,8 +316,37 @@ const setImages = (defectId: number, event: Event) => {
 
         // this.dbData.images[defectId].push(obj)
     }
+}
 
+const addImagesAI = (defectId: number) => {
+    // Иммитируем клик для скрытого элемента Input - file, и, соотвественно вызываем другую функцию setImages()
+    const fileInput = fileInputs.value['fileInputAI' + String(defectId)];
 
+    if (!fileInput) return
+
+    fileInput.value = '' // Сбрасываем значение, чтобы можно было выбирать те же файлы повторно
+    fileInput.click() // Триггерим клик по скрытому input
+};
+
+const setImagesAI = (defectId: number, event: Event) => {
+    console.log("event", event);
+
+    const image = (event.target as HTMLInputElement).files ;
+
+    axios.post('/api/ai-image',{
+        image: image.length > 0 ? image : null,
+        defectId
+    }, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
+        .then(res => {
+            console.log(res.data);
+        })
+        .catch(e => {
+
+        })
 }
 
 const deleteImage = (defectId: number) => {

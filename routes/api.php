@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AiController;
 use App\Http\Controllers\API\AndroidController;
 use App\Http\Controllers\API\DefectDataController;
 use App\Http\Controllers\API\EspController;
@@ -16,4 +17,5 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::resource('input', InputController::class);
     Route::get('/esp', [EspController::class, 'index']);
     Route::resource('defect-data', DefectDataController::class);
+    Route::post('ai-image', [AiController::class, 'checkImage']);
 });
