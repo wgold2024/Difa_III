@@ -1,5 +1,5 @@
 <template>
-<!--    <Toast />-->
+    <Toast />
     <Accordion value="-1" class="mb-4">
         <AccordionPanel value="0">
             <AccordionHeader>Общая информация</AccordionHeader>
@@ -101,18 +101,26 @@
                             </div>
 
                             <div class="w-[400px] min-h-[200px] flex flex-col justify-between" >
-                                <div v-if="Object.keys(defectDataMapImages[component.id] ?? {}).length > 0">
-                                    <Galleria :value="defectDataMapImages[component.id] as unknown as any[] || []"
-                                              v-model:active-index="galleryIndex[component.id]"
-                                              :numVisible="5" containerStyle="max-width: 640px"
-                                              :showItemNavigators="true" :showThumbnails="false">
-                                        <template #item="slotProps">
-                                            <img :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt" style="width: 100%; max-height: 240px; object-position: center; object-fit: cover; display: block;" />
-                                        </template>
-                                    </Galleria>
+                                <div v-if="isAiActive[component.id]" class="flex justify-center items-center h-full border border-r rounded-lg mb-2" style="color: var(--novomet-black-800); border-color: var(--novomet-light-gray-blue-1000)">
+                                    <div class="w-1/2 text-center">
+                                        <i class="pi pi-spin pi-cog mb-3" style="font-size: 3rem; color: var(--novomet-orange-600)"></i>
+                                        <div class="text-lg">Подождите идет анализ изображения</div>
+                                    </div>
                                 </div>
-                                <div v-else class="flex justify-center items-center h-full text-gray-700 border border-r rounded-lg mb-2" style="color: var(--novomet-black-400); border-color: var(--novomet-light-gray-blue-1000)">
-                                    <div class="w-1/2 text-center">Добавьте изображения дефектов</div>
+                                <div v-else class="h-full mb-2">
+                                    <div v-if="Object.keys(defectDataMapImages[component.id] ?? {}).length > 0">
+                                        <Galleria :value="defectDataMapImages[component.id] as unknown as any[] || []"
+                                                  v-model:active-index="galleryIndex[component.id]"
+                                                  :numVisible="5" containerStyle="max-width: 640px"
+                                                  :showItemNavigators="true" :showThumbnails="false">
+                                            <template #item="slotProps">
+                                                <img :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt" style="width: 100%; max-height: 240px; object-position: center; object-fit: cover; display: block;" />
+                                            </template>
+                                        </Galleria>
+                                    </div>
+                                    <div v-else class="flex justify-center items-center h-full text-gray-700 border border-r rounded-lg" style="color: var(--novomet-black-400); border-color: var(--novomet-light-gray-blue-1000)">
+                                        <div class="w-1/2 text-center">Добавьте изображения дефектов</div>
+                                    </div>
                                 </div>
                                 <div class="flex justify-between items-center">
                                     <input type="file"  :ref="(el) => fileInputs['fileInput' + String(component.id)] = el as HTMLInputElement | null" multiple class="file-upload-button" @change="setImages(component.id, $event)" style="display: none">
@@ -120,6 +128,7 @@
                                     <div>
                                         <Button icon="pi pi-plus" class="w-[35%] mr-1" severity="primary" @click="addImages(component.id)" outlined />
                                         <Button
+                                            v-show="false"
                                             v-if="component.detail_id === 2 || component.detail_id === 4 || component.detail_id === 5 || component.detail_id === 6  || component.detail_id === 7"
                                             class="w-[50%]" severity="primary" @click="addImagesAI(component.id)" outlined style="padding-left: 5px;"
                                         >
@@ -182,6 +191,15 @@ import {toRaw} from "vue/dist/vue";
 
 // const model = defineModel()
 
+import Toast from 'primevue/toast';
+import { h } from 'vue';
+
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from 'primevue/usetoast';
+
+const confirm = useConfirm();
+const toast = useToast();
+
 
 const props = defineProps<{
     details?: Detail[];
@@ -215,6 +233,7 @@ const fileInputs = ref<{[key: string]: HTMLInputElement | null}>({});
 
 const galleryIndex = ref<number[]>([])
 const isImagesUpdating = ref(false)
+const isAiActive = ref<boolean[]>([])
 
 const data = defineModel<Data[]>({
     default: () => [] as Data[]
@@ -272,7 +291,7 @@ const optionComponents = computed<Defect[]>(() => {
 const btnDetailChange = (index: number) => {
     activeBtn.value = index;
     if (props.details?.length) {
-        btnComponents.value = props.details[index + 1].defects.filter(res => !res.is_option)
+        btnComponents.value = props.details[index + 1].defects.filter(res => !res.is_option && res.id < 33)
     }
 }
 
@@ -289,32 +308,10 @@ const addImages = (defectId: number) => {
 const setImages = (defectId: number, event: Event) => {
     const files = (event.target as HTMLInputElement).files
 
-    if (files === null) return;
+    // if (files === null) return;
 
     for (const file of files ) {
-        // console.log(file)
-
-        // if (!Array.isArray(defectDataMapImages.value[defectId])) {
-        //     defectDataMapImages.value[defectId] = []; // Инициализируем как массив, если это не так
-        // }
-
-        let obj = {
-            itemImageSrc: URL.createObjectURL(file),
-            file: file
-        }
-
-        if (!defectDataMapImages.value[defectId]) {
-            defectDataMapImages.value[defectId] = [];
-        }
-        (defectDataMapImages.value[defectId] as Array<any>).push(obj);
-
-
-        // console.log(defectDataMapImages.value)
-
-        // Установка индекса галереи для отображения последнего добавленного изображения
-        galleryIndex.value[defectId] = defectDataMapImages.value[defectId].length - 1
-
-        // this.dbData.images[defectId].push(obj)
+        attachImage(defectId, file)
     }
 }
 
@@ -329,12 +326,13 @@ const addImagesAI = (defectId: number) => {
 };
 
 const setImagesAI = (defectId: number, event: Event) => {
+    isAiActive.value[defectId] = true
     console.log("event", event);
 
-    const image = (event.target as HTMLInputElement).files ;
+    const files = (event.target as HTMLInputElement).files ;
 
     axios.post('/api/ai-image',{
-        image: image.length > 0 ? image : null,
+        image: files.length > 0 ? files : null,
         defectId
     }, {
         headers: {
@@ -342,11 +340,64 @@ const setImagesAI = (defectId: number, event: Event) => {
         }
     })
         .then(res => {
+            isAiActive.value[defectId] = false
             console.log(res.data);
+            if (res.data.result) {
+                toast.add({
+                    severity: 'info',
+                    summary: 'Изображение принято',
+                    detail: `Класс: ${res.data.class}\nДеталь: ${res.data.detail}`,
+                    life: 5000,
+                });
+                attachImage(defectId, files[0])
+            } else {
+                confirm.require({
+                    message: `Анализ показал, что изображение не относится к детали: ${res.data.detail.toLowerCase()}.\n` +
+                        `Полученные класс: ${res.data.class}. Принять принудительно?`,
+                    header: 'Подтверждение действия',
+                    icon: 'pi pi-exclamation-triangle',
+                    acceptLabel: 'Да',
+                    rejectLabel: 'Нет',
+                    rejectProps: {
+                        severity: 'secondary',
+                    },
+                    acceptProps: {
+                        severity: 'secondary',
+                        outlined: true
+                    },
+                    accept: () => {
+                        attachImage(defectId, files[0])
+                    },
+                    reject: () => {
+
+                    }
+                });
+            }
         })
         .catch(e => {
-
+            const serverError = e.response?.data?.error || e.response?.data?.message || JSON.stringify(e.response?.data?.errors) || e.message;
+            toast.add({
+                severity: 'error',
+                summary: 'Ошибка на сервере',
+                detail: `${serverError}`,
+                life: 3000,
+            });
         })
+}
+
+const attachImage = (defectId: number, image: File) => {
+    let obj = {
+        itemImageSrc: URL.createObjectURL(image),
+        file: image
+    }
+
+    if (!defectDataMapImages.value[defectId]) {
+        defectDataMapImages.value[defectId] = [];
+    }
+    (defectDataMapImages.value[defectId] as Array<any>).push(obj);
+
+    // Установка индекса галереи для отображения последнего добавленного изображения
+    galleryIndex.value[defectId] = defectDataMapImages.value[defectId].length - 1
 }
 
 const deleteImage = (defectId: number) => {
@@ -578,7 +629,7 @@ watch(
                             convertedValue = item.value === 'true' || item.value === '1';
                             break;
                         case 'number':
-                            convertedValue = Number(item.value);
+                            convertedValue = item.value !== 'null' ? Number(item.value) : null;
                             break;
                         case 'string':
                         default:
@@ -705,6 +756,17 @@ watchEffect(() => {
     display: none;
 }
 
+:deep(.p-galleria) {
+    .p-galleria-prev-button,
+    .p-galleria-next-button {
+        background-color: var(--novomet-black-200);
+        font-size: 50px !important;
+    }
+}
+
+
+
 
 </style>
 
+// https://stackoverflow.com/questions/74525054/primevue-confirmdialog-opens-multiple-times
