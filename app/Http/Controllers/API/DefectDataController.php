@@ -10,6 +10,7 @@ use App\Http\Resources\Input\InputResource;
 use App\Models\Defect;
 use App\Models\DefectData;
 use App\Models\DefectValue;
+use App\Models\Group;
 use App\Models\ImageData;
 use App\Models\Input;
 use App\Services\DefectDataService;
@@ -79,14 +80,22 @@ class DefectDataController extends Controller
 
         $inputId = $data['input_id'];
         $unit = $data['unit'];
-        $sections = $data['sections'];
+        $sections = $data['sections'] ?? null;
+
+        if ($sections === null) {
+            return response()->json(['error' => 'Сохранение отлонено: нет новых данных'], Response::HTTP_BAD_REQUEST);
+        }
 
         try {
             DB::beginTransaction();
 
             foreach ($sections as $section) {
                 $sectionNumber = $section['section_number'];
-                $defects = $section['defects'];
+                $defects = $section['defects'] ?? null;
+                if ($defects === null) {
+                    continue;
+                }
+
                 foreach ($defects as $defect) {
                     $detailId = Defect::find($defect['defect_id'])->detail->id;
                     $defectDataEl = DefectData::updateOrCreate(
@@ -102,9 +111,6 @@ class DefectDataController extends Controller
                             'comment' => $defect['comment'] ?? '',
                         ]
                     );
-
-
-
 
 //                    $defectData[] = $defectDataEl;
 
@@ -152,107 +158,22 @@ class DefectDataController extends Controller
 //                    }
 
                     // Удаление записи для которой нет фактических значений (value, comment. images)
-                    if (
-                        ($defectDataEl->value === false || $defectDataEl->value === 'false' || $defectDataEl->value === 0 || $defectDataEl->value === '0') &&
-                        empty($defectDataEl->comment) &&
-                        $defectDataEl->images->isEmpty()
-                    ) {
-                        dump('Deleting record:', $defectDataEl->id);
-//                        $defectDataEl->delete();
-                    }
-
-                    // Удаление записи в группе, если основной дефект отсуствует
-                    if (false || $defectDataEl->defect_id === 28 || $defectDataEl->defect_id === 29 ||$defectDataEl->defect_id === 30) {
-//                        dump($defectDataEl->value);
-                        $defect = Defect::find($defectDataEl->defect_id);
-//                        dump((boolean)$defect->is_option);
-
-                        $defectsJoin = [];
-                        $groupId = $defect->group_id;
-                        if ($groupId) {
-                            if (!(boolean)$defect->is_option) {
-                                $defectsJoin = DefectData::join('defects', 'defect_data.defect_id', '=', 'defects.id')
-                                    ->where('defect_data.unit', $unit)
-                                    ->where('defect_data.section_number', $sectionNumber)
-                                    ->where('defects.group_id', $groupId)
-                                    ->select('defect_data.id', 'defect_data.value', 'defects.name', 'defects.type', 'defects.is_option')
-                                    ->get();
-                            }
-
-                            if ((boolean)$defect->is_option  ) {
-
-                            }
-                            foreach ($defectsJoin as $defectItem) {
-                                $defectItem->delete();
-//                                dump('$needDelete');
-                                dump($defectItem);
-                                $needDelete = false;
-                                if (true || (isset($defectItem->is_option) && !$defectItem->is_option && !$defectItem->value) || !isset($defectItem->value)) {
-                                    $needDelete = true;
-
-//                                    dump('$needDelete', $needDelete);
-                                }
-                                if (isset($defectItem->is_option) && $defectItem->is_option) {
-
-                                    if ($needDelete) {
-//                                        dump("Deleted", $defectItem->id);
-//                                        $defectItem->delete();
-                                    }
-                                }
-
-
-//                                if (!$defectItem->is_option && !$defectItem->value) {
-//                                    foreach ($defects as $defectItem2) {
-//                                        if ($defectItem2->is_option) {
-////                                            $defectItem2->delete();
-//                                        }
-//                                    }
-////                                    dump('asdf', $defectItem->is_option);
-//                                }
-
-//                                    $defect->delete();
-                            }
-
-
-                        }
-
-
-
-
-
-
-//                        if ($defect->group_id && (boolean)$defect->is_option) {
-//                            $defects = Defect::where('group_id', $defect->group_id)->first();
-//                            dump($defects);
-//                            foreach ($defects as $item) {
-////                                $defectData = DefectData::where('unit', $unit)
-////                                    ->where('defect_id', $item->id)
-////                                    ->where('section_number', $sectionNumber)
-////                                    ->get();
-////                                foreach ($defectData as $data) {
-//////                                    if ()
-////                                    dump($data->value);
-////                                }
-//
-//                            }
-//                        }
-
-
-
-
-//                        if ($defect->group_id && (boolean)$defect->is_option === true  && !$defectDataEl->value) {
-//                            $defects = Defect::where('group_id', $defect->group_id)->where('is_option', false)->get();
-//                            foreach ($defects as $item) {
-//                                dump($item->id);
-//                            }
-////                            dump($groupId);
-//                        }
-
-                    }
+                    $this->defectDataService->deleteValueFalseElement($defectDataEl);
                 }
+                // Удаление записи в группе, если основной дефект отсуствует
+                $this->defectDataService->deleteOptionElements($unit, $sectionNumber);
             }
 
             DB::commit();
+
+
+
+
+
+
+
+
+
 
 //            return response()->json([
 //                'success' => true,

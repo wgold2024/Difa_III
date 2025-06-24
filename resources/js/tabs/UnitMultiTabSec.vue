@@ -46,7 +46,7 @@
                     <template #content>
                         <div class="flex justify-between p-1">
                             <div class="flex justify-between w-full">
-                                <img src="#" alt="Ждем фото от ОБ" class="border border-r rounded-lg mr-3" style="width: 400px; height: 300px; border-color: var(--novomet-light-gray-blue-1000)">
+                                <img :src="defectImage(component.id)" alt="Ждем фото от ОБ" class="border border-r rounded-lg mr-3" style="min-width: 350px; max-width: 350px; height: 300px; object-position: center; object-fit: cover;">
                                 <div class="mr-3 flex flex-col justify-stretch w-full">
                                     <div>
                                         <div class="flex justify-between items-center">
@@ -95,7 +95,7 @@
                                         </Dialog>
                                     </div>
                                     <div class="flex-1 min-h-[100px]" >
-                                        <textarea v-model="defectDataMapComment[component.id]  as unknown as string" class="w-full h-full p-2 border border-r rounded-lg" style="resize: none; outline: none; border-color: var(--novomet-light-gray-blue-1000)" rows="3" placeholder="Введите общее примечание к разбору"></textarea>
+                                        <textarea v-model="defectDataMapComment[component.id]  as unknown as string" class="w-full h-full p-2 border border-r rounded-lg" style="resize: none; outline: none; border-color: var(--novomet-light-gray-blue-1000)" rows="3" placeholder="Введите комментарий"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -281,6 +281,10 @@ const optionComponents = computed<Defect[]>(() => {
     return targetItem.defects.filter(res => res.is_option);
 })
 
+const defectImage = (componentId: number) => {
+    return `http://localhost:8000/storage/img/defects/${componentId}.jpg`
+}
+
 
 // const getOptionComponents = () => {
 //     const data = props.details[activeBtn.value + 1].defects.filter(res => res.is_option)
@@ -291,8 +295,11 @@ const optionComponents = computed<Defect[]>(() => {
 const btnDetailChange = (index: number) => {
     activeBtn.value = index;
     if (props.details?.length) {
-        btnComponents.value = props.details[index + 1].defects.filter(res => !res.is_option && res.id < 33)
+        btnComponents.value = props.details[index + 1].defects.filter(res => !res.is_option && res.id < 92) //33
     }
+
+    // Отображение изображений дефектов
+
 }
 
 const addImages = (defectId: number) => {
@@ -308,7 +315,7 @@ const addImages = (defectId: number) => {
 const setImages = (defectId: number, event: Event) => {
     const files = (event.target as HTMLInputElement).files
 
-    // if (files === null) return;
+    if (files === null) return
 
     for (const file of files ) {
         attachImage(defectId, file)
@@ -329,7 +336,9 @@ const setImagesAI = (defectId: number, event: Event) => {
     isAiActive.value[defectId] = true
     console.log("event", event);
 
-    const files = (event.target as HTMLInputElement).files ;
+    const files: FileList | null = (event.target as HTMLInputElement).files;
+
+    if (files === null) return
 
     axios.post('/api/ai-image',{
         image: files.length > 0 ? files : null,
@@ -499,7 +508,7 @@ watch([defectDataMap, defectDataMapComment, defectDataMapImages], () => {
         if (!isNaN(numKey)) {
             const existing = arrMap.get(numKey);
             if (existing) {
-                existing.images = value.map(item => item.file);
+                existing.images = value.map((item: ImageData) => item.file);
             } else {
                 arrMap.set(numKey, {
                     defect_id: numKey,
@@ -509,7 +518,7 @@ watch([defectDataMap, defectDataMapComment, defectDataMapImages], () => {
                     comment: defectDataMapComment.value?.[numKey] !== undefined
                         ? String(defectDataMapComment.value[numKey])
                         : null,
-                    images: value.map(item => item.file),
+                    images: value.map((item: ImageData) => item.file),
                     deletedImages: defectDataMapDelImages.value?.[numKey]?.map(item => item.itemImageSrc) ?? null
                 });
             }

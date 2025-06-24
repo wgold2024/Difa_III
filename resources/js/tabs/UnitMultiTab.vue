@@ -23,7 +23,7 @@
                 <Tab v-for="tab in tabs" :key="tab.title" :value="tab.value">{{ tab.title }}</Tab>
             </div>
             <div class="absolute right-3 top-1">
-                <Button label="Cохранить" @click="store"/>
+                <Button label="Cохранить" icon="pi pi-save" :loading="isSaving" @click="store"/>
             </div>
         </TabList>
         <TabPanels>
@@ -87,6 +87,8 @@ const defectData = ref<DefectData | null>(null)
 
 const sectionData = ref<SectionData[] | null>(null)
 
+const isSaving = ref<boolean>(false)
+
 // const defectData = ref<DefectData[]>([]);
 const data = ref<DefectDataMap[]>([]);
 const espData = ref<EspData>({
@@ -129,6 +131,7 @@ const getDetails = () => {
 }
 
 const store = () => {
+    isSaving.value = true;
     //console.log(espData.value[props.unit]);
     // console.log(espData.value[props.unit][3].defects[1]);
     axios.post('/api/defect-data',{
@@ -159,6 +162,7 @@ const store = () => {
                     life: 3000,
                 });
             }
+            isSaving.value = false;
         })
         .catch(e => {
             const serverError = e.response?.data?.error || e.response?.data?.message || JSON.stringify(e.response?.data?.errors) || e.message;

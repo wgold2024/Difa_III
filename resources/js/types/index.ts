@@ -56,8 +56,6 @@ export interface InputError {
     analysisDateAt: string | boolean,
     stopReason: string | boolean,
     mode: string | boolean,
-    slKey: string | boolean,
-    note: string | boolean,
 }
 
 type DisabledKeys = 'startDate' | 'stopDate' | 'dismantlingDate' | 'analysisDate';

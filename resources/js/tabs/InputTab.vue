@@ -81,7 +81,7 @@
             </Fieldset>
         </div>
     </div>
-    <Button label="Сохранить" @click="store" :disabled="isDisabled.btnSave"/>
+    <Button label="Сохранить"  icon="pi pi-save" :loading="isSaving" @click="store" :disabled="isDisabled.btnSave"/>
 </template>
 
 
@@ -92,7 +92,7 @@ import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import DatePicker from 'primevue/datepicker';
 import InputNumber from 'primevue/inputnumber';
-import { computed, onMounted, ref, toRaw, watch } from "vue";
+import {computed, onMounted, ref, toRaw, watch, watchEffect} from "vue";
 import { locations } from "@/data";
 import { Input, InputError } from "@/types";
 import axios, { type RawAxiosRequestConfig } from 'axios';
@@ -116,6 +116,8 @@ const isDisabled = ref({
     analysisDateAt: true,
     btnSave: true,
 })
+
+const isSaving = ref<boolean>(false)
 
 // Работа с датами
 const minDate = computed(() => {
@@ -167,7 +169,7 @@ const checkDateSequence = () => {
 }
 const operatingTimeCount = () => {
     if (input.value.stopDateAt && input.value.startDateAt) {
-        input.value.operatingTime = Number(new Date(input.value.stopDateAt).getTime() - new Date(input.value.startDateAt).getTime()) / (1000 * 60 * 60 * 24);
+        input.value.operatingTime = Number((new Date(input.value.stopDateAt).getTime() - new Date(input.value.startDateAt).getTime()) / (1000 * 60 * 60 * 24));
         if (input.value.operatingTime < 0) {
             toast.add({ severity: 'warn', summary: 'Предупреждение', detail: 'Наработка отрицательная', life: 3000 });
         }
@@ -205,6 +207,7 @@ onMounted(() => {
 
 
 const store = () => {
+    isSaving.value = true;
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     const config: RawAxiosRequestConfig = {
@@ -223,6 +226,7 @@ const store = () => {
                 life: 3000,
             })
             isDisabled.value.btnSave = true;
+            isSaving.value = false;
         })
         .catch(e => {
             const serverError = e.response?.data?.error || e.response?.data?.message || JSON.stringify(e.response?.data?.errors) || e.message;
@@ -250,11 +254,18 @@ const store = () => {
     watch(
         () => input.value[key],
         (newVal) => {
-            inputError.value[key] = !newVal;
             isDisabled.value.btnSave = false;
         }
     );
 });
+
+watchEffect(() => {
+    let error: boolean = false;
+    (Object.keys(inputError.value) as Array<keyof InputError>).forEach((key) => {
+        error = error || Boolean(inputError.value[key]);
+    })
+    isDisabled.value.btnSave = Boolean(error);
+})
 
 </script>
 

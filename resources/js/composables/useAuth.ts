@@ -63,7 +63,7 @@ export default function useAuth() {
     const inputErrorObj = {
         op: false, city: false, company: false, field: false, cluster: false, well: false,
         installationDateAt: false, startDateAt: false, stopDateAt: false, dismantlingDateAt: false, operatingTime: false, analysisDateAt: false,
-        stopReason: false, mode: false, slKey: false, note: false,
+        stopReason: false, mode: false,
     }
 
     return {
