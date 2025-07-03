@@ -15,12 +15,12 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(DetailSeeder::class);
         $this->call(GroupSeeder::class);
-        $this->call(DefectSeeder::class);
+        $this->call(DefectPumpSeeder::class);
         $this->call(DefectValueSeeder::class);
     }
 }
 
 // php artisan db:seed --class=DetailSeeder --force
 // php artisan db:seed --class=GroupSeeder --force
-// php artisan db:seed --class=DefectSeeder --force
+// php artisan db:seed --class=DefectPumpSeeder --force
 // php artisan db:seed --class=DefectValueSeeder --force

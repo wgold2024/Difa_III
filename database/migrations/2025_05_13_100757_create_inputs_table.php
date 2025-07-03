@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('op');
             $table->string('city');
+            $table->string('contract_number')->nullable();;
             $table->string('company');
             $table->string('field');
             $table->string('cluster');

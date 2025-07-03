@@ -1,6 +1,6 @@
 <template>
     <Toast />
-    <Accordion value="-1" class="mb-4">
+    <Accordion value="0" class="mb-4">
         <AccordionPanel value="0">
             <AccordionHeader>Общая информация</AccordionHeader>
             <AccordionContent>
@@ -12,7 +12,7 @@
                         </div>
                         <div v-if="component.type=='number'"  class="w-full text-center">
                             <div class="mb-1">{{ component.name }}, {{ component.measure_unit }}</div>
-                            <InputNumber v-model="defectDataMap[component.id] as unknown as number" :min="0" placeholder="Введите число" class="w-1/2"/>
+                            <InputNumber v-model="defectDataMap[component.id] as unknown as number" :min="0" :minFractionDigits="1" locale="ru-RU" placeholder="Введите число" class="w-1/2"/>
                         </div>
                         <div v-if="component.type=='select'" >
                             <div class="mb-1">{{ component.name }}</div>
@@ -46,15 +46,22 @@
                     <template #content>
                         <div class="flex justify-between p-1">
                             <div class="flex justify-between w-full">
-                                <img :src="defectImage(component.id)" alt="Ждем фото от ОБ" class="border border-r rounded-lg mr-3" style="min-width: 350px; max-width: 350px; height: 300px; object-position: center; object-fit: cover;">
+                                <img
+                                    v-lazy
+                                    :data-src="defectImage(component.id)"
+                                    :alt="`&nbsp;Ждем фото, id = ${component.id}`"
+                                    :key="component.id"
+                                    class="border border-r rounded-lg mr-3"
+                                    style="min-width: 350px; max-width: 350px; height: 300px; object-fit: cover;"
+                                >
                                 <div class="mr-3 flex flex-col justify-stretch w-full">
                                     <div>
                                         <div class="flex justify-between items-center">
                                             <div class="mb-3">
-                                                <Checkbox v-model="defectDataMap[component.id]" :binary="true" :value="component.id" :id="'label' + String(component.id)" name="defect" />
-                                                <label :for="'label' + String(component.id)" class="ml-2">{{ component.name }}</label>
+                                                <Checkbox v-model="defectDataMap[component.id]" :binary="true" :value="component.id" :id="'label' + String(component.id)" name="defect" :disabled="false && defectDataMap[idInNorm] ? idInNorm !== component.id : false"/>
+                                                <label :for="'label' + String(component.id)" class="ml-2">{{ component.name + ' (id = ' + component.id + ')'}}</label>
                                             </div>
-                                            <Button label="Возможные причины" text raised severity="secondary" @click="isReasonVisible[component.id] = !isReasonVisible[component.id]" class="mb-2"/>
+                                            <Button label="Возможные причины" text raised severity="secondary" @click="isReasonVisible[component.id] = !isReasonVisible[component.id]" class="mb-2" :class="{ 'm-hidden': component.name === 'В норме'}"/>
                                         </div>
                                         <p class="mb-2">
                                             {{ component.description }}
@@ -68,7 +75,7 @@
                                                     </div>
                                                     <div v-if="item.type=='number'"  class="w-full text-center">
                                                         <div class="mb-1">{{ item.name }}, {{ item.measure_unit }}</div>
-                                                        <InputNumber v-model="defectDataMap[item.id] as unknown as number" :min="0" placeholder="Введите число" class="w-full"/>
+                                                        <InputNumber v-model="defectDataMap[item.id] as unknown as number" :min="0" :minFractionDigits="1" placeholder="Введите число" class="w-full"/>
                                                     </div>
                                                     <div v-if="item.type=='select' && filteredOptions(item.values).length > 0" >
                                                         <div class="mb-1">{{ item.name }}</div>
@@ -95,7 +102,7 @@
                                         </Dialog>
                                     </div>
                                     <div class="flex-1 min-h-[100px]" >
-                                        <textarea v-model="defectDataMapComment[component.id]  as unknown as string" class="w-full h-full p-2 border border-r rounded-lg" style="resize: none; outline: none; border-color: var(--novomet-light-gray-blue-1000)" rows="3" placeholder="Введите комментарий"></textarea>
+                                        <textarea v-model="defectDataMapComment[component.id]  as unknown as string" class="w-full h-full p-2 border border-r rounded-lg" style="resize: none; outline: none; border-color: var(--novomet-light-gray-blue-1000)" placeholder="Введите комментарий"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -281,9 +288,21 @@ const optionComponents = computed<Defect[]>(() => {
     return targetItem.defects.filter(res => res.is_option);
 })
 
+// const defectImage = (componentId: number) => {
+//     return `http://localhost:8000/storage/img/defects/${componentId}.png`
+// }
+
+const defectImageCache = new Map<number, string>();
 const defectImage = (componentId: number) => {
-    return `http://localhost:8000/storage/img/defects/${componentId}.jpg`
-}
+    if (defectImageCache.has(componentId)) {
+        return defectImageCache.get(componentId)!;
+    }
+
+    const url = `http://localhost:8000/storage/img/defects/${componentId}.png`;
+    defectImageCache.set(componentId, url);
+
+    return url;
+};
 
 
 // const getOptionComponents = () => {
@@ -295,11 +314,21 @@ const defectImage = (componentId: number) => {
 const btnDetailChange = (index: number) => {
     activeBtn.value = index;
     if (props.details?.length) {
-        btnComponents.value = props.details[index + 1].defects.filter(res => !res.is_option && res.id < 92) //33
+        btnComponents.value = props.details[index + 1].defects.filter(res => !res.is_option && res.id < 200) //33
+
     }
-
     // Отображение изображений дефектов
+}
 
+const idInNorm = computed(() => {
+    return btnComponents.value?.find(res => res.name === 'В норме')?.id ?? 0
+})
+
+const disabledElement = () => {
+    const idInNorm: number = btnComponents.value?.find(res => res.name === 'В норме')?.id ?? 0
+    // console.log('idInNorm', idInNorm);
+    // console.log('defectDataMap', defectDataMap.value[idInNorm] ?? false);
+    return defectDataMap.value[idInNorm] ?? false
 }
 
 const addImages = (defectId: number) => {
@@ -678,7 +707,8 @@ watch(
             defectDataMap.value = result
             defectDataMapComment.value = comments
 
-            console.log('defectDataMapImages', sectionNumber.value, defectDataMapImages.value)
+            // console.log('defectDataMapImages', sectionNumber.value, defectDataMapImages.value)
+            console.log('defectDataMap', sectionNumber.value, defectDataMap.value)
 
 
 
@@ -719,12 +749,17 @@ watch(
             //defectDataMap.value = result
             //
             //console.log('result', result);
+            // btnDetailChange(0);
         }
     }, {
         deep: true,
         immediate: true
     }
 );
+
+// watch((props.details) => {
+//     btnDetailChange(0);
+// })
 
 watchEffect(() => {
     btnDetailChange(0);

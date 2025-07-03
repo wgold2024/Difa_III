@@ -26,6 +26,7 @@ class StoreRequest extends FormRequest
             'id' => 'nullable|integer|exists:inputs,id',
             'op' => 'required|string',
             'city' => 'required|string',
+            'contract_number' => 'nullable|string',
             'company'=> 'required|string',
             'field' => 'required|string',
             'cluster' => 'required|string',
@@ -52,6 +53,7 @@ class StoreRequest extends FormRequest
             'op.string' => 'Поле "op" должно быть строкой',
             'city.required' => 'Поле "city" необходимо для заполнения',
             'city.string' => 'Поле "city" должно быть строкой',
+            'contract_number.string' => 'Поле "contract_number" должно быть строкой',
             'company.required' => 'Поле "company" необходимо для заполнения',
             'company.string' => 'Поле "company" должно быть строкой',
             'field.required' => 'Поле "field" необходимо для заполнения',
@@ -87,6 +89,7 @@ class StoreRequest extends FormRequest
         $timeZone = $this->header('X-Timezone');
 
         $this->merge([
+            'contract_number' => $this->contractNumber,
             'installation_date_at' => $this->installationDateAt ? Carbon::parse($this->installationDateAt)->timezone($timeZone) : null,
             'start_date_at' =>  $this->startDateAt ? Carbon::parse($this->startDateAt)->timezone($timeZone) : null,
             'stop_date_at' =>  $this->stopDateAt ? Carbon::parse($this->stopDateAt)->timezone($timeZone) : null,

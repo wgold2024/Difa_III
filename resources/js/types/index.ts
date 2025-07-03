@@ -25,6 +25,7 @@ export interface ApiError {
 export interface Input {
     op: string,
     city: string,
+    contractNumber: string,
     company: string,
     field: string,
     cluster: string,
@@ -52,7 +53,6 @@ export interface InputError {
     startDateAt: string | boolean,
     stopDateAt: string | boolean,
     dismantlingDateAt: string | boolean,
-    operatingTime: string | boolean,
     analysisDateAt: string | boolean,
     stopReason: string | boolean,
     mode: string | boolean,

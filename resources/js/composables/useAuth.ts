@@ -55,14 +55,14 @@ export default function useAuth() {
     // }
 
     const inputObj = {
-        op: '', city: '', company: '', field: '', cluster: '', well: '',
+        op: '', city: '', contractNumber: '', company: '', field: '', cluster: '', well: '',
         installationDateAt: null, startDateAt: null, stopDateAt: null, dismantlingDateAt: null, operatingTime: 0, analysisDateAt: null,
         stopReason: '', mode: '', slKey: '', note: '',
     }
 
     const inputErrorObj = {
         op: false, city: false, company: false, field: false, cluster: false, well: false,
-        installationDateAt: false, startDateAt: false, stopDateAt: false, dismantlingDateAt: false, operatingTime: false, analysisDateAt: false,
+        installationDateAt: true, startDateAt: true, stopDateAt: true, dismantlingDateAt: true, analysisDateAt: true,
         stopReason: false, mode: false,
     }
 

@@ -34,4 +34,17 @@ app.use(PrimeVue, {
 app.use(router);
 app.use(ToastService);
 app.use(ConfirmationService);
+app.directive('lazy', {
+    mounted(el) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    el.src = el.dataset.src;
+                    observer.unobserve(el);
+                }
+            });
+        });
+        observer.observe(el);
+    }
+});
 app.mount('#app');

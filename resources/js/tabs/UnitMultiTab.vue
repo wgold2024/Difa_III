@@ -1,6 +1,6 @@
 <template>
     <Toast />
-    <Accordion value="-" class="mb-1">
+    <Accordion value="0" class="mb-1">
         <AccordionPanel value="0">
             <AccordionHeader>Схема</AccordionHeader>
             <AccordionContent>
@@ -202,18 +202,19 @@ const updateData = (sectionData: SectionData) => {
 const show = () => {
     axios.get(`/api/defect-data/${route.params.id}?unit=${props.unit}`)
         .then(res => {
-            const data: SectionData[] = res.data[props.unit];
+            const data: SectionData[] = res.data[props.unit] || [];
 
-            if(data.length > 0) {
-                console.log(data);
+            sections.value = data.length > 0
+                ? Math.max(...data.map((item: SectionData) => item.section_number))
+                : 1;
 
-                sections.value = data.length > 0
-                    ? Math.max(...data.map((item: SectionData) => item.section_number))
-                    : 1;
-
-                sectionData.value = data
-            }
+            sectionData.value = data;
         })
+        .catch(error => {
+            console.error('Error fetching defect data:', error);
+            sections.value = 1;
+            sectionData.value = [];
+        });
 }
 
 </script>

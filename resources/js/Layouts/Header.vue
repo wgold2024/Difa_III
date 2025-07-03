@@ -16,6 +16,7 @@
 
 
         <div class="flex items-center px-4 py-0 h-full">
+            <Button  icon="pi pi-microchip-ai" outlined class="m-mobile_font mr-3"/>
             <Button  label="Скачать д/планшета" @click="getApk()" icon="pi pi-android" outlined class="m-mobile_font mr-3"/>
             <Button  label="Info" icon="pi pi-info-circle" outlined class="m-mobile_hide mr-3" />
 

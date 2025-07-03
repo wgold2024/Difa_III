@@ -3,72 +3,78 @@
     <div class="flex justify-content-between gap-3 w-full mb-3">
         <Fieldset legend="Общая информация" class="m-flex">
             <div class="mb-3">
-                <div class="mb-1">Обособленное подразделение</div>
+                <div class="mb-1">Обособленное подразделение *</div>
                 <div>
                     <Select v-model="input.op" :options="locations.getOps()" optionLabel="name" optionValue="name" placeholder="Выберите ОП" class="w-full md:w-14rem" :class="{ 'p-invalid': Boolean(inputError.op) }"/>
                 </div>
             </div>
             <div class="mb-3">
-                <div class="mb-1">Город</div>
+                <div class="mb-1">Город *</div>
                 <div>
                     <Select v-model="input.city" :options="locations.getCities()" optionLabel="name" optionValue="name" placeholder="Выберите город" class="w-full md:w-14rem" :class="{ 'p-invalid': Boolean(inputError.city) }"/>
                 </div>
             </div>
             <div class="mb-3">
-                <div class="mb-1">Компания</div>
+                <div class="mb-1">Номер договора</div>
+                <div>
+                    <InputText v-model="input.contractNumber" class="w-full" placeholder="Введите номер договора" />
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="mb-1">Компания *</div>
                 <div>
                     <Select v-model="input.company" :options="locations.getCompanies()" optionLabel="name" optionValue="name" placeholder="Выберите компанию" class="w-full md:w-14rem" :class="{ 'p-invalid': Boolean(inputError.company) }"/>
                 </div>
             </div>
             <div class="mb-3">
-                <div class="mb-1">Месторождение</div>
+                <div class="mb-1">Месторождение *</div>
                 <div>
                     <Select v-model="input.field" :options="locations.getFields()" optionLabel="name" optionValue="name" placeholder="Выберите месторождение" class="w-full md:w-14rem" :class="{ 'p-invalid': Boolean(inputError.field) }"/>
                 </div>
             </div>
             <div class="mb-3">
-                <div class="mb-1">Куст</div>
+                <div class="mb-1">Куст *</div>
                 <InputText v-model="input.cluster" class="w-full" placeholder="Введите куст" :class="{ 'p-invalid': Boolean(inputError.cluster) }"/>
             </div>
             <div class="mb-3">
-                <div class="mb-1">Скважина</div>
+                <div class="mb-1">Скважина *</div>
                 <InputText v-model="input.well" class="w-full" placeholder="Введите скважину" :class="{ 'p-invalid': Boolean(inputError.well) }"/>
             </div>
         </Fieldset>
         <Fieldset legend="Этапы эксплуатации" class="m-flex">
             <div class="mb-3">
-                <div class="mb-1">Дата монтажа</div>
+                <div class="mb-1">Дата монтажа *</div>
                 <DatePicker v-model="input.installationDateAt" @value-change="changeInstallationDate" dateFormat="dd.mm.yy" :minDate="minDate" :maxDate="maxDate" showIcon class="w-full" :invalid="Boolean(inputError.installationDateAt)"  placeholder="Выберите дату монтажа" />
             </div>
             <div class="mb-3">
-                <div class="mb-1">Дата запуска</div>
+                <div class="mb-1">Дата запуска *</div>
                 <DatePicker v-model="input.startDateAt"  @value-change="changeStartDate" dateFormat="dd.mm.yy" :maxDate="maxDate" showIcon class="w-full" :invalid="Boolean(inputError.startDateAt)" placeholder="Выберите дату запуска" :disabled="isDisabled.startDateAt" :min-date="input.installationDateAt ? new Date(input.installationDateAt) : minDate" />
             </div>
             <div class="mb-3">
-                <div class="mb-1">Дата остановки</div>
+                <div class="mb-1">Дата остановки *</div>
                 <DatePicker v-model="input.stopDateAt" @value-change="changeStopDate" dateFormat="dd.mm.yy" :maxDate="maxDate" showIcon class="w-full" :invalid="Boolean(inputError.stopDateAt)" placeholder="Выберите дату остановки" :disabled="isDisabled.stopDateAt" :min-date="input.startDateAt ? new Date(input.startDateAt) : minDate" />
             </div>
             <div class="mb-3">
-                <div class="mb-1">Дата демонтажа</div>
+                <div class="mb-1">Дата демонтажа *</div>
                 <DatePicker v-model="input.dismantlingDateAt" @value-change="changeDismantlingDate" dateFormat="dd.mm.yy" :maxDate="maxDate" showIcon class="w-full" :invalid="Boolean(inputError.dismantlingDateAt)" placeholder="Выберите дату демонтажа" :disabled="isDisabled.dismantlingDateAt" :min-date="input.stopDateAt ? new Date(input.stopDateAt) : minDate" />
             </div>
             <div class="mb-3">
                 <div class="mb-1">Наработка</div>
-                <InputNumber v-model="input.operatingTime" @input="changeOperatingTime" :min="0" :max="10000" suffix=" сут" class="operating-time-datepicker w-full" placeholder="Вычисляемое поле" disabled/>
+                <InputNumber v-model="input.operatingTime" :min="0" :max="10000" suffix=" сут" class="operating-time-datepicker w-full" placeholder="Вычисляемое поле" disabled/>
             </div>
             <div class="mb-3">
-                <div class="mb-1">Дата проведения разбора</div>
+                <div class="mb-1">Дата проведения разбора *</div>
                 <DatePicker v-model="input.analysisDateAt" @value-change="changeAnalysisDate" dateFormat="dd.mm.yy" :maxDate="maxDate" showIcon class="w-full" :invalid="Boolean(inputError.analysisDateAt)" placeholder="Выберите дату разбора" :disabled="isDisabled.analysisDateAt" :min-date="input.dismantlingDateAt ? new Date(input.dismantlingDateAt) : minDate" />
             </div>
         </Fieldset>
         <div class="flex flex-col">
             <Fieldset legend="Дополнительная информация" class="mb-5">
                 <div class="mb-3">
-                    <div class="mb-1">Причина остановки</div>
+                    <div class="mb-1">Причина остановки *</div>
                     <Select v-model="input.stopReason" :options="locations.getStopReasons()" optionLabel="name" optionValue="name" placeholder="Выберите причину" class="w-full md:w-14rem" :class="{ 'p-invalid': Boolean(inputError.stopReason) }" />
                 </div>
                 <div class="mb-3">
-                    <div class="mb-1">Режим работы</div>
+                    <div class="mb-1">Режим работы *</div>
                     <Select v-model="input.mode" :options="locations.getModes()" optionLabel="name" optionValue="name" placeholder="Выберите режим" class="w-full md:w-14rem" :class="{ 'p-invalid': Boolean(inputError.mode) }"  />
                 </div>
                 <div class="mb-3">
@@ -81,7 +87,7 @@
             </Fieldset>
         </div>
     </div>
-    <Button label="Сохранить"  icon="pi pi-save" :loading="isSaving" @click="store" :disabled="isDisabled.btnSave"/>
+    <Button label="Сохранить" icon="pi pi-save" :loading="isSaving" :disabled="isDisabled.btnSave"  @click="store" />
 </template>
 
 
@@ -96,13 +102,14 @@ import {computed, onMounted, ref, toRaw, watch, watchEffect} from "vue";
 import { locations } from "@/data";
 import { Input, InputError } from "@/types";
 import axios, { type RawAxiosRequestConfig } from 'axios';
-import { useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import useAuth from '@/composables/useAuth.js'
 import Toast from "primevue/toast";
 import { useToast } from 'primevue/usetoast';
 
 
 const { inputObj, inputErrorObj, convertCamelToSnake } = useAuth();
+const router = useRouter();
 const route = useRoute()
 const toast = useToast();
 
@@ -139,7 +146,6 @@ const changeInstallationDate = () => { inputError.value.installationDateAt = fal
 const changeStartDate = () => { inputError.value.startDateAt = false; operatingTimeCount(); isDisabled.value.stopDateAt = false; checkDateSequence() }
 const changeStopDate = () => { inputError.value.stopDateAt = false; operatingTimeCount(); isDisabled.value.dismantlingDateAt = false; checkDateSequence() }
 const changeDismantlingDate = () => { inputError.value.dismantlingDateAt = false; isDisabled.value.analysisDateAt = false; checkDateSequence() }
-const changeOperatingTime = () => { inputError.value.operatingTime = false; }
 const changeAnalysisDate = () => { inputError.value.analysisDateAt = false; checkDateSequence() }
 const checkDateSequence = () => {
     if (input.value.dismantlingDateAt !== null && input.value.analysisDateAt !== null && new Date(input.value.dismantlingDateAt) > new Date(input.value.analysisDateAt)) {
@@ -177,7 +183,6 @@ const operatingTimeCount = () => {
     }
 }
 // -------
-
 
 onMounted(() => {
     const id = route.params.id;
@@ -225,6 +230,10 @@ const store = () => {
                 detail: `Id: ${res.data.id}`,
                 life: 3000,
             })
+            router.push({
+                name: route.name!, // сохраняем текущее имя маршрута
+                params: { ...route.params, id: `${res.data.id}` }
+            });
             isDisabled.value.btnSave = true;
             isSaving.value = false;
         })
@@ -237,6 +246,7 @@ const store = () => {
                 life: 3000,
             });
 
+            isSaving.value = false;
             inputError.value = convertCamelToSnake(e.response.data.errors);
         })
 }
@@ -260,11 +270,23 @@ const store = () => {
 });
 
 watchEffect(() => {
+    console.log(inputError.value);
+
     let error: boolean = false;
     (Object.keys(inputError.value) as Array<keyof InputError>).forEach((key) => {
+        if (
+            key !== 'installationDateAt' &&
+            key !== 'startDateAt' &&
+            key !== 'stopDateAt' &&
+            key !== 'dismantlingDateAt' &&
+            key !== 'analysisDateAt'
+        ) {
+            inputError.value[key] = !input.value[key]
+        }
         error = error || Boolean(inputError.value[key]);
     })
     isDisabled.value.btnSave = Boolean(error);
+    console.log('isDisabled.value.btnSave', isDisabled.value.btnSave);
 })
 
 </script>

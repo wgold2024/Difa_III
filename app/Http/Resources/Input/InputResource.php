@@ -35,6 +35,7 @@ class InputResource extends JsonResource
             'id' => $this->id,
             'op' => $this->op,
             'city' => $this->city,
+            'contract_number' => $this->contract_number,
             'company' => $this->company,
             'field' => $this->field,
             'cluster' => $this->cluster,
