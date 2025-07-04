@@ -1,0 +1,16 @@
+export interface Security {
+    secid: string;
+    shortname: string;
+    regnumber: string | null;
+    name: string;
+    isin: string | null;
+    is_traded: number;
+    emitent_id: number | null;
+    emitent_title: string | null;
+    emitent_inn: string | null;
+    emitent_okpo: string | null;
+    type: string;
+    group: string;
+    primary_boardid: string;
+    marketprice_boardid: string | null;
+}

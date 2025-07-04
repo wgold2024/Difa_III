@@ -16,6 +16,10 @@
 
 
         <div class="flex items-center px-4 py-0 h-full">
+            <router-link to="/mmvb" class="m-mobile_hide mr-3">
+                <Button  icon="pi pi-money-bill" outlined class="m-mobile_font mr-3"/>
+            </router-link>
+
             <router-link to="/ai" class="m-mobile_hide mr-3">
                 <Button  icon="pi pi-microchip-ai" outlined class="m-mobile_font mr-3"/>
             </router-link>
