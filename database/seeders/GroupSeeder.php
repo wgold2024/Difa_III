@@ -91,7 +91,6 @@ class GroupSeeder extends Seeder
                 'id' => '19',
                 'name' => 'Износ посадочного места под опорные шайбы (средние)',
             ],
-
             [
                 'id' => '20',
                 'name' => 'Износ посадочного места под опорные шайбы (нижние)',
@@ -114,8 +113,7 @@ class GroupSeeder extends Seeder
             ],
             [
                 'id' => '25',
-                'name' => 'Износ нижнего диска
-',
+                'name' => 'Износ нижнего диска',
             ],
             [
                 'id' => '26',
@@ -153,8 +151,6 @@ class GroupSeeder extends Seeder
                 'id' => '34',
                 'name' => 'Износ',
             ],
-
-
         ];
 
         foreach ($data as $item) {

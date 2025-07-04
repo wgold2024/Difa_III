@@ -48,8 +48,7 @@ class DetailSeeder extends Seeder
             ],
             [
                 'id' => '9',
-                'name' => 'Концевые детали: основание
-',
+                'name' => 'Концевые детали: основание',
             ],
             [
                 'id' => '10',
@@ -69,6 +68,69 @@ class DetailSeeder extends Seeder
             ],
         ];
 
+        $dataMotor = [
+            [
+                'id' => '51',
+                'name' => 'Общая информация',
+            ],
+            [
+                'id' => '52',
+                'name' => 'Ротор в сборе',
+            ],
+            [
+                'id' => '53',
+                'name' => 'Вал',
+            ],
+            [
+                'id' => '54',
+                'name' => 'Корпус',
+            ],
+            [
+                'id' => '55',
+                'name' => 'Масло',
+            ],
+            [
+                'id' => '56',
+                'name' => 'Узел пяты',
+            ],
+            [
+                'id' => '57',
+                'name' => 'Узел токоввода',
+            ],
+            [
+                'id' => '58',
+                'name' => 'Статор',
+            ],
+            [
+                'id' => '59',
+                'name' => 'Пакеты ротора (вентильный)',
+            ],
+            [
+                'id' => '60',
+                'name' => 'Пакеты ротора (асинхронный)',
+            ],
+            [
+                'id' => '61',
+                'name' => 'Втулка подшипника',
+            ],
+            [
+                'id' => '62',
+                'name' => 'Муфта шлицевая',
+            ],
+            [
+                'id' => '63',
+                'name' => 'Подшипники (ротора)',
+            ],
+            [
+                'id' => '64',
+                'name' => 'Узел секционирования',
+            ],
+            [
+                'id' => '65',
+                'name' => 'Стыковочный узел с ТМС/ТМС',
+            ],
+        ];
+
         // Детали насоса
         $dataPump = array_map(function ($item) {
             $item['unit'] = 'Pump';
@@ -76,6 +138,16 @@ class DetailSeeder extends Seeder
         }, $dataPump);
 
         foreach ($dataPump as $item) {
+            Detail::create($item);
+        }
+
+        // Детали двигателя
+        $dataMotor = array_map(function ($item) {
+            $item['unit'] = 'Motor';
+            return $item;
+        }, $dataMotor);
+
+        foreach ($dataMotor as $item) {
             Detail::create($item);
         }
     }

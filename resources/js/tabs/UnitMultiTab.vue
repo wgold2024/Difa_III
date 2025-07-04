@@ -1,6 +1,6 @@
 <template>
     <Toast />
-    <Accordion value="0" class="mb-1">
+    <Accordion value="-" class="mb-1">
         <AccordionPanel value="0">
             <AccordionHeader>Схема</AccordionHeader>
             <AccordionContent>

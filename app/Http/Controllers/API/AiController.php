@@ -68,4 +68,50 @@ class AiController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function train(Request $request) {
+//        $output = shell_exec('C:\Users\Zolotarev.iv\AppData\Local\anaconda3\envs\photo_processing\python D:\Ivan\Prjs\Difa\Python_II\upload_app\main.py test_two 1 2 3"');
+//
+//        dd($output);
+
+        if (!function_exists('socket_create')) {
+            dd("Расширение sockets не установлено в PHP!");
+        }
+        dd(12);
+
+
+        $command = 'C:\Users\Zolotarev.iv\AppData\Local\anaconda3\envs\photo_processing\python D:\Ivan\Prjs\Difa\Python_II\upload_app\main.py test_two 1 2 3';
+
+        $descriptorspec = [
+            0 => ["pipe", "r"],  // stdin
+            1 => ["pipe", "w"],  // stdout
+            2 => ["pipe", "w"]   // stderr
+        ];
+
+        $process = proc_open($command, $descriptorspec, $pipes);
+
+        if (is_resource($process)) {
+            fclose($pipes[0]);
+
+            // Подключаемся к Python-сокету
+            $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+            socket_connect($socket, "127.0.0.1", 65432);
+
+            for ($i = 1; $i <= 10; $i++) {
+                socket_write($socket, "next", 4);
+                $value = socket_read($socket, 1024);
+                dump("Получено: " . $value . "<br>");
+                ob_flush();
+                flush();
+            }
+
+            $finalOutput = stream_get_contents($pipes[1]);
+            echo "Результат: " . $finalOutput;
+
+            socket_close($socket);
+            fclose($pipes[1]);
+            fclose($pipes[2]);
+            proc_close($process);
+        }
+    }
 }

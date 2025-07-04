@@ -7,7 +7,7 @@ use App\Models\Detail;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DefectPumpSeeder extends Seeder
+class Defect1PumpSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -85,7 +85,7 @@ class DefectPumpSeeder extends Seeder
             [
                 'id' => '12',
                 'detail_id' => '1',
-                'name' => 'Номер муфты ',
+                'name' => 'Номер муфты',
                 'type' => 'string',
             ],
             [

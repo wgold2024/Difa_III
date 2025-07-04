@@ -18,4 +18,5 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::get('/esp', [EspController::class, 'index']);
     Route::resource('defect-data', DefectDataController::class);
     Route::post('ai-image', [AiController::class, 'checkImage']);
+    Route::post('ai-train', [AiController::class, 'train']);
 });
