@@ -15,6 +15,7 @@ class GroupSeeder extends Seeder
     public function run(): void
     {
         $data = [
+            // --- Насос
             [
                 'id' => '1',
                 'name' => 'Common',
@@ -150,6 +151,16 @@ class GroupSeeder extends Seeder
             [
                 'id' => '34',
                 'name' => 'Износ',
+            ],
+
+            // --- Двигатель
+            [
+                'id' => '51',
+                'name' => 'Наружный термоиндикатор',
+            ],
+            [
+                'id' => '52',
+                'name' => 'Внутренний термоиндикатор',
             ],
         ];
 

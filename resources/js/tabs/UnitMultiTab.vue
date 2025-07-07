@@ -33,6 +33,7 @@
                     :section-number="index + 1"
                     @updateData="updateData"
                     :section-data="sectionData || null"
+                    :defectGroups="defectGroups"
                 />
             </TabPanel>
         </TabPanels>
@@ -56,7 +57,7 @@ import TabPanel from 'primevue/tabpanel';
 import UnitMultiTabSec from "@/tabs/UnitMultiTabSec.vue";
 import axios from "axios";
 import Button from "primevue/button";
-import { DefectDataMap, DefectData, EspData, SectionData } from "@/types";
+import { DefectDataMap, DefectData, EspData, SectionData, DefectGroup } from "@/types";
 import Toast from "primevue/toast";
 import { useToast } from 'primevue/usetoast';
 
@@ -84,6 +85,7 @@ const sections = ref(1)
 const tabActive = ref(0)
 const details = ref([])
 const defectData = ref<DefectData | null>(null)
+const defectGroups = ref<DefectGroup[]>([])
 
 const sectionData = ref<SectionData[] | null>(null)
 
@@ -92,7 +94,8 @@ const isSaving = ref<boolean>(false)
 // const defectData = ref<DefectData[]>([]);
 const data = ref<DefectDataMap[]>([]);
 const espData = ref<EspData>({
-    Pump: []
+    Pump: [],
+    Motor: [],
 });
 
 const route = useRoute()
@@ -177,13 +180,17 @@ const store = () => {
 
 const updateData = (sectionData: SectionData) => {
     // console.log('sectionData', sectionData.section_number)
-    const existingIndex = espData.value.Pump.findIndex(
+    // console.log('props.unit', props.unit);
+    // console.log('sectionData', sectionData);
+    // if (!sectionData.defects.length) return;
+
+    const existingIndex = espData.value[props.unit].findIndex(
         item => item.section_number === sectionData.section_number
     );
     if (existingIndex !== -1) {
-        espData.value.Pump[existingIndex] = sectionData;
+        espData.value[props.unit][existingIndex] = sectionData;
     } else {
-        espData.value.Pump.push(sectionData);
+        espData.value[props.unit].push(sectionData);
     }
 
 
@@ -196,6 +203,7 @@ const updateData = (sectionData: SectionData) => {
     //     Pump: arr
     // }
     //
+
     // console.log(espData.value);
 }
 
@@ -214,6 +222,15 @@ const show = () => {
             console.error('Error fetching defect data:', error);
             sections.value = 1;
             sectionData.value = [];
+        });
+
+    axios.get(`/api/defect-group?unit=${props.unit}`)
+        .then(res => {
+            defectGroups.value = res.data
+            // console.log('defectGroups.value', defectGroups.value)
+        })
+        .catch(error => {
+            console.error('Error fetching defect group:', error);
         });
 }
 

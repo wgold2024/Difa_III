@@ -136,6 +136,11 @@ export interface DefectData {
     deletedImages?: string[] | null;
 }
 
+export interface DefectGroup {
+    id: number;
+    name: string;
+}
+
 
 
 

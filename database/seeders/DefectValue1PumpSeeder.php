@@ -8,7 +8,7 @@ use App\Models\Group;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DefectValueSeeder extends Seeder
+class DefectValue1PumpSeeder extends Seeder
 {
     /**
      * Run the database seeds.

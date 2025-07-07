@@ -4,7 +4,7 @@
         <AccordionPanel value="0">
             <AccordionHeader>Общая информация</AccordionHeader>
             <AccordionContent>
-                <div class="grid grid-cols-5 gap-x-1 gap-y-2">
+                <div class="grid grid-cols-5 gap-x-1 gap-y-2 mb-2">
                     <div v-for="(component, index) in commonComponents" :key="index" class="mr-5">
                         <div v-if="component.type=='string'" >
                             <div class="mb-1">{{ component.name }}</div>
@@ -18,8 +18,40 @@
                             <div class="mb-1">{{ component.name }}</div>
                             <Select v-model="defectDataMap[component.id]" :options="component.values" optionLabel="name" optionValue="name" placeholder="Выберите значение" class="w-full" />
                         </div>
+                        <div v-if="component.type=='boolean'" class="w-full text-center">
+                            <div class="mb-3">
+                                <Checkbox v-model="defectDataMap[component.id]" :binary="true" :value="component.id" :id="'label' + String(component.id)" name="defect" />
+                                <label :for="'label' + String(component.id)" class="ml-2">{{ component.name + ' (id = ' + component.id + ')' }}</label>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
+                <!-- Выводим сгруппированные компоненты -->
+                <Fieldset
+                    v-for="(group, groupId) in commonGroupedComponents"
+                    v-if="defectGroupsMap.size > 0"
+                    :key="groupId"
+                    :legend="getGroupName(groupId)"
+                    style="margin-bottom: 10px;"
+                >
+                    <div class="flex justify-around"> <!-- Основной flex-контейнер -->
+                        <div v-for="component in group" :key="component.id" class="flex items-center bg-white px-5 py-3 border border-r rounded-lg"
+                            style="border-color: var(--novomet-light-gray-blue-800)"> <!-- Элемент группы -->
+                            <Checkbox
+                                v-model="defectDataMap[component.id]"
+                                :binary="true"
+                                :value="component.id"
+                                :id="'label' + component.id"
+                                name="defect"
+                                class="mr-2"
+                            />
+                            <label :for="'label' + component.id">
+                                {{ component.name }} (id = {{ component.id }})
+                            </label>
+                        </div>
+                    </div>
+                </Fieldset>
             </AccordionContent>
         </AccordionPanel>
     </Accordion>
@@ -91,6 +123,13 @@
                                                             optionLabel="name" optionValue="name"
                                                             placeholder="Выберите значение" class="w-full"
                                                         />
+                                                    </div>
+                                                    <div v-if="item.type=='boolean'" class="w-full text-center">
+                                                        asdasd
+                                                        <div class="mb-3">
+                                                            <Checkbox v-model="defectDataMap[item.id]" :binary="true" :value="item.id" :id="'label' + String(item.id)" name="defect" />
+                                                            <label :for="'label' + String(item.id)" class="ml-2">{{ item.name + ' (id = ' + item.id + ')' }}</label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -186,7 +225,7 @@ import {
     DefectData,
     DefectDataMapImages,
     ImageData,
-    Image
+    Image, DefectGroup
 } from "@/types";
 import Galleria from 'primevue/galleria';
 import { PhotoService } from "@/servicies/PhotoService";
@@ -212,6 +251,7 @@ const props = defineProps<{
     details?: Detail[];
     sectionNumber: number;
     sectionData: SectionData[] | null;
+    defectGroups: DefectGroup[];
 }>();
 
 
@@ -254,9 +294,37 @@ const buttons = computed<Detail[]>(() => {
 });
 
 const commonComponents = computed<Defect[]>(() => {
+    // console.log('props.details', props.details);
     const data = props.details?.find((res: Detail) => res.name === 'Общая информация');
-    return data?.defects ?? []; // Вернёт пустой массив если defects нет
+    // console.log('defects', data?.defects ?? []);
+    return data?.defects.filter(res => res.group_id === null) ?? []; // Вернёт пустой массив если defects нет
 });
+
+const commonGroupedComponents = computed(() => {
+    const data = props.details?.find(d => d.name === 'Общая информация');
+    const defects = data?.defects.filter(d => d.group_id !== null) ?? [];
+
+    return defects.reduce((acc, defect) => {
+        const groupId = defect.group_id!;
+        acc[groupId] = acc[groupId] || [];
+        acc[groupId].push(defect);
+        return acc;
+    }, {} as Record<number, Defect[]>);
+});
+
+const defectGroupsMap = computed(() => {
+    const map = new Map();
+    props.defectGroups.forEach(item => map.set(item.id, item.name));
+
+    return map;
+});
+
+const getGroupName = (groupId) => {
+    console.log('props.defectGroups', props.defectGroups);
+    console.log('props.defectGroups', props.defectGroups.find((res: DefectGroup) => res.id == groupId).name);
+
+    return props.defectGroups.find((res: DefectGroup) => res.id == groupId).name || `Группа ${groupId}`;
+};
 
 const filteredOptions = (item: Value[]) => {
     return item.filter(res =>
@@ -284,6 +352,8 @@ const filteredOptions = (item: Value[]) => {
 const optionComponents = computed<Defect[]>(() => {
     const targetItem = props.details?.[activeBtn.value + 1];
     if (!targetItem?.defects) return [];
+
+    // console.log(targetItem.defects.filter(res => res.is_option));
 
     return targetItem.defects.filter(res => res.is_option);
 })
@@ -708,7 +778,7 @@ watch(
             defectDataMapComment.value = comments
 
             // console.log('defectDataMapImages', sectionNumber.value, defectDataMapImages.value)
-            console.log('defectDataMap', sectionNumber.value, defectDataMap.value)
+            // console.log('defectDataMap', sectionNumber.value, defectDataMap.value)
 
 
 
@@ -808,6 +878,13 @@ watchEffect(() => {
     }
 }
 
+:deep(.p-fieldset-legend) {
+    background-color: transparent;
+}
+:deep(.p-fieldset.p-component) {
+    background-color: transparent;
+    border: 2px solid var(--novomet-light-gray-blue-800);
+}
 
 
 
