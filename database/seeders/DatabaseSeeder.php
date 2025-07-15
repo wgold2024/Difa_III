@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call(GroupSeeder::class);
         $this->call(Defect1PumpSeeder::class);
         $this->call(DefectValue1PumpSeeder::class);
+        $this->call(Defect2MotorSeeder::class);
+        $this->call(DefectValue2MotorSeeder::class);
     }
 }
 

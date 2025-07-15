@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('reason')->nullable();
             $table->boolean('is_option')->default(false);
             $table->boolean('is_required')->default(false);
+            $table->string('hint')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

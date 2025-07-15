@@ -39,6 +39,10 @@ class DefectResource extends JsonResource
                 $this->values->whereNotNull('measure_unit')->isNotEmpty(),
                 fn() => $this->values->firstWhere('measure_unit', '!=', null)->measure_unit
             ),
+            'hint' => $this->when(
+                !is_null($this->hint),
+                fn() => $this->hint
+            ),
         ];
     }
 }

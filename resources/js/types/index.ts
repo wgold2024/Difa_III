@@ -75,6 +75,8 @@ export interface Defect {
     description: string,
     reason: string,
     is_option: boolean
+    is_required: boolean
+    hint: string
     measure_unit: string
     values: Value[]
 }
