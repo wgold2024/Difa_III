@@ -44,12 +44,19 @@ class InputController extends Controller
         try {
             DB::beginTransaction();
 
-//            $input = Input::create($data);
+            if (empty($request->input('id'))) {
+                unset($data['id']); // полностью удаляем id для автоинкремента
+                $input = Input::create($data);
+            } else {
+                $input = Input::find($request->input('id'));
 
-            $input = Input::updateOrCreate(
-                ['id' => $request->input('id')],
-                $data
-            );
+                if ($input) {
+                    $input->update($data);
+                } else {
+                    unset($data['id']); // полностью удаляем id для автоинкремента
+                    $input = Input::create($data);
+                }
+            }
 
             DB::commit();
         } catch (\Exception $exception) {
