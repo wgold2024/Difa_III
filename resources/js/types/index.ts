@@ -120,7 +120,7 @@ export interface EspData {
         id: number;
     };
     Pump: SectionData[];
-    Motor?: SectionData[];
+    Motor: SectionData[];
 }
 
 export interface SectionData {

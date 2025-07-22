@@ -180,33 +180,20 @@ const store = () => {
 }
 
 const updateData = (sectionData: SectionData) => {
-    // console.log('sectionData', sectionData.section_number)
-    // console.log('props.unit', props.unit);
-    // console.log('sectionData', sectionData);
-    // if (!sectionData.defects.length) return;
+    const unitValue = espData.value[props.unit];
 
-    const existingIndex = espData.value[props.unit].findIndex(
-        item => item.section_number === sectionData.section_number
-    );
-    if (existingIndex !== -1) {
-        espData.value[props.unit][existingIndex] = sectionData;
-    } else {
-        espData.value[props.unit].push(sectionData);
+    if (Array.isArray(unitValue)) {
+        // Обработка для Pump, Motor и т.п. исключая Input
+        const existingIndex = unitValue.findIndex(
+            item => item.section_number === sectionData.section_number
+        );
+        if (existingIndex !== -1) {
+            unitValue[existingIndex] = sectionData;
+        } else {
+            unitValue.push(sectionData);
+        }
     }
-
-
-
-
-    // const arr: SectionData[] = []
-    // arr.push(sectionData)
-    //
-    // espData.value = {
-    //     Pump: arr
-    // }
-    //
-
-    // console.log(espData.value);
-}
+};
 
 const show = () => {
     axios.get(`/api/defect-data/${route.params.id}?unit=${props.unit}`)

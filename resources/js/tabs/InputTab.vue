@@ -179,7 +179,7 @@ const operatingTimeCount = () => {
         if (input.value.operatingTime < 0) {
             toast.add({ severity: 'warn', summary: 'Предупреждение', detail: 'Наработка отрицательная', life: 3000 });
         }
-        inputError.value.operatingTime = false;
+        // inputError.value.operatingTime = false;
     }
 }
 // -------
@@ -265,7 +265,9 @@ const store = () => {
         () => input.value[key],
         (newVal) => {
             isDisabled.value.btnSave = false;
-            inputError.value[key] = !input.value[key]
+
+            type InputKey = keyof InputError;
+            inputError.value[key as InputKey] = !input.value[key as InputKey];
         }
     );
 });

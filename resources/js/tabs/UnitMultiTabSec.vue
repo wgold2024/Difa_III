@@ -321,11 +321,11 @@ const defectGroupsMap = computed(() => {
     return map;
 });
 
-const getGroupName = (groupId) => {
+const getGroupName = (groupId: number) => {
     // console.log('props.defectGroups', props.defectGroups);
     // console.log('props.defectGroups', props.defectGroups.find((res: DefectGroup) => res.id == groupId).name);
 
-    return props.defectGroups.find((res: DefectGroup) => res.id == groupId).name || `Группа ${groupId}`;
+    return props.defectGroups.find((res: DefectGroup) => res.id == groupId)?.name || `Группа ${groupId}`;
 };
 
 const filteredOptions = (item: Value[]) => {
