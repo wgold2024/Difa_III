@@ -370,7 +370,7 @@ const defectImage = (componentId: number) => {
         return defectImageCache.get(componentId)!;
     }
 
-    const url = `http://localhost:8000/storage/img/defects/${componentId}.png`;
+    const url = `/storage/img/defects/${componentId}.png`;
     defectImageCache.set(componentId, url);
 
     return url;
