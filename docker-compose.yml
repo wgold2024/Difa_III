@@ -20,6 +20,9 @@ services:
         build:
             context: .
             dockerfile: Dockerfile.nginx
+        environment:
+            - HTTP_PROXY=http://zabbix.novomet.ru:8888
+            - HTTPS_PROXY=http://zabbix.novomet.ru:8888
         image: nginx:Dockerfile
         container_name: difa_nginx
         restart: unless-stopped
