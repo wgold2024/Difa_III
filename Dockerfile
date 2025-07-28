@@ -1,6 +1,6 @@
 # BACKEND
 # Используем официальный образ PHP
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
 ## Настройка прокси для всех компонентов
 #ENV HTTP_PROXY=http://zabbix.novomet.ru:8888 \
