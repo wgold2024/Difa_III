@@ -5,7 +5,7 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        image: app:Dockerfile
+        image: difa-app
         container_name: difa_app
         restart: unless-stopped
         volumes:
@@ -23,7 +23,7 @@ services:
 #        environment:
 #            - HTTP_PROXY=http://zabbix.novomet.ru:8888
 #            - HTTPS_PROXY=http://zabbix.novomet.ru:8888
-        image: nginx:Dockerfile
+        image: difa-nginx
         container_name: difa_nginx
         restart: unless-stopped
         ports:
