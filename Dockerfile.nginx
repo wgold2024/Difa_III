@@ -1,0 +1,20 @@
+# FRONTEND
+# Первый этап сборки (получение артефактов сборки html,css,js)
+FROM node:18-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+
+COPY ./ ./
+RUN npm run build
+
+CMD ["npm", "run", "dev"]
+
+# Второй этап сборки
+FROM nginx:alpine
+COPY --from=build /app/public /var/www/public
+# В уроке через bind mount
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+
+# start nginx to server the application
+CMD ["nginx", "-g", "daemon off;"]
