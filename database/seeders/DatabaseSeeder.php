@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(UserSeeder::class);
         $this->call(DetailSeeder::class);
         $this->call(GroupSeeder::class);
         $this->call(Defect1PumpSeeder::class);
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
     }
 }
 
+// php artisan db:seed --class=UserSeeder --force
 // php artisan db:seed --class=DetailSeeder --force
 // php artisan db:seed --class=GroupSeeder --force
 // php artisan db:seed --class=Defect1PumpSeeder --force
