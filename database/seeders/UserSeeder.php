@@ -37,9 +37,9 @@ class UserSeeder extends Seeder
 
         User::create([
             'id' => 4,
-            'name' => 'Олег Юров',
+            'name' => 'Олег Борисович Юров',
             'email' => 'Oleg.Iurov@novometgroup.com',
-            'password' => Hash::make('Lydhdg&^kjd'),
+            'password' => Hash::make('I8J688dYH_)p'),
         ]);
 
         //-----------------------------------------------------
@@ -218,5 +218,13 @@ class UserSeeder extends Seeder
             'password' => Hash::make('ew98IjYHtg@'),
         ]);
         // ---
+
+        // Новые пользователи
+        User::create([
+            'id' => 30,
+            'name' => 'Зеляева Елена Сергеевна',
+            'email' => 'Elena.Zeliaeva@novometgroup.com',
+            'password' => Hash::make('ddw98F*YHii2'),
+        ]);
     }
 }
