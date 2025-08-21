@@ -17,9 +17,13 @@ class InputController extends Controller
      */
     public function index()
     {
-//        $input = Input::all();
+        $id = auth()->id();
 
-        $input = Input::where("user_id", auth()->id())->get();
+        if ($id === 1) {
+            $input = Input::all();
+        } else {
+            $input = Input::where("user_id", auth()->id())->get();
+        }
 
         return InputResource::collection($input)->resolve();
     }
