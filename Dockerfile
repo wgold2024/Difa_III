@@ -27,6 +27,9 @@ RUN apt-get update && apt-get install -y \
       apt-get clean && \
       rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Копируем custom php.ini
+COPY php.ini /usr/local/etc/php/conf.d/custom.ini
+
 # Установка Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -41,3 +44,7 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-di
 
 # Копируем конфигурацию
 COPY .env.example .env
+
+# Настройка прав
+RUN chown -R www-data:www-data /var/www && \
+    chmod -R 755 /var/www/storage
