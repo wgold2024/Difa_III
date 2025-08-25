@@ -30,7 +30,10 @@
                     </TabPanel>
                     <TabPanel value="tab1_charts">
                         Графики
-                        <TabCharts />
+                        <p class="m-0">
+                            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+                            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                        </p>
                     </TabPanel>
                     <TabPanel value="tab2_trades">
                         Сделки
@@ -46,28 +49,7 @@
         <div class="flex justify-center mb-10">
             <Button type="submit" @click="startTrain" label="Получить данные" />
         </div>
-        <div>
-            <DataTable
-                :value="securities"
-                paginator
-                :rows="10"
-                :rowsPerPageOptions="[5, 10, 20]"
-                tableStyle="min-width: 50rem"
-            >
-                <Column field="secid" header="ID" sortable></Column>
-                <Column field="shortname" header="Краткое название" sortable></Column>
-                <Column field="name" header="Название" sortable></Column>
-                <Column field="type" header="Тип" sortable></Column>
-                <Column field="group" header="Группа" sortable></Column>
-                <Column field="is_traded" header="Торгуется" sortable>
-                    <template #body="{ data }">
-                        {{ data.is_traded ? 'Да' : 'Нет' }}
-                    </template>
-                </Column>
-                <Column field="emitent_id" header="emitent_id" sortable />
-                <Column field="emitent_title" header="emitent_title" sortable />
-            </DataTable>
-        </div>
+
     </div>
 </template>
 
@@ -85,7 +67,6 @@ import TabList from "primevue/tablist";
 import Tab from "primevue/tab";
 import TabPanel from "primevue/tabpanel";
 import TabPanels from "primevue/tabpanels";
-import TabCharts from "@/Pages/Mmvb/tabs/TabCharts.vue";
 
 const dataTable = ref<Array<string>>();
 const selectedProduct = ref();
