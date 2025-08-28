@@ -22,3 +22,9 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::post('ai-train', [AiController::class, 'train']);
     Route::get('/defect-group', [GroupController::class, 'index']);
 });
+
+Route::get('/test', function (Request $request) {
+    return response()->json([
+        "result" => 'success'
+    ]);
+});
