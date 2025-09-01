@@ -95,27 +95,55 @@ class DefectValue2MotorSeeder extends Seeder
                 'defect_id' => '509',
                 'name' => 'Прямобочный',
             ],
-            // 510. Тип шлицевого соединения
+            // 510. Группа прочности вала
             [
                 'defect_id' => '510',
-                'name' => 'Т8',
+                'name' => 'Т9',
+            ],
+            [
+                'defect_id' => '510',
+                'name' => 'Т10',
             ],
             [
                 'defect_id' => '510',
                 'name' => 'Т11',
             ],
+            [
+                'defect_id' => '510',
+                'name' => 'Т12',
+            ],
+            [
+                'defect_id' => '510',
+                'name' => 'Т13',
+            ],
+            [
+                'defect_id' => '510',
+                'name' => 'Т14',
+            ],
             // 511. Диаметр вала
             [
                 'defect_id' => '511',
-                'name' => '1',
+                'name' => '14',
             ],
             [
                 'defect_id' => '511',
-                'name' => '2',
+                'name' => '20',
             ],
             [
                 'defect_id' => '511',
-                'name' => '3',
+                'name' => '25',
+            ],
+            [
+                'defect_id' => '511',
+                'name' => '30',
+            ],
+            [
+                'defect_id' => '511',
+                'name' => '38',
+            ],
+            [
+                'defect_id' => '511',
+                'name' => '42',
             ],
             // 514. Вращение вала
             [

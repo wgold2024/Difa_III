@@ -17,7 +17,7 @@ class DefectValue1PumpSeeder extends Seeder
     {
         $data = [
             // --- Общая информация
-            // Схема сборки
+            // 4. Схема сборки
             [
                 'defect_id' => '4',
                 'name' => 'Плавающая',
@@ -30,7 +30,7 @@ class DefectValue1PumpSeeder extends Seeder
                 'defect_id' => '4',
                 'name' => 'Компрессионная',
             ],
-            // Тип секции
+            // 5. Тип секции
             [
                 'defect_id' => '5',
                 'name' => 'Верхняя',
@@ -43,7 +43,7 @@ class DefectValue1PumpSeeder extends Seeder
                 'defect_id' => '5',
                 'name' => 'Нижняя',
             ],
-            // Тип ремонта
+            // 6. Тип ремонта
             [
                 'defect_id' => '6',
                 'name' => 'Новый',
@@ -52,16 +52,76 @@ class DefectValue1PumpSeeder extends Seeder
                 'defect_id' => '6',
                 'name' => 'Ремонтный',
             ],
-            // Длина секции
+            // 7. Длина секции
             [
                 'defect_id' => '7',
-                'name' => '0.5',
+                'name' => '0.7',
+            ],
+            [
+                'defect_id' => '7',
+                'name' => '0.9',
+            ],
+            [
+                'defect_id' => '7',
+                'name' => '1',
+            ],
+            [
+                'defect_id' => '7',
+                'name' => '1.2',
+            ],
+            [
+                'defect_id' => '7',
+                'name' => '1.4',
+            ],
+            [
+                'defect_id' => '7',
+                'name' => '1.5',
+            ],
+            [
+                'defect_id' => '7',
+                'name' => '1.6',
+            ],
+            [
+                'defect_id' => '7',
+                'name' => '1.7',
+            ],
+            [
+                'defect_id' => '7',
+                'name' => '2',
+            ],
+            [
+                'defect_id' => '7',
+                'name' => '2.5',
+            ],
+            [
+                'defect_id' => '7',
+                'name' => '3',
+            ],
+            [
+                'defect_id' => '7',
+                'name' => '3.5',
+            ],
+            [
+                'defect_id' => '7',
+                'name' => '4',
+            ],
+            [
+                'defect_id' => '7',
+                'name' => '4.5',
+            ],
+            [
+                'defect_id' => '7',
+                'name' => '5',
+            ],
+            [
+                'defect_id' => '7',
+                'name' => '5.5',
             ],
             [
                 'defect_id' => '7',
                 'name' => '6',
             ],
-            // Тип шлицевого соединения
+            // 8. Тип шлицевого соединения
             [
                 'defect_id' => '8',
                 'name' => 'Эвольвентный',
@@ -70,29 +130,89 @@ class DefectValue1PumpSeeder extends Seeder
                 'defect_id' => '8',
                 'name' => 'Прямобочный',
             ],
-            // Группа прочности вала
+            // 9. Группа прочности вала
             [
                 'defect_id' => '9',
                 'name' => 'Т8',
             ],
             [
                 'defect_id' => '9',
+                'name' => 'Т9',
+            ],
+            [
+                'defect_id' => '9',
+                'name' => 'Т11',
+            ],
+            [
+                'defect_id' => '9',
+                'name' => 'Т11У',
+            ],
+            [
+                'defect_id' => '9',
+                'name' => 'Т12',
+            ],
+            [
+                'defect_id' => '9',
+                'name' => 'Т13',
+            ],
+            [
+                'defect_id' => '9',
                 'name' => 'Т14',
             ],
-            // Диаметр вала
+            [
+                'defect_id' => '9',
+                'name' => 'Т16',
+            ],
+            // 10. Диаметр вала
             [
                 'defect_id' => '10',
-                'name' => '1',
+                'name' => '10',
             ],
             [
                 'defect_id' => '10',
-                'name' => '2',
+                'name' => '12.8',
             ],
             [
                 'defect_id' => '10',
-                'name' => '3',
+                'name' => '14',
             ],
-            // Вращение вала
+            [
+                'defect_id' => '10',
+                'name' => '17',
+            ],
+            [
+                'defect_id' => '10',
+                'name' => '20',
+            ],
+            [
+                'defect_id' => '10',
+                'name' => '22',
+            ],
+            [
+                'defect_id' => '10',
+                'name' => '25',
+            ],
+            [
+                'defect_id' => '10',
+                'name' => '30',
+            ],
+            [
+                'defect_id' => '10',
+                'name' => '35',
+            ],
+            [
+                'defect_id' => '10',
+                'name' => '38',
+            ],
+            [
+                'defect_id' => '10',
+                'name' => '42',
+            ],
+            [
+                'defect_id' => '10',
+                'name' => '52',
+            ],
+            // 13. Вращение вала
             [
                 'defect_id' => '13',
                 'name' => 'Свободное',
@@ -105,12 +225,12 @@ class DefectValue1PumpSeeder extends Seeder
                 'defect_id' => '13',
                 'name' => 'Отсутствует',
             ],
-            // Момент вращения
+            // 14. Момент вращения
             [
                 'defect_id' => '14',
                 'measure_unit' => 'Н*м',
             ],
-            // Ход вала
+            // 15. Ход вала
             [
                 'defect_id' => '15',
                 'name' => 'Да',
@@ -119,27 +239,27 @@ class DefectValue1PumpSeeder extends Seeder
                 'defect_id' => '15',
                 'name' => 'Нет',
             ],
-            // Вылет вала (верхнее положение)
+            // 16. Вылет вала (верхнее положение)
             [
                 'defect_id' => '16',
                 'measure_unit' => 'мм',
             ],
-            // Норматив
+            // 17. Норматив
             [
                 'defect_id' => '17',
                 'measure_unit' => 'мм',
             ],
-            // Вылет вала (нижнее положение)
+            // 18. Вылет вала (нижнее положение)
             [
                 'defect_id' => '18',
                 'measure_unit' => 'мм',
             ],
-            // Норматив
+            // 19. Норматив
             [
                 'defect_id' => '19',
                 'measure_unit' => 'мм',
             ],
-            // Суммарная наработка вала
+            // 20. Суммарная наработка вала
             [
                 'defect_id' => '20',
                 'measure_unit' => 'сут',
