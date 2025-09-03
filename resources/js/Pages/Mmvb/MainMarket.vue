@@ -1,7 +1,7 @@
 <template>
     <div class="m-mobile_hide items-start w-full px-1 py-10">
         <div class="w-full p-1">
-            <Tabs value="tab0_input" scrollable>
+            <Tabs value="tab1_charts" scrollable>
                 <TabList>
                     <Tab value="tab0_securities">
                         <i class="pi pi-th-large mr-2"></i>
@@ -29,7 +29,6 @@
                         </p>
                     </TabPanel>
                     <TabPanel value="tab1_charts">
-                        Графики
                         <TabCharts />
                     </TabPanel>
                     <TabPanel value="tab2_trades">
@@ -43,10 +42,8 @@
             </Tabs>
         </div>
 
-        <div class="flex justify-center mb-10">
-            <Button type="submit" @click="startTrain" label="Получить данные" />
-        </div>
-        <div>
+
+        <div v-if="false">
             <DataTable
                 :value="securities"
                 paginator
@@ -67,6 +64,9 @@
                 <Column field="emitent_id" header="emitent_id" sortable />
                 <Column field="emitent_title" header="emitent_title" sortable />
             </DataTable>
+        </div>
+        <div v-if="false" class="flex justify-center mb-10">
+            <Button type="submit" @click="startTrain" label="Получить данные" />
         </div>
     </div>
 </template>
