@@ -10,7 +10,7 @@ import ActTabsPage from "@/Pages/TabsPage.vue";
 import AiPage from "@/Pages/AiPage.vue";
 
 import useAuth from '@/composables/useAuth.js'
-import MainMarket from "@/Pages/Mmvb/MainMarket.vue";
+
 const { authenticated, attempt, setAuthenticated, setUser } = useAuth();
 
 const routes = [
@@ -60,12 +60,6 @@ const routes = [
                 name: 'ai',
                 path: '/ai',
                 component: AiPage,
-                meta: { requiresAuth: true }
-            },
-            {
-                name: 'mmvb',
-                path: '/mmvb',
-                component: MainMarket,
                 meta: { requiresAuth: true }
             },
         ]

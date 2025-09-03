@@ -5,22 +5,22 @@
             <AccordionHeader>Схема</AccordionHeader>
             <AccordionContent>
                 <div class="flex justify-around items-center content-center h-full">
-                    <div>
+                    <div v-if="!single">
                         <h5 class="ml-2">Число секций</h5>
                         <InputNumber v-model="sections" showButtons buttonLayout="horizontal" :inputStyle="{'width':'3rem'}"
                                      decrementButtonClassName="p-button-secondary" incrementButtonClassName="p-button-secondary"
                                      incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" class="mb-5"
                                      :min="1" :max="maxSections" @input="input"/>
                     </div>
-                    <img :src="getImagePath as unknown as string" :alt="`Изображение ${unit}`" class="ml-9 w-2/3"/>
+                    <img :src="imagePath" :alt="`Изображение ${unit}`" class="w-2/3"/>
                 </div>
             </AccordionContent>
         </AccordionPanel>
     </Accordion>
     <Tabs :value="tabActive" class="w-full">
         <TabList class="w-full relative">
-            <div class="flex">
-                <Tab v-for="tab in tabs" :key="tab.title" :value="tab.value">{{ tab.title }}</Tab>
+            <div class="flex" :class="{'invisible': single}">
+                <Tab  v-for="tab in tabs" :key="tab.title" :value="tab.value">{{ tab.title }}</Tab>
             </div>
             <div class="absolute right-3 top-1">
                 <Button label="Cохранить" icon="pi pi-save" :loading="isSaving" @click="store"/>
@@ -33,6 +33,7 @@
                     :section-number="index + 1"
                     @updateData="updateData"
                     :section-data="sectionData || null"
+                    :defectGroups="defectGroups"
                 />
             </TabPanel>
         </TabPanels>
@@ -56,14 +57,14 @@ import TabPanel from 'primevue/tabpanel';
 import UnitMultiTabSec from "@/tabs/UnitMultiTabSec.vue";
 import axios from "axios";
 import Button from "primevue/button";
-import { DefectDataMap, DefectData, EspData, SectionData } from "@/types";
+import { DefectDataMap, DefectData, EspData, SectionData, DefectGroup } from "@/types";
 import Toast from "primevue/toast";
 import { useToast } from 'primevue/usetoast';
 
 
 const props = defineProps({
     unit: {
-        type: String as PropType<'Input' | 'Pump' | 'Motor'>,
+        type: String as PropType<'Input' | 'Pump' | 'Motor' | 'Mpp'>,
         required: true
     },
     imagePath: {
@@ -73,6 +74,10 @@ const props = defineProps({
     maxSections: {
         type: Number,
         required: true
+    },
+    single: {
+        type: Boolean,
+        required: false
     },
     // details: {
     //     type: Array,
@@ -84,6 +89,7 @@ const sections = ref(1)
 const tabActive = ref(0)
 const details = ref([])
 const defectData = ref<DefectData | null>(null)
+const defectGroups = ref<DefectGroup[]>([])
 
 const sectionData = ref<SectionData[] | null>(null)
 
@@ -92,7 +98,9 @@ const isSaving = ref<boolean>(false)
 // const defectData = ref<DefectData[]>([]);
 const data = ref<DefectDataMap[]>([]);
 const espData = ref<EspData>({
-    Pump: []
+    Pump: [],
+    Motor: [],
+    Mpp: [],
 });
 
 const route = useRoute()
@@ -145,7 +153,7 @@ const store = () => {
     })
         .then(res => {
             // console.log('res.data[props.unit]', res.data[props.unit]);
-            console.log('res', res.data[props.unit]);
+            // console.log('res', res.data[props.unit]);
             if (res.status >= 200 && res.status < 300) {
                 sectionData.value = res.data[props.unit];
                 toast.add({
@@ -172,32 +180,25 @@ const store = () => {
                 detail: `${serverError}`,
                 life: 3000,
             });
+            isSaving.value = false;
         })
 }
 
 const updateData = (sectionData: SectionData) => {
-    // console.log('sectionData', sectionData.section_number)
-    const existingIndex = espData.value.Pump.findIndex(
-        item => item.section_number === sectionData.section_number
-    );
-    if (existingIndex !== -1) {
-        espData.value.Pump[existingIndex] = sectionData;
-    } else {
-        espData.value.Pump.push(sectionData);
+    const unitValue = espData.value[props.unit];
+
+    if (Array.isArray(unitValue)) {
+        // Обработка для Pump, Motor и т.п. исключая Input
+        const existingIndex = unitValue.findIndex(
+            item => item.section_number === sectionData.section_number
+        );
+        if (existingIndex !== -1) {
+            unitValue[existingIndex] = sectionData;
+        } else {
+            unitValue.push(sectionData);
+        }
     }
-
-
-
-
-    // const arr: SectionData[] = []
-    // arr.push(sectionData)
-    //
-    // espData.value = {
-    //     Pump: arr
-    // }
-    //
-    // console.log(espData.value);
-}
+};
 
 const show = () => {
     axios.get(`/api/defect-data/${route.params.id}?unit=${props.unit}`)
@@ -214,6 +215,15 @@ const show = () => {
             console.error('Error fetching defect data:', error);
             sections.value = 1;
             sectionData.value = [];
+        });
+
+    axios.get(`/api/defect-group?unit=${props.unit}`)
+        .then(res => {
+            defectGroups.value = res.data
+            // console.log('defectGroups.value', defectGroups.value)
+        })
+        .catch(error => {
+            console.error('Error fetching defect group:', error);
         });
 }
 

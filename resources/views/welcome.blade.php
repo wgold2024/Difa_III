@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Предиктивная аналитика</title>
+{{--        <title>Тестовое приложение</title>--}}
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

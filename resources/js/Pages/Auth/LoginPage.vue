@@ -2,21 +2,23 @@
     <Toast />
     <div class="flex flex-col w-full items-center" style="min-width: 320px">
         <!-- Кнопка "Регистрация" и "Домашняя страница" справа -->
-        <div class="m-mobile_hide flex justify-end w-full">
-            <RouterLink to="/home" class="self-end mr-5">
-                <Button class="hover:underline" variant="text" label="Гостевая страница" />
-            </RouterLink>
-            <RouterLink to="/register" class="self-end mr-5">
-                <Button class="hover:underline" variant="text" label="Регистрация" />
-            </RouterLink>
-        </div>
+<!--        <div class="m-mobile_hide flex justify-end w-full">-->
+<!--            <RouterLink to="/home" class="self-end mr-5">-->
+<!--                <Button class="hover:underline" variant="text" label="Гостевая страница" />-->
+<!--            </RouterLink>-->
+<!--            <RouterLink to="/register" class="self-end mr-5">-->
+<!--                <Button class="hover:underline" variant="text" label="Регистрация" />-->
+<!--            </RouterLink>-->
+<!--        </div>-->
 
         <!-- Остальной контент -->
         <div class="flex-col w-full items-center justify-items-center">
             <img src="../../img/novomet-logo.png" class="m-mobile_logo mt-20 max-w-lg" alt="Логотип">
             <div class="m-mobile_font block text-600 font-medium text-base mb-10">Программа анализа надежности "Novomet DIFA"</div>
+<!--            <img src="../../img/test-logo.svg" class="m-mobile_logo mt-20 max-w-lg mb-9" alt="Логотип">-->
+<!--            <div class="m-mobile_font block font-medium font-bold text-base mb-10">Приложение для тестирования</div>-->
 
-            <Form v-slot="$form" :initialValues :resolver @submit="onFormSubmit" class="flex-col w-full justify-items-center">
+            <Form v-slot="$form" :initialValues :resolver @submit="onFormSubmit" class="flex-col w-full justify-items-center text-center">
                 <div class="flex flex-col bg-white w-[90%] max-w-xl p-8 border border-gray-100 items-center mb-5 rounded-xl">
                     <FloatLabel class="mb-8 w-full flex flex-col items-center">
                         <InputText class="m-mobile_font w-full" id="email" name="email" type="text" />
@@ -54,8 +56,8 @@ const toast = useToast();
 const router = useRouter();
 
 const initialValues = reactive({
-    email: 'ivan.zolotarev@novometgroup.com',
-    password: '12345678',
+    // email: 'ivan.zolotarev@novometgroup.com',
+    // password: '12345678',
 });
 
 const resolver = ({ values }) => {

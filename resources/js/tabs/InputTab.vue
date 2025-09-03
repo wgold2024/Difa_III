@@ -179,7 +179,7 @@ const operatingTimeCount = () => {
         if (input.value.operatingTime < 0) {
             toast.add({ severity: 'warn', summary: 'Предупреждение', detail: 'Наработка отрицательная', life: 3000 });
         }
-        inputError.value.operatingTime = false;
+        // inputError.value.operatingTime = false;
     }
 }
 // -------
@@ -265,12 +265,18 @@ const store = () => {
         () => input.value[key],
         (newVal) => {
             isDisabled.value.btnSave = false;
+
+            type InputKey = keyof InputError;
+            inputError.value[key as InputKey] = !input.value[key as InputKey];
         }
     );
 });
 
+
+
+
 watchEffect(() => {
-    console.log(inputError.value);
+    console.log('inputError', inputError.value);
 
     let error: boolean = false;
     (Object.keys(inputError.value) as Array<keyof InputError>).forEach((key) => {
@@ -281,12 +287,12 @@ watchEffect(() => {
             key !== 'dismantlingDateAt' &&
             key !== 'analysisDateAt'
         ) {
-            inputError.value[key] = !input.value[key]
+            // inputError.value[key] = !input.value[key]
         }
         error = error || Boolean(inputError.value[key]);
     })
     isDisabled.value.btnSave = Boolean(error);
-    console.log('isDisabled.value.btnSave', isDisabled.value.btnSave);
+    // console.log('isDisabled.value.btnSave', isDisabled.value.btnSave);
 })
 
 </script>

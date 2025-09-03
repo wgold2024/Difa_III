@@ -26,6 +26,7 @@
         tableStyle="min-width: 50rem"
     >
         <Column field="number" header="№" :sortable="true" style="width: 100px" >
+
             <template #body="{ data }">
                 {{ data.number }}
             </template>

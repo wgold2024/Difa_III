@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AiController;
 use App\Http\Controllers\API\AndroidController;
 use App\Http\Controllers\API\DefectDataController;
 use App\Http\Controllers\API\EspController;
+use App\Http\Controllers\API\GroupController;
 use App\Http\Controllers\API\InputController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -20,6 +21,9 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::resource('defect-data', DefectDataController::class);
     Route::post('ai-image', [AiController::class, 'checkImage']);
     Route::post('ai-train', [AiController::class, 'train']);
+
+    Route::get('/defect-group', [GroupController::class, 'index']);
+
 
     Route::get('/moex/securities', function () {
 //        $response = Http::get('http://iss.moex.com/iss/securities.json');
@@ -49,6 +53,10 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
 
         return $response->json();
     });
+});
 
-
+Route::get('/test', function (Request $request) {
+    return response()->json([
+        "result" => 'success'
+    ]);
 });

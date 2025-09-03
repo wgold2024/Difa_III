@@ -1,4 +1,6 @@
 *
 !apk/
 !apk/**
+!img/
+!img/**
 !.gitignore

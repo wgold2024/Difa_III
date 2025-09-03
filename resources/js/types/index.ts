@@ -75,6 +75,8 @@ export interface Defect {
     description: string,
     reason: string,
     is_option: boolean
+    is_required: boolean
+    hint: string
     measure_unit: string
     values: Value[]
 }
@@ -118,7 +120,8 @@ export interface EspData {
         id: number;
     };
     Pump: SectionData[];
-    Motor?: SectionData[];
+    Motor: SectionData[];
+    Mpp: SectionData[];
 }
 
 export interface SectionData {
@@ -134,6 +137,11 @@ export interface DefectData {
     comment: string | null;
     images?: File[] | Image[] | null;
     deletedImages?: string[] | null;
+}
+
+export interface DefectGroup {
+    id: number;
+    name: string;
 }
 
 

@@ -15,5 +15,10 @@ class Defect extends Model
 
     public function detail() {
         return $this->belongsTo(Detail::class);
+
+    }
+    public function groups()
+    {
+        return $this->belongsTo(Group::class);
     }
 }
