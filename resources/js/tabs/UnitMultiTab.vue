@@ -5,22 +5,22 @@
             <AccordionHeader>Схема</AccordionHeader>
             <AccordionContent>
                 <div class="flex justify-around items-center content-center h-full">
-                    <div>
+                    <div v-if="!single">
                         <h5 class="ml-2">Число секций</h5>
                         <InputNumber v-model="sections" showButtons buttonLayout="horizontal" :inputStyle="{'width':'3rem'}"
                                      decrementButtonClassName="p-button-secondary" incrementButtonClassName="p-button-secondary"
                                      incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" class="mb-5"
                                      :min="1" :max="maxSections" @input="input"/>
                     </div>
-                    <img :src="getImagePath as unknown as string" :alt="`Изображение ${unit}`" class="ml-9 w-2/3"/>
+                    <img :src="imagePath" :alt="`Изображение ${unit}`" class="w-2/3"/>
                 </div>
             </AccordionContent>
         </AccordionPanel>
     </Accordion>
     <Tabs :value="tabActive" class="w-full">
         <TabList class="w-full relative">
-            <div class="flex">
-                <Tab v-for="tab in tabs" :key="tab.title" :value="tab.value">{{ tab.title }}</Tab>
+            <div class="flex" :class="{'invisible': single}">
+                <Tab  v-for="tab in tabs" :key="tab.title" :value="tab.value">{{ tab.title }}</Tab>
             </div>
             <div class="absolute right-3 top-1">
                 <Button label="Cохранить" icon="pi pi-save" :loading="isSaving" @click="store"/>
@@ -64,7 +64,7 @@ import { useToast } from 'primevue/usetoast';
 
 const props = defineProps({
     unit: {
-        type: String as PropType<'Input' | 'Pump' | 'Motor'>,
+        type: String as PropType<'Input' | 'Pump' | 'Motor' | 'Mpp'>,
         required: true
     },
     imagePath: {
@@ -74,6 +74,10 @@ const props = defineProps({
     maxSections: {
         type: Number,
         required: true
+    },
+    single: {
+        type: Boolean,
+        required: false
     },
     // details: {
     //     type: Array,
@@ -96,6 +100,7 @@ const data = ref<DefectDataMap[]>([]);
 const espData = ref<EspData>({
     Pump: [],
     Motor: [],
+    Mpp: [],
 });
 
 const route = useRoute()

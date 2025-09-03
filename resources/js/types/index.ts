@@ -121,6 +121,7 @@ export interface EspData {
     };
     Pump: SectionData[];
     Motor: SectionData[];
+    Mpp: SectionData[];
 }
 
 export interface SectionData {
