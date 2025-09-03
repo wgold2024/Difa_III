@@ -31,14 +31,14 @@
                 {{ data.number }}
             </template>
         </Column>
-        <Column field="open" header="Open" sortable="true"></Column>
-        <Column field="close" header="Close" sortable="true"></Column>
-        <Column field="high" header="High" sortable="true"></Column>
-        <Column field="low" header="Low" sortable="true"></Column>
-        <Column field="value" header="Value" sortable="true"></Column>
-        <Column field="volume" header="Volume" sortable="true"></Column>
-        <Column field="begin" header="Begin" sortable="true"></Column>
-        <Column field="end" header="End" sortable="true"></Column>
+        <Column field="open" header="Open" :sortable="true"></Column>
+        <Column field="close" header="Close" :sortable="true"></Column>
+        <Column field="high" header="High" :sortable="true"></Column>
+        <Column field="low" header="Low" :sortable="true"></Column>
+        <Column field="value" header="Value" :sortable="true"></Column>
+        <Column field="volume" header="Volume" :sortable="true"></Column>
+        <Column field="begin" header="Begin" :sortable="true"></Column>
+        <Column field="end" header="End" :sortable="true"></Column>
     </DataTable>
 </template>
 
@@ -50,7 +50,7 @@ import Select from "primevue/select";
 import { values } from "@/Pages/Mmvb/data";
 import { ref } from "vue";
 import axios from "axios";
-import {Security} from "@/types/mmvb";
+import {Candle, Security} from "@/types/mmvb";
 import DatePicker from "primevue/datepicker";
 
 const security = ref('USDRUBF')
@@ -90,15 +90,15 @@ const transformData = (apiData: any): Security[] => {
     const data = apiData.candles.data;
 
     return data.map((row: any[], index: number) => {
-        const obj: Partial<Security> = {
+        const obj: Partial<Candle> = {
             number: index + 1
         };
 
         columns.forEach((col: string, colIndex: number) => {
-            obj[col as keyof Security] = row[colIndex];
+            obj[col as keyof Candle] = row[colIndex];
         });
 
-        return obj as Security;
+        return obj as Candle;
     });
 };
 

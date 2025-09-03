@@ -14,3 +14,14 @@ export interface Security {
     primary_boardid: string;
     marketprice_boardid: string | null;
 }
+
+export interface Candle {
+    number?: number;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+    volume: number;
+    begin: string;
+    end: string;
+}
