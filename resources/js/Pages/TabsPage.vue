@@ -57,8 +57,7 @@
                     <UnitMultiTab
                         unit="Mpp"
                         imagePath="/storage/img/units/Mpp.jpg"
-                        :maxSections = 5
-                        :single=true
+                        :maxSections = 3
                     />
                 </TabPanel>
                 <TabPanel value="tab4_agh">

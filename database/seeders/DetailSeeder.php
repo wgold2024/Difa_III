@@ -147,6 +147,61 @@ class DetailSeeder extends Seeder
             ],
         ];
 
+        $dataMpp = [
+            [
+                'id' => '101',
+                'name' => 'Общая информация',
+            ],
+            [
+                'id' => '102',
+                'name' => 'Вал',
+            ],
+            [
+                'id' => '103',
+                'name' => 'Корпус',
+            ],
+            [
+                'id' => '104',
+                'name' => 'Рабочие колеса',
+            ],
+            [
+                'id' => '105',
+                'name' => 'Направляющие аппараты',
+            ],
+            [
+                'id' => '106',
+                'name' => 'Проставок',
+            ],
+            [
+                'id' => '107',
+                'name' => 'Втулка защитная вала',
+            ],
+            [
+                'id' => '108',
+                'name' => 'Муфта шлицевая',
+            ],
+            [
+                'id' => '109',
+                'name' => 'Концевые детали: голова',
+            ],
+            [
+                'id' => '110',
+                'name' => 'Концевые детали: основание',
+            ],
+            [
+                'id' => '111',
+                'name' => 'Концевые детали: верхний подшипник',
+            ],
+            [
+                'id' => '112',
+                'name' => 'Концевые детали: нижний подшипник',
+            ],
+            [
+                'id' => '113',
+                'name' => 'Подшипники',
+            ],
+        ];
+
         // Детали насоса
         $dataPump = array_map(function ($item) {
             $item['unit'] = 'Pump';
@@ -164,6 +219,16 @@ class DetailSeeder extends Seeder
         }, $dataMotor);
 
         foreach ($dataMotor as $item) {
+            Detail::create($item);
+        }
+
+        // Детали МФОН
+        $dataMpp = array_map(function ($item) {
+            $item['unit'] = 'Mpp';
+            return $item;
+        }, $dataMpp);
+
+        foreach ($dataMpp as $item) {
             Detail::create($item);
         }
     }
