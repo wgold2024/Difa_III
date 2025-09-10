@@ -16,7 +16,7 @@
 
 
         <div class="flex items-center px-4 py-0 h-full">
-            <router-link to="/ai" class="m-mobile_hide mr-3">
+            <router-link  v-if="user.id == 1" to="/ai" class="m-mobile_hide mr-3">
                 <Button  icon="pi pi-microchip-ai" outlined class="m-mobile_font mr-3"/>
             </router-link>
 
@@ -54,13 +54,6 @@ const onLogout = () => {
             return e;
         });
 };
-
-const apiUser = () => {
-    axios.get('/api/user')
-        .then(res => {
-            console.log('user:', res)
-        })
-}
 
 const getApk = () => {
     let  date = new Date().getTime();
