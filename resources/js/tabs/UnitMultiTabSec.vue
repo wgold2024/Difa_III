@@ -252,8 +252,8 @@ const props = defineProps<{
     sectionNumber: number;
     sectionData: SectionData[] | null;
     defectGroups: DefectGroup[];
+    unit: 'Input' | 'Pump' | 'Motor' | 'Mpp';
 }>();
-
 
 
 onMounted(() => {
@@ -386,7 +386,7 @@ const defectImage = (componentId: number) => {
 const btnDetailChange = (index: number) => {
     activeBtn.value = index;
     if (props.details?.length) {
-        btnComponents.value = props.details[index + 1].defects.filter(res => !res.is_option && res.id < 1000) //33
+        btnComponents.value = props.details[index + 1].defects.filter(res => !res.is_option && res.id < 10000) //33
 
     }
     // Отображение изображений дефектов
@@ -555,30 +555,33 @@ const deleteImage = (defectId: number) => {
 const emit = defineEmits(['updateData'])
 
 watch([defectDataMap, defectDataMapComment, defectDataMapImages], () => {
-    if (defectDataMap.value[504] === "Вентильный") {
-        isBtnHidden.value[8] = true
-        isBtnHidden.value[7] = false
-        if (activeBtn.value === 8) {
-            activeBtn.value = 7
-            btnDetailChange(7)
+    if (props.unit === 'Motor') {
+        if (defectDataMap.value[504] === "Вентильный") {
+            isBtnHidden.value[8] = true
+            isBtnHidden.value[7] = false
+            if (activeBtn.value === 8) {
+                activeBtn.value = 7
+                btnDetailChange(7)
+            }
+            for (let i = 652; i <= 661; i++) {
+                defectDataMap.value[i] = ''
+            }
+        } else if(defectDataMap.value[504] === "Асинхронный") {
+            isBtnHidden.value[8] = false
+            isBtnHidden.value[7] = true
+            if (activeBtn.value === 7) {
+                activeBtn.value = 8
+                btnDetailChange(8)
+            }
+            for (let i = 636; i <= 651; i++) {
+                defectDataMap.value[i] = ''
+            }
+        } else {
+            isBtnHidden.value[7] = true
+            isBtnHidden.value[8] = true
         }
-        for (let i = 652; i <= 661; i++) {
-            defectDataMap.value[i] = ''
-        }
-    } else if(defectDataMap.value[504] === "Асинхронный") {
-        isBtnHidden.value[8] = false
-        isBtnHidden.value[7] = true
-        if (activeBtn.value === 7) {
-            activeBtn.value = 8
-            btnDetailChange(8)
-        }
-        for (let i = 636; i <= 651; i++) {
-            defectDataMap.value[i] = ''
-        }
-    } else {
-        isBtnHidden.value[7] = true
-        isBtnHidden.value[8] = true
     }
+
 
     // const el93 = document.getElementById('93')
     // el93.classList.add('mr-9')

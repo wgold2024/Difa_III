@@ -31,3 +31,6 @@ class DatabaseSeeder extends Seeder
 
 // php artisan db:seed --class=Defect2MotorSeeder
 // php artisan db:seed --class=DefectValue2MotorSeeder
+
+// php artisan db:seed --class=Defect3MppSeeder
+// php artisan db:seed --class=DefectValue3MppSeeder

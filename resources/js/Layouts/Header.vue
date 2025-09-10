@@ -16,13 +16,15 @@
 
 
         <div class="flex items-center px-4 py-0 h-full">
-            <router-link to="/mmvb" class="m-mobile_hide mr-3">
-                <Button  icon="pi pi-money-bill" outlined class="m-mobile_font mr-3"/>
-            </router-link>
+            <div v-if="user.id == 1">
+                <router-link to="/mmvb" class="m-mobile_hide mr-3">
+                    <Button  icon="pi pi-money-bill" outlined class="m-mobile_font mr-3"/>
+                </router-link>
 
-            <router-link to="/ai" class="m-mobile_hide mr-3">
-                <Button  icon="pi pi-microchip-ai" outlined class="m-mobile_font mr-3"/>
-            </router-link>
+                <router-link  to="/ai" class="m-mobile_hide mr-3">
+                    <Button  icon="pi pi-microchip-ai" outlined class="m-mobile_font mr-3"/>
+                </router-link>
+            </div>
 
             <Button  label="Скачать д/планшета" @click="getApk()" icon="pi pi-android" outlined class="m-mobile_font mr-3"/>
             <Button  label="Info" icon="pi pi-info-circle" outlined class="m-mobile_hide mr-3" />
@@ -58,13 +60,6 @@ const onLogout = () => {
             return e;
         });
 };
-
-const apiUser = () => {
-    axios.get('/api/user')
-        .then(res => {
-            console.log('user:', res)
-        })
-}
 
 const getApk = () => {
     let  date = new Date().getTime();

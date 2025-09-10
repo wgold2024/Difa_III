@@ -34,6 +34,7 @@
                     @updateData="updateData"
                     :section-data="sectionData || null"
                     :defectGroups="defectGroups"
+                    :unit="unit"
                 />
             </TabPanel>
         </TabPanels>
