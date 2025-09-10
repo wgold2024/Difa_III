@@ -1,9 +1,9 @@
 <template>
-    <div class="m-mobile_hide items-start w-full px-1 py-10">
+    <div class="m-mobile_hide items-start w-full px-1 py-3">
         <div class="w-full p-1">
-            <Tabs value="tab1_charts" scrollable>
+            <Tabs value="tab2_portfolio" scrollable>
                 <TabList>
-                    <Tab value="tab0_securities">
+                    <Tab value="tab0_portfolio">
                         <i class="pi pi-th-large mr-2"></i>
                         <span>Портфель</span>
                     </Tab>
@@ -21,12 +21,8 @@
                     </Tab>
                 </TabList>
                 <TabPanels>
-                    <TabPanel value="tab0_securities" class="w-full">
-                        Портфель
-                        <p class="m-0">
-                            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-                            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-                        </p>
+                    <TabPanel value="tab0_portfolio">
+                        <TabPortfolio />
                     </TabPanel>
                     <TabPanel value="tab1_charts">
                         <TabCharts />
@@ -86,6 +82,7 @@ import Tab from "primevue/tab";
 import TabPanel from "primevue/tabpanel";
 import TabPanels from "primevue/tabpanels";
 import TabCharts from "@/Pages/Mmvb/tabs/TabCharts.vue";
+import TabPortfolio from "@/Pages/Mmvb/tabs/TabPortfolio.vue";
 
 const dataTable = ref<Array<string>>();
 const selectedProduct = ref();
@@ -124,8 +121,8 @@ const onRowDblClick = () => {
 </script>
 
 <style scoped>
-:deep(.p-datatable-tbody > tr > td) {
-    padding: 3px 10px;
+:deep(.p-tabpanels) {
+    padding: 0;
 }
 
 </style>

@@ -25,3 +25,13 @@ export interface Candle {
     begin: string;
     end: string;
 }
+
+export interface SecurityLevel {
+    USDRUBF: number | null;
+    EURRUBF: number | null;
+    CNYRUBF: number | null;
+    GLDRUBF: number | null;
+    IMOEXF: number | null;
+    SBERF: number | null;
+    GAZPF: number | null;
+}

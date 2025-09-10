@@ -60,3 +60,4 @@ Route::get('/test', function (Request $request) {
         "result" => 'success'
     ]);
 });
+
