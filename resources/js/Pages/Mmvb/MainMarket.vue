@@ -1,7 +1,7 @@
 <template>
     <div class="m-mobile_hide items-start w-full px-1 py-3">
         <div class="w-full p-1">
-            <Tabs value="tab2_portfolio" scrollable>
+            <Tabs value="tab0_portfolio" scrollable>
                 <TabList>
                     <Tab value="tab0_portfolio">
                         <i class="pi pi-th-large mr-2"></i>

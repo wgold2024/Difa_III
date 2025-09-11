@@ -44,7 +44,7 @@
 
             <div class="text-center text-lg">Выберите портфель</div>
                 <Accordion @update:value="updateAccordion">
-                    <AccordionPanel value="0">
+                    <AccordionPanel value="accSimpleRuble">
                         <AccordionHeader>Header I</AccordionHeader>
                         <AccordionContent>
                             <p class="m-0 mb-5">
@@ -56,7 +56,7 @@
                             </div>
                         </AccordionContent>
                     </AccordionPanel>
-                    <AccordionPanel value="1">
+                    <AccordionPanel value="accMaxRuble">
                         <AccordionHeader>Header II</AccordionHeader>
                         <AccordionContent>
                             <p class="m-0 mb-5">
@@ -68,7 +68,7 @@
                             </div>
                         </AccordionContent>
                     </AccordionPanel>
-                    <AccordionPanel value="2">
+                    <AccordionPanel value="accSimpleBalanced">
                         <AccordionHeader>Header III</AccordionHeader>
                         <AccordionContent>
                             <p class="m-0">
@@ -80,7 +80,7 @@
                             </div>
                         </AccordionContent>
                     </AccordionPanel>
-                    <AccordionPanel value="3">
+                    <AccordionPanel value="accMaxBalanced">
                         <AccordionHeader>Header IV</AccordionHeader>
                         <AccordionContent class="p-3">
                             <p class="mb-3">
@@ -97,8 +97,20 @@
                     </AccordionPanel>
                 </Accordion>
         </SplitterPanel>
-        <SplitterPanel class="flex items-center justify-center" :size="75">
-asd
+        <SplitterPanel class="flex mt-5 justify-center" :size="75">
+            <div class="card overflow-x-auto">
+                <OrganizationChart :value="data" collapsible>
+                    <template #security="slotProps">
+                        <div class="flex flex-col" :style="slotProps.node.data.style">
+                            <i :class="['pi', slotProps.node.data.icon]"></i>
+                            <div class="flex flex-col items-center p-4">
+                                <span class="font-bold mb-2">{{ slotProps.node.data.name }}</span>
+                                <span>{{ slotProps.node.data.title }}</span>
+                            </div>
+                        </div>
+                    </template>
+                </OrganizationChart>
+            </div>
         </SplitterPanel>
     </Splitter>
 
@@ -116,13 +128,15 @@ import Button from "primevue/button";
 import Panel from 'primevue/panel';
 import Select from "primevue/select";
 import InputText from "primevue/inputtext";
-
-import { values } from "@/Pages/Mmvb/data";
-import { SecurityLevel } from "@/types/mmvb";
-
-import { ref, computed } from "vue";
+import OrganizationChart from 'primevue/organizationchart';
 import DatePicker from "primevue/datepicker";
 import axios from "axios";
+
+import { values } from "@/Pages/Mmvb/data";
+import { securityColor } from "@/Pages/Mmvb/colors";
+import { SecurityLevel } from "@/types/mmvb";
+
+import {ref, computed, onMounted, nextTick} from "vue";
 
 const startDate = ref(new Date('2024-01-01'));
 
@@ -149,31 +163,67 @@ const isCounted = ref<Boolean>(false)
 const amount = ref<number>(1000000)
 
 const valueSimpleRuble = ref([
-    { label: 'IMOEXF', color: '#34d399', value: 50 },
-    { label: 'SU29009RMFS6', color: '#fbbf24', value: 50 },
+    { label: 'IMOEXF', color: securityColor.imoexf, value: 50, type: 'futures' },
+    { label: 'SU29009RMFS6', color: securityColor.su29009rmfs6, value: 50, type: 'ofz' },
 ]);
 const valueMaxRuble = ref([
-    { label: 'IMOEXF', color: '#34d399', value: 26 },
-    { label: 'SBERF', color: '#fbbf24', value: 12 },
-    { label: 'GAZPF', color: '#60a5fa', value: 12 },
-    { label: 'SU29009RMFS6', color: '#c084fc', value: 25 },
-    { label: 'SU26238RMFS4', color: '#f87171', value: 25 },
+    { label: 'IMOEXF', color: securityColor.imoexf, value: 26, type: 'futures' },
+    { label: 'SBERF', color: securityColor.sberf, value: 12, type: 'futures' },
+    { label: 'GAZPF', color: securityColor.gazpf, value: 12, type: 'futures' },
+    { label: 'SU29009RMFS6', color: securityColor.su29009rmfs6, value: 25, type: 'ofz' },
+    { label: 'SU26238RMFS4', color: securityColor.su26238rmfs4, value: 25, type: 'ofz' },
 ]);
 const valueSimpleBalanced = ref([
-    { label: 'IMOEXF', color: '#34d399', value: 25 },
-    { label: 'CNYRUBF', color: '#fbbf24', value: 25 },
-    { label: 'GLDRUBF', color: '#60a5fa', value: 25 },
-    { label: 'SU29009RMFS6', color: '#c084fc', value: 25 },
+    { label: 'IMOEXF', color: securityColor.imoexf, value: 25, type: 'futures' },
+    { label: 'CNYRUBF', color: securityColor.cnyrubf, value: 25, type: 'futures' },
+    { label: 'GLDRUBF', color: securityColor.gldrubf, value: 25, type: 'futures' },
+    { label: 'SU29009RMFS6', color: securityColor.su29009rmfs6, value: 25, type: 'ofz' },
 ]);
 const valueMaxBalanced = ref([
-    { label: 'IMOEXF', color: '#34d399', value: 26 },      // зеленый
-    { label: 'SBERF', color: '#fbbf24', value: 12 },       // желтый
-    { label: 'GAZPF', color: '#60a5fa', value: 12 },       // голубой
-    { label: 'CNYRUBF', color: '#c084fc', value: 25 },     // фиолетовый
-    { label: 'GLDRUBF', color: '#f87171', value: 25 },     // коралловый
-    { label: 'SU29009RMFS6', color: '#22d3ee', value: 25 }, // бирюзовый
-    { label: 'SU26238RMFS4', color: '#fb923c', value: 25 }  // оранжевый
+    { label: 'IMOEXF', color: securityColor.imoexf, value: 26, type: 'futures' },
+    { label: 'SBERF', color: securityColor.sberf, value: 12, type: 'futures' },
+    { label: 'GAZPF', color: securityColor.gazpf, value: 12, type: 'futures' },
+    { label: 'CNYRUBF', color: securityColor.cnyrubf, value: 25, type: 'futures' },
+    { label: 'GLDRUBF', color: securityColor.gldrubf, value: 25, type: 'futures' },
+    { label: 'SU29009RMFS6', color: securityColor.su29009rmfs6, value: 25, type: 'ofz' },
+    { label: 'SU26238RMFS4', color: securityColor.su26238rmfs4, value: 25, type: 'ofz' }
 ]);
+
+const data = ref({
+    key: '0',
+    type: 'security',
+    styleClass: '!bg-gray-200 text-white rounded-xl',
+    data: {
+        icon: 'pi-shopping-bag',
+        name: 'Portfolio',
+        style: `padding-top: 10px; width: 200px`
+    },
+    children: [
+        // {
+        //     key: '0_0',
+        //     type: 'security',
+        //     styleClass: '!bg-gray-100 rounded-xl w-full',
+        //     data: {
+        //         name: 'pump',
+        //         title: '60%',
+        //         style: `background-color: ${securityColor.imoexf}; width: 200px`
+        //     },
+        //     children: [
+        //         {
+        //             label: 'Sales',
+        //             styleClass: '!bg-purple-100 text-white rounded-xl'
+        //         },
+        //         {
+        //             label: 'Marketing',
+        //             styleClass: '!bg-purple-100 text-white rounded-xl'
+        //         }
+        //     ]
+        // }
+
+    ]
+});
+
+
 
 const getLevels = () => {
     const d = new Date(startDate.value);
@@ -224,12 +274,166 @@ const getLevels = () => {
 }
 
 const updateAccordion = (value) => {
-    console.log('value:', value);
+    let kOfz  = null
+    let summFutures = 0
+    let k = 3
+
+    switch (value) {
+        case 'accSimpleRuble':
+            data.value.children = [];
+            data.value.data.name = 'Simple ruble';
+
+            kOfz  = valueSimpleRuble.value.filter(res => res.type === 'ofz').length
+            console.log('kOfz', kOfz)
+            summFutures = 0
+            k = 3
+            for (const item of valueSimpleRuble.value) {
+                let index = addChildWithAutoKeys(item.label, `${item.value} %`, item.color, '150px', null)
+
+                let summ = 0
+                console.log('item.type', item.type)
+                console.log('item.label', item.label)
+                if (item.type === 'futures') {
+                   summ = amount.value * Number(item.value) / 100 / k
+                   summFutures += summ
+                    console.log('summ', summ)
+                    console.log('summFutures', summFutures)
+                } else if (item.type === 'ofz') {
+                   summ = (amount.value - summFutures) / kOfz
+                    console.log('summ2', summ)
+                } else {
+                    summ = 0
+                }
+
+                addChildWithAutoKeys('Доля, руб', `${amount.value * Number(item.value) / 100}`, item.color, '150px', index)
+                addChildWithAutoKeys('Сумма, руб', `${Number(summ).toFixed(0)}`, item.color, '150px', index)
+            }
+
+            console.log('data.value', data.value)
+            break;
+        case 'accMaxRuble':
+            data.value.children = [];
+
+            kOfz  = valueMaxRuble.value.filter(res => res.type === 'ofz').length
+            console.log('kOfz', kOfz)
+            summFutures = 0
+            k = 3
+            for (const item of valueMaxRuble.value) {
+                let index = addChildWithAutoKeys(item.label, `${item.value} %`, item.color, '150px', null)
+
+                let summ = 0
+                console.log('item.type', item.type)
+                console.log('item.label', item.label)
+                if (item.type === 'futures') {
+                    summ = amount.value * Number(item.value) / 100 / k
+                    summFutures += summ
+                    console.log('summ', summ)
+                    console.log('summFutures', summFutures)
+                } else if (item.type === 'ofz') {
+                    summ = (amount.value - summFutures) / kOfz
+                    console.log('summ2', summ)
+                } else {
+                    summ = 0
+                }
+
+                addChildWithAutoKeys('Доля, руб', `${amount.value * Number(item.value) / 100}`, item.color, '150px', index)
+                addChildWithAutoKeys('Сумма, руб', `${Number(summ).toFixed(0)}`, item.color, '150px', index)
+            }
+            // addChildWithAutoKeys('IMOEXF', '50 %', `background-color: ${securityColor.imoexf}; width: 150px`)
+            // addChildWithAutoKeys('SBERF', '50 %', `background-color: ${securityColor.su29009rmfs6}; width: 150px`)
+            // addChildWithAutoKeys('GAZPF', '50 %', `background-color: ${securityColor.su29009rmfs6}; width: 150px`)
+            // addChildWithAutoKeys('SU29009RMFS6', '50 %', `background-color: ${securityColor.su29009rmfs6}; width: 150px`)
+            // addChildWithAutoKeys('SU26238RMFS4', '50 %', `background-color: ${securityColor.su29009rmfs6}; width: 150px`)
+            // data.value.data.name = 'Max ruble';
+            //
+            // data.value.children[0].data.name = value + 1;
+            // data.value.children[1].data.title = value + 2;
+
+            break;
+        case 'accSimpleBalanced':
+            data.value.data.name = 'Simple balanced';
+            break;
+        case 'accMaxBalanced':
+            data.value.data.name = 'Max balanced';
+            break;
+        default:
+            data.value.children = [];
+            // data.value.data.name = '';
+            // data.value.children[0].data.name = '';
+            // data.value.children[0].data.title = '';
+            // data.value.children[0].data.style = `background-color: white; width: 0px`;
+            // data.value.children[1].data.name = '';
+            // data.value.children[1].data.title = '';
+            // data.value.children[1].data.style = `background-color: white; width: 0px`;
+            break;
+    }
+
+
+
+    console.log(value);
 }
+
+const addChildWithAutoKeys = (name: string, title: string, color: string, width: string, childIndex: number | null) => {
+    if (childIndex !== null) {
+        // Создаем глубокую копию для реактивного обновления
+        const updatedChildren = [...data.value.children];
+        const targetChild = updatedChildren[childIndex];
+
+        // if(childIndex >= targetChild.children?.length) {
+        //     return
+        // }
+
+        const newNestedChild = {
+            key: `${targetChild.key}_${targetChild.children?.length || 0}`,
+            type: 'security',
+            data: {
+                name,
+                title,
+                style: `background-color: ${color}; width: ${width}; padding: 1rem;`
+            }
+        };
+
+        // Обновляем вложенные children
+        updatedChildren[childIndex] = {
+            ...targetChild,
+            children: [...(targetChild.children || []), newNestedChild]
+        };
+
+        // Реактивное обновление всего объекта
+        data.value = {
+            ...data.value,
+            children: updatedChildren
+        };
+
+        return targetChild.children?.length
+    } else {
+        // Добавление в корневой уровень
+        const newChildren = [...data.value.children];
+        const newChild = {
+            key: `0_${newChildren.length}`,
+            type: 'security',
+            data: {
+                name,
+                title,
+                style: `background-color: ${color}; width: ${width}; padding: 1rem;`
+            }
+        };
+
+        data.value = {
+            ...data.value,
+            children: [...newChildren, newChild]
+        };
+
+        return newChildren.length
+    }
+};
 
 </script>
 
 <style scoped>
+:deep(.p-organizationchart-node){
+    padding: 5px !important;
+}
 
 
 </style>
