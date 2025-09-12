@@ -425,6 +425,8 @@ class Defect1PumpSeeder extends Seeder
                 'id' => '55',
                 'detail_id' => '3',
                 'name' => 'Изгиб корпуса',
+                'description' => 'Прогиб корпуса',
+                'reason' => 'Работа в кривизне',
                 'type' => 'boolean'
             ],
             // Рабочие колеса
