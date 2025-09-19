@@ -1,3 +1,6 @@
+import {ref} from "vue";
+import {securityColor} from "@/Pages/Mmvb/colors";
+
 export const values = {
     getSecurity() {
         return [
@@ -25,11 +28,25 @@ export const values = {
     },
     getLevell() {
         return [
-            { name: '1: < 20 %', value: 0 },
-            { name: '2: 20-40 %', value: 20 },
-            { name: '3: 40-60 %', value: 40 },
-            { name: '4: 60-80 %', value: 60 },
-            { name: '5: > 80 %', value: 80 },
+            { name: '0: < 20 %', value: 20 },
+            { name: '1: 20-40 %', value: 40 },
+            { name: '2: 40-60 %', value: 60 },
+            { name: '3: 60-80 %', value: 80 },
+            { name: '4: > 80 %', value: 100 },
+        ];
+    },
+    getRiskDegree() {
+        return [
+            { name: 'низкая', value: 0 },
+            { name: 'средняя', value: 1 },
+            { name: 'высокая', value: 2 },
+        ];
+    },
+
+    getValueSimpleRuble() {
+        return [
+            {label: 'IMOEXF', color: securityColor.imoexf, value: 50, type: 'futures'},
+            {label: 'SU29009RMFS6', color: securityColor.su29009rmfs6, value: 50, type: 'ofz'},
         ];
     },
 };

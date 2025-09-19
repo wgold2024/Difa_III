@@ -1,4 +1,6 @@
-export interface Security {
+import {securityColor} from "@/Pages/Mmvb/colors";
+
+export interface Securityold {
     secid: string;
     shortname: string;
     regnumber: string | null;
@@ -34,4 +36,56 @@ export interface SecurityLevel {
     IMOEXF: number | null;
     SBERF: number | null;
     GAZPF: number | null;
+}
+
+export type SecurityFuturesNames =
+    | 'USDRUBF'
+    | 'EURRUBF'
+    | 'CNYRUBF'
+    | 'GLDRUBF'
+    | 'IMOEXF'
+    | 'SBERF'
+    | 'GAZPF';
+
+export type SecurityOfzNames =
+    | 'ОФЗ 29009'
+    | 'ОФЗ 26238';
+
+// export interface Security {
+//     name: SecurityFuturesNames | SecurityOfzNames,
+//     color: string,
+//     base: number,
+//     type: string,
+//     level: number
+// }
+
+export interface Security {
+    name: SecurityFuturesNames | SecurityOfzNames,
+    level: number | null,
+    levelValue: number | null,
+    price: number | null,
+    type: 'futures' | 'ofz',
+    color: string,
+}
+
+export interface Level {
+    name: string,
+    value: number
+}
+
+export interface PortfolioCollectionElementData {
+    security: SecurityFuturesNames | SecurityOfzNames,
+    base: number
+}
+
+export interface PortfolioCollectionElement {
+    name: string,
+    nameRus: string,
+    data: PortfolioCollectionElementData[]
+}
+
+export interface PortfolioForMeter {
+    label: SecurityFuturesNames | SecurityOfzNames,
+    color: string,
+    value: number
 }
