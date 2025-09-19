@@ -35,8 +35,6 @@
                 <i class="pi pi-sign-out"></i>
             </button>
         </div>
-
-
     </div>
 </template>
 

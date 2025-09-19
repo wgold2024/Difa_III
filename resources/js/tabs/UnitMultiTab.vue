@@ -17,7 +17,7 @@
             </AccordionContent>
         </AccordionPanel>
     </Accordion>
-    <Tabs :value="tabActive" class="w-full">
+    <Tabs :value="tabActive" class="w-full" :class="{'single-mode': single}">
         <TabList class="w-full relative">
             <div class="flex" :class="{'invisible': single}">
                 <Tab  v-for="tab in tabs" :key="tab.title" :value="tab.value">{{ tab.title }}</Tab>
@@ -253,6 +253,10 @@ const show = () => {
 
 :deep(.p-accordioncontent-content) {
     padding: 25px;
+}
+
+.single-mode :deep(.p-tablist-active-bar) {
+    background-color: transparent;
 }
 
 </style>
