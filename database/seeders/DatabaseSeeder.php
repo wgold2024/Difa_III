@@ -34,3 +34,10 @@ class DatabaseSeeder extends Seeder
 
 // php artisan db:seed --class=Defect3MppSeeder
 // php artisan db:seed --class=DefectValue3MppSeeder
+
+// php artisan db:seed --class=Defect4AghSeeder
+// php artisan db:seed --class=DefectValue4AghSeeder
+
+// Очистка
+// php artisan app:clear-groups
+// php artisan app:clear-agh
