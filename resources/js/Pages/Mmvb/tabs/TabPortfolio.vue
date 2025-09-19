@@ -46,25 +46,42 @@
             </div>
             <div class="text-center text-xl mt-10">Выберите портфель</div>
                 <Accordion @update:value="updateAccordion">
-                    <AccordionPanel value="accSimpleRuble">
-                        <AccordionHeader>Header I</AccordionHeader>
-                        <AccordionContent>
-                            <p class="m-0 mb-5">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                            </p>
-                            <div class="mb-3">Базовый</div>
-                            <div class="card mb-5">
-<!--                                <MeterGroup :value="portfolio.getValueSimpleRuble()" />-->
-                                <MeterGroup :value="portfolio.getCollection()[0]" />
-                            </div>
-                            <div class="mb-3">Текущий</div>
-                            <div class="card mb-1">
-<!--                                <MeterGroup :value="valueSimpleRuble" />-->
-                                <MeterGroup :value="portfolio.getCollection()[1]" />
-                            </div>
-                        </AccordionContent>
-                    </AccordionPanel>
+                    <div v-for="(portfolioData, index) in portfolio.getCollection()" :key="index">
+
+                        <AccordionPanel :value="portfolio.collection[index].name">
+                            <AccordionHeader>{{ portfolio.collection[index].nameRus }}</AccordionHeader>
+<!--                            <AccordionHeader>{{ portfolioData[index].name }}</AccordionHeader>-->
+                            <AccordionContent>
+                                <div v-if="portfolio.collection[index].name === 'Custom'" class="flex items-center p-5">
+                                    <div class="text-lg mr-5">Инструмент:</div>
+                                    <div class="mr-10">
+                                        <Select v-model="customSecurity" :options="portfolio.securities" optionLabel="name" optionValue="name"
+                                                style="width: 150px; padding: 0"
+                                        />
+                                    </div>
+                                    <div class="text-lg mr-5">Доля, %:</div>
+                                    <div>
+                                        <InputText v-model="customPercentage" class="w-1/2" />
+                                    </div>
+                                    <div class="flex">
+                                        <Button outlined label="+" @click="addCustomSecurity" class="mr-1"/>
+                                        <Button outlined label="-" @click="removeCustomSecurity" />
+                                    </div>
+                                </div>
+                                <div v-else>
+                                    <p class="m-0 mb-5">...</p>
+                                    <div class="mb-3">Базовый</div>
+                                    <div class="card mb-5">
+                                        <MeterGroup :value="portfolio.getBaseCollection()[index]" />
+                                    </div>
+                                </div>
+                                <div class="mb-3">Текущий</div>
+                                <div class="card mb-1">
+                                    <MeterGroup :value="portfolioData" />
+                                </div>
+                            </AccordionContent>
+                        </AccordionPanel>
+                    </div>
                </Accordion>
         </SplitterPanel>
         <SplitterPanel class="flex mt-5 justify-center" :size="75">
@@ -105,6 +122,7 @@ import { values } from "@/Pages/Mmvb/data";
 import { ref, computed, onMounted, nextTick } from "vue";
 
 import Portfolio from "@/Pages/Mmvb/Portfolio";
+import {PortfolioCollectionElementData, SecurityFuturesNames, SecurityOfzNames} from "@/types/mmvb";
 
 
 
@@ -113,11 +131,29 @@ const startDate = ref<Date>(new Date('2024-01-01'));
 const isCounted = ref<Boolean>(false)
 const amount = ref<number>(1000000)
 const risk = ref<number>(0)
+const customSecurity = ref<SecurityFuturesNames | SecurityOfzNames | null>(null)
+const customPercentage = ref<number>(0)
 
 const getLevels = async () => {
     await portfolio.value.getLevels(startDate.value);
+    console.log('portfolio.value', portfolio.value)
+    // portfolio.value.getCollection()
     isCounted.value = true;
 };
+
+const addCustomSecurity = () => {
+    const obj: PortfolioCollectionElementData = {
+        security: customSecurity.value,
+        base: customPercentage.value
+    }
+
+    if (obj.security === null || obj.base === 0) return
+
+    portfolio.value.addCustomSecurity(obj)
+}
+const removeCustomSecurity = () => {
+    portfolio.value.removeCustomSecurity(customSecurity.value)
+}
 
 
 interface ChartNode {

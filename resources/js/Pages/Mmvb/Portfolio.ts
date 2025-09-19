@@ -4,7 +4,7 @@ import {
     Level,
     PortfolioCollectionElement,
     PortfolioForMeter,
-    PortfolioCollectionElementData
+    PortfolioCollectionElementData, SecurityFuturesNames, SecurityOfzNames
 } from "@/types/mmvb";
 import axios from "axios";
 import {ref} from "vue";
@@ -50,23 +50,100 @@ export default class Portfolio {
                 { security: 'ОФЗ 26238', base: 25 },
             ]
         },
-
+        {
+            name: 'Simple Balanced',
+            nameRus: 'Simple Balanc',
+            data: [
+                { security: 'IMOEXF', base: 25 },
+                { security: 'CNYRUBF', base: 25 },
+                { security: 'GLDRUBF', base: 25 },
+                { security: 'ОФЗ 29009', base: 25 },
+            ]
+        },
+        {
+            name: 'Max Balanced',
+            nameRus: 'Max Balanc',
+            data: [
+                { security: 'IMOEXF', base: 12.5 },
+                { security: 'SBERF', base: 7.5 },
+                { security: 'GAZPF', base: 5 },
+                { security: 'CNYRUBF', base: 12.5 },
+                { security: 'GLDRUBF', base: 12.5 },
+                { security: 'ОФЗ 29009', base: 25 },
+                { security: 'ОФЗ 26238', base: 25 },
+            ]
+        },
+        {
+            name: 'Custom',
+            nameRus: 'Пользовательский',
+            data: []
+        },
     ]
+
+    addCustomSecurity(data: PortfolioCollectionElementData) {
+        const customPorfolio = this.collection.find(res => res.name === 'Custom')
+        if (customPorfolio) {
+            customPorfolio.data.push(data)
+        }
+    }
+
+    removeCustomSecurity(security: SecurityFuturesNames | SecurityOfzNames) {
+        const customPorfolio = this.collection.find(res => res.name === 'Custom')
+        if (customPorfolio) {
+            const index = customPorfolio.data.findIndex(item => item.security === security);
+
+            if (index !== -1) {
+                customPorfolio.data.splice(index, 1);
+            }
+        }
+    }
+
 
     getValueSimpleRuble() {
         return [
-            { name: 'IMOEXF', color: securityColor.imoexf, value: 50, type: 'futures' },
-            { name: 'SU29009RMFS6', color: securityColor.su29009rmfs6, value: 50, type: 'ofz' },
+            { name: 'IMOEXF', color: securityColor.imoexf, value: 50, valueCurrent: 20, type: 'futures' },
+            { name: 'SU29009RMFS6', color: securityColor.su29009rmfs6, value: 50, valueCurrent: 50, type: 'ofz' },
         ];
     }
     getCollection(): PortfolioForMeter[][] {
+        const baseData = this.getBaseCollection();
+        baseData.forEach((portfolio, index) => {
+            const kOfz = portfolio.filter(item => item.type === 'ofz').length
+            let summaValueCurrentFutures =0
+            portfolio.forEach(element => {
+                if (element.type === 'futures') {
+                    element.value = element.valueCurrent
+                    summaValueCurrentFutures += element.valueCurrent
+                }
+            })
+            portfolio.forEach(element => {
+                if (element.type === 'ofz') {
+                    element.value = (100 - summaValueCurrentFutures) / kOfz
+                }
+            })
+        });
+
+        return baseData;
+    }
+
+    /*
+    Возвращает массив подобных массивов
+        [
+            { name: Simple R, label: 'IMOEXF', color: securityColor.imoexf, value: 50, type: 'futures' },
+            { name: Simple R, label: 'SU29009RMFS6', color: securityColor.su29009rmfs6, value: 50, type: 'ofz' },
+        ]
+    */
+    getBaseCollection(): PortfolioForMeter[][] {
         return this.collection.map(portfolio =>
             portfolio.data.map(item => {
                 const sec = this.securities.find(s => s.name === item.security);
                 return {
+                    name: portfolio.nameRus,
                     label: item.security,
                     color: sec?.color ?? 'black',
-                    value: item.base
+                    value: item.base,
+                    valueCurrent: item.base * (sec?.level ?? 50) / 50,
+                    type: sec?.type ?? 'err'
                 } as PortfolioForMeter;
             })
         );
@@ -119,6 +196,8 @@ export default class Portfolio {
             }
         }
     }
+
+
 
 
 

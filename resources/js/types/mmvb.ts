@@ -85,7 +85,10 @@ export interface PortfolioCollectionElement {
 }
 
 export interface PortfolioForMeter {
+    name: string,
     label: SecurityFuturesNames | SecurityOfzNames,
     color: string,
-    value: number
+    value: number,
+    valueCurrent: number,
+    type: 'futures' | 'ofz',
 }
