@@ -65,7 +65,7 @@ import { useToast } from 'primevue/usetoast';
 
 const props = defineProps({
     unit: {
-        type: String as PropType<'Input' | 'Pump' | 'Motor' | 'Mpp'>,
+        type: String as PropType<'Input' | 'Pump' | 'Motor' | 'Mpp' | 'Agh'>,
         required: true
     },
     imagePath: {
@@ -102,6 +102,7 @@ const espData = ref<EspData>({
     Pump: [],
     Motor: [],
     Mpp: [],
+    Agh: [],
 });
 
 const route = useRoute()

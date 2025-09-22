@@ -124,4 +124,9 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'title' => env('APP_TITLE', 'Test'),
+    'title_logo' => env('APP_TITLE_LOGO', 'Test Application'),
+    'favicon' => env('APP_FAVICON', 'default.ico'),
+    'logo' => env('APP_LOGO', 'default-logo.png'),
+
 ];

@@ -65,7 +65,6 @@
                         unit="Agh"
                         imagePath="/storage/img/units/Ahg.png"
                         :maxSections = 3
-                        :single = true
                     />
                 </TabPanel>
                 <TabPanel value="tab5_gas_separator">

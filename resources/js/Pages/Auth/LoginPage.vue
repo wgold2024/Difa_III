@@ -13,10 +13,15 @@
 
         <!-- Остальной контент -->
         <div class="flex-col w-full items-center justify-items-center">
-            <img src="../../img/novomet-logo.png" class="m-mobile_logo mt-20 max-w-lg" alt="Логотип">
-            <div class="m-mobile_font block text-600 font-medium text-base mb-10">Программа анализа надежности "Novomet DIFA"</div>
+<!--            <img src="../../img/novomet-logo.png" class="m-mobile_logo mt-20 max-w-lg" alt="Логотип">-->
+<!--            <div class="m-mobile_font block text-600 font-medium text-base mb-10">Программа анализа надежности "Novomet DIFA"</div>-->
 <!--            <img src="../../img/test-logo.svg" class="m-mobile_logo mt-20 max-w-lg mb-9" alt="Логотип">-->
 <!--            <div class="m-mobile_font block font-medium font-bold text-base mb-10">Приложение для тестирования</div>-->
+
+            <img :src="appConfig.logo" class="m-mobile_logo mt-20 max-w-lg" alt="Логотип">
+            <div class="m-mobile_font block text-600 font-medium text-base mb-10">
+                {{ appConfig.titleLogo }}
+            </div>
 
             <Form v-slot="$form" :initialValues :resolver @submit="onFormSubmit" class="flex-col w-full justify-items-center text-center">
                 <div class="flex flex-col bg-white w-[90%] max-w-xl p-8 border border-gray-100 items-center mb-5 rounded-xl">
@@ -44,7 +49,7 @@ import { Message } from "primevue";
 import { FloatLabel } from "primevue";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
-import { reactive } from 'vue';
+import { reactive, inject } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import Toast from 'primevue/toast'; // надо без него не работает
 import { useRouter } from 'vue-router';
@@ -59,6 +64,8 @@ const initialValues = reactive({
     // email: 'ivan.zolotarev@novometgroup.com',
     // password: '12345678',
 });
+
+const appConfig = inject('appConfig')
 
 const resolver = ({ values }) => {
     const errors = {};

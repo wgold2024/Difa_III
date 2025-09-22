@@ -4,8 +4,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Предиктивная аналитика</title>
-{{--        <title>Тестовое приложение</title>--}}
+{{--        <title>{{ env('APP_TITLE', 'Test') }}</title>--}}
+{{--        <link id="favicon" rel="icon" href="{{ asset(env('APP_FAVICON', 'default.ico')) }}">--}}
+
+        <title>{{ config('app.title') }}</title>
+        <link id="favicon" rel="icon" href="{{ asset(config('app.favicon')) }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -21,7 +24,10 @@
         @endif
     </head>
     <body>
-    <div id="app"></div>
+    <div id="app"
+         data-app-title-logo="{{ config('app.title_logo') }}"
+         data-app-logo="{{ asset(config('app.logo')) }}">
+    </div>
 
     <script type="module" src="{{ Vite::asset('resources/js/app.ts') }}"></script>
     </body>
