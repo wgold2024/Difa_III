@@ -705,445 +705,564 @@ class DefectValue4AghSeeder extends Seeder
                 'defect_id' => '1583',
                 'name' => 'Проппант',
             ],
-//            // 105.Направляющие аппараты
-//            // 1085. ИИзнос лопаток.Характер износа
-//            [
-//                'defect_id' => '1585',
-//                'name' => 'Износ',
-//            ],
-//            [
-//                'defect_id' => '1085',
-//                'name' => 'Слом',
-//            ],
-//            [
-//                'defect_id' => '1085',
-//                'name' => 'Смятие',
-//            ],
-//            [
-//                'defect_id' => '1085',
-//                'name' => 'Промыв',
-//            ],
-//            // 1086. Износ лопаток.Степень износа
-//            [
-//                'defect_id' => '1086',
-//                'name' => '0-10%',
-//                'visibility_defect_id' => '1085',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1086',
-//                'name' => '10-30%',
-//                'visibility_defect_id' => '1085',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1086',
-//                'name' => '30-50%',
-//                'visibility_defect_id' => '1085',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1086',
-//                'name' => '50-70%',
-//                'visibility_defect_id' => '1085',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1086',
-//                'name' => '70%-90%',
-//                'visibility_defect_id' => '1085',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1086',
-//                'name' => '100%',
-//                'visibility_defect_id' => '1085',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1086',
-//                'name' => 'Сквозной',
-//                'visibility_defect_id' => '1085',
-//                'visibility_defect_value' => 'Промыв'
-//            ],
-//            [
-//                'defect_id' => '1086',
-//                'name' => 'Несквозной',
-//                'visibility_defect_id' => '1085',
-//                'visibility_defect_value' => 'Промыв'
-//            ],
-//            // 1088. Износ ступиц.Характер износа
-//            [
-//                'defect_id' => '1088',
-//                'name' => 'Износ',
-//            ],
-//            [
-//                'defect_id' => '1088',
-//                'name' => 'Слом',
-//            ],
-//            [
-//                'defect_id' => '1088',
-//                'name' => 'Смятие',
-//            ],
-//            [
-//                'defect_id' => '1088',
-//                'name' => 'Промыв',
-//            ],
-//            // 1089. Износ ступиц.Степень износа
-//            [
-//                'defect_id' => '1089',
-//                'name' => '0-10%',
-//                'visibility_defect_id' => '1088',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1089',
-//                'name' => '10-30%',
-//                'visibility_defect_id' => '1088',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1089',
-//                'name' => '30-50%',
-//                'visibility_defect_id' => '1088',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1089',
-//                'name' => '50-70%',
-//                'visibility_defect_id' => '1088',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1089',
-//                'name' => '70%-90%',
-//                'visibility_defect_id' => '1088',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1089',
-//                'name' => '100%',
-//                'visibility_defect_id' => '1088',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1089',
-//                'name' => 'Сквозной',
-//                'visibility_defect_id' => '1088',
-//                'visibility_defect_value' => 'Промыв'
-//            ],
-//            [
-//                'defect_id' => '1089',
-//                'name' => 'Несквозной',
-//                'visibility_defect_id' => '1088',
-//                'visibility_defect_value' => 'Промыв'
-//            ],
-//            // 1091. Износ втулки внутреннего диаметра.Характер износа
-//            [
-//                'defect_id' => '1091',
-//                'name' => 'Износ',
-//            ],
-//            [
-//                'defect_id' => '1091',
-//                'name' => 'Слом',
-//            ],
-//            [
-//                'defect_id' => '1091',
-//                'name' => 'Смятие',
-//            ],
-//            [
-//                'defect_id' => '1091',
-//                'name' => 'Промыв',
-//            ],
-//            // 111. Износ втулки внутреннего диаметра.Степень износа
-//            [
-//                'defect_id' => '1092',
-//                'name' => '0-10%',
-//                'visibility_defect_id' => '1091',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1092',
-//                'name' => '10-30%',
-//                'visibility_defect_id' => '1091',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1092',
-//                'name' => '30-50%',
-//                'visibility_defect_id' => '1091',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1092',
-//                'name' => '50-70%',
-//                'visibility_defect_id' => '1091',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1092',
-//                'name' => '70%-90%',
-//                'visibility_defect_id' => '1091',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1092',
-//                'name' => '100%',
-//                'visibility_defect_id' => '1091',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1092',
-//                'name' => 'Сквозной',
-//                'visibility_defect_id' => '1091',
-//                'visibility_defect_value' => 'Промыв'
-//            ],
-//            [
-//                'defect_id' => '1092',
-//                'name' => 'Несквозной',
-//                'visibility_defect_id' => '1091',
-//                'visibility_defect_value' => 'Промыв'
-//            ],
-//            // 1094. Износ стакана.Характер износа
-//            [
-//                'defect_id' => '1094',
-//                'name' => 'Износ',
-//            ],
-//            [
-//                'defect_id' => '1094',
-//                'name' => 'Слом',
-//            ],
-//            [
-//                'defect_id' => '1094',
-//                'name' => 'Смятие',
-//            ],
-//            [
-//                'defect_id' => '1094',
-//                'name' => 'Промыв',
-//            ],
-//            // 1095. Износ стакана.Степень износа
-//            [
-//                'defect_id' => '1095',
-//                'name' => '0-10%',
-//                'visibility_defect_id' => '1094',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1095',
-//                'name' => '10-30%',
-//                'visibility_defect_id' => '1094',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1095',
-//                'name' => '30-50%',
-//                'visibility_defect_id' => '1094',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1095',
-//                'name' => '50-70%',
-//                'visibility_defect_id' => '1094',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1095',
-//                'name' => '70%-90%',
-//                'visibility_defect_id' => '1094',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1095',
-//                'name' => '100%',
-//                'visibility_defect_id' => '1094',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1095',
-//                'name' => 'Сквозной',
-//                'visibility_defect_id' => '1094',
-//                'visibility_defect_value' => 'Промыв'
-//            ],
-//            [
-//                'defect_id' => '1095',
-//                'name' => 'Несквозной',
-//                'visibility_defect_id' => '1094',
-//                'visibility_defect_value' => 'Промыв'
-//            ],
-//            // 1097. Засорение.Степень перекрытия проточных каналов
-//            [
-//                'defect_id' => '1097',
-//                'name' => 'Частичное',
-//            ],
-//            [
-//                'defect_id' => '1097',
-//                'name' => 'Около 50%',
-//            ],
-//            [
-//                'defect_id' => '1097',
-//                'name' => 'Полное',
-//            ],
-//            // 1098. Засорение.Тип засорения
-//            [
-//                'defect_id' => '1098',
-//                'name' => 'Механические примеси',
-//            ],
-//            [
-//                'defect_id' => '1098',
-//                'name' => 'Твердые отложения',
-//            ],
-//            [
-//                'defect_id' => '1098',
-//                'name' => 'Посторонние включения',
-//            ],
-//            [
-//                'defect_id' => '1098',
-//                'name' => 'АСПО',
-//            ],
-//            [
-//                'defect_id' => '1098',
-//                'name' => 'Проппант',
-//            ],
-//            // 106.Проставок
-//            // 1107. Износ.Характер износа
-//            [
-//                'defect_id' => '1107',
-//                'name' => 'Износ',
-//            ],
-//            [
-//                'defect_id' => '1107',
-//                'name' => 'Слом',
-//            ],
-//            [
-//                'defect_id' => '1107',
-//                'name' => 'Смятие',
-//            ],
-//            [
-//                'defect_id' => '1107',
-//                'name' => 'Промыв',
-//            ],
-//            // 1108. Износ.Степень износа
-//            [
-//                'defect_id' => '1108',
-//                'name' => '0-10%',
-//                'visibility_defect_id' => '1107',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1108',
-//                'name' => '10-30%',
-//                'visibility_defect_id' => '1107',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1108',
-//                'name' => '30-50%',
-//                'visibility_defect_id' => '1107',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1108',
-//                'name' => '50-70%',
-//                'visibility_defect_id' => '1107',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1108',
-//                'name' => '70%-90%',
-//                'visibility_defect_id' => '1107',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1108',
-//                'name' => '100%',
-//                'visibility_defect_id' => '1107',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1108',
-//                'name' => 'Сквозной',
-//                'visibility_defect_id' => '1107',
-//                'visibility_defect_value' => 'Промыв'
-//            ],
-//            [
-//                'defect_id' => '1108',
-//                'name' => 'Несквозной',
-//                'visibility_defect_id' => '1107',
-//                'visibility_defect_value' => 'Промыв'
-//            ],
-//
-//            // 1116. Износ.Характер износа
-//            [
-//                'defect_id' => '1116',
-//                'name' => 'Износ',
-//            ],
-//            [
-//                'defect_id' => '1116',
-//                'name' => 'Слом',
-//            ],
-//            [
-//                'defect_id' => '1116',
-//                'name' => 'Трещина',
-//            ],
-//            // 1117. Износ.Тип износа
-//            [
-//                'defect_id' => '1117',
-//                'name' => 'Односторонний',
-//                'visibility_defect_id' => '1116',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1117',
-//                'name' => 'Радиальный',
-//                'visibility_defect_id' => '1116',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            // 1118. Износ.Степень износа
-//            [
-//                'defect_id' => '1118',
-//                'name' => '0-10%',
-//                'visibility_defect_id' => '1116',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1118',
-//                'name' => '10-30%',
-//                'visibility_defect_id' => '1116',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1118',
-//                'name' => '30-50%',
-//                'visibility_defect_id' => '1116',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1118',
-//                'name' => '50-70%',
-//                'visibility_defect_id' => '1116',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1118',
-//                'name' => '70%-90%',
-//                'visibility_defect_id' => '1116',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            [
-//                'defect_id' => '1118',
-//                'name' => '100%',
-//                'visibility_defect_id' => '1116',
-//                'visibility_defect_value' => 'Износ'
-//            ],
-//            // 1124. Износ.Место износа
-//            [
-//                'defect_id' => '1124',
-//                'name' => 'По наружной поверхности',
-//            ],
-//            [
-//                'defect_id' => '1124',
-//                'name' => 'По внутренней поверхности',
-//            ],
+            // 155.Направляющие аппараты
+            // 1586. ИИзнос лопаток.Характер износа
+            [
+                'defect_id' => '1586',
+                'name' => 'Износ',
+            ],
+            [
+                'defect_id' => '1586',
+                'name' => 'Слом',
+            ],
+            [
+                'defect_id' => '1586',
+                'name' => 'Смятие',
+            ],
+            [
+                'defect_id' => '1586',
+                'name' => 'Промыв',
+            ],
+            // 1086. Износ лопаток.Степень износа
+            [
+                'defect_id' => '1587',
+                'name' => '0-10%',
+                'visibility_defect_id' => '1586',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1587',
+                'name' => '10-30%',
+                'visibility_defect_id' => '1586',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1587',
+                'name' => '30-50%',
+                'visibility_defect_id' => '1586',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1587',
+                'name' => '50-70%',
+                'visibility_defect_id' => '1586',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1587',
+                'name' => '70%-90%',
+                'visibility_defect_id' => '1586',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1587',
+                'name' => '100%',
+                'visibility_defect_id' => '1586',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1587',
+                'name' => 'Сквозной',
+                'visibility_defect_id' => '1586',
+                'visibility_defect_value' => 'Промыв'
+            ],
+            [
+                'defect_id' => '1587',
+                'name' => 'Несквозной',
+                'visibility_defect_id' => '1586',
+                'visibility_defect_value' => 'Промыв'
+            ],
+            // 1589. Износ ступиц.Характер износа
+            [
+                'defect_id' => '1589',
+                'name' => 'Износ',
+            ],
+            [
+                'defect_id' => '1589',
+                'name' => 'Слом',
+            ],
+            [
+                'defect_id' => '1589',
+                'name' => 'Смятие',
+            ],
+            [
+                'defect_id' => '1589',
+                'name' => 'Промыв',
+            ],
+            // 1590. Износ ступиц.Степень износа
+            [
+                'defect_id' => '1590',
+                'name' => '0-10%',
+                'visibility_defect_id' => '1589',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1590',
+                'name' => '10-30%',
+                'visibility_defect_id' => '1589',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1590',
+                'name' => '30-50%',
+                'visibility_defect_id' => '1589',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1590',
+                'name' => '50-70%',
+                'visibility_defect_id' => '1589',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1590',
+                'name' => '70%-90%',
+                'visibility_defect_id' => '1589',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1590',
+                'name' => '100%',
+                'visibility_defect_id' => '1589',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1590',
+                'name' => 'Сквозной',
+                'visibility_defect_id' => '1589',
+                'visibility_defect_value' => 'Промыв'
+            ],
+            [
+                'defect_id' => '1590',
+                'name' => 'Несквозной',
+                'visibility_defect_id' => '1589',
+                'visibility_defect_value' => 'Промыв'
+            ],
+            // 1592. Износ втулки внутреннего диаметра.Характер износа
+            [
+                'defect_id' => '1592',
+                'name' => 'Износ',
+            ],
+            [
+                'defect_id' => '1592',
+                'name' => 'Слом',
+            ],
+            [
+                'defect_id' => '1592',
+                'name' => 'Смятие',
+            ],
+            [
+                'defect_id' => '1592',
+                'name' => 'Промыв',
+            ],
+            // 1593. Износ втулки внутреннего диаметра.Степень износа
+            [
+                'defect_id' => '1593',
+                'name' => '0-10%',
+                'visibility_defect_id' => '1592',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1593',
+                'name' => '10-30%',
+                'visibility_defect_id' => '1592',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1593',
+                'name' => '30-50%',
+                'visibility_defect_id' => '1592',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1593',
+                'name' => '50-70%',
+                'visibility_defect_id' => '1592',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1593',
+                'name' => '70%-90%',
+                'visibility_defect_id' => '1592',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1593',
+                'name' => '100%',
+                'visibility_defect_id' => '1592',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1593',
+                'name' => 'Сквозной',
+                'visibility_defect_id' => '1592',
+                'visibility_defect_value' => 'Промыв'
+            ],
+            [
+                'defect_id' => '1593',
+                'name' => 'Несквозной',
+                'visibility_defect_id' => '1592',
+                'visibility_defect_value' => 'Промыв'
+            ],
+            // 1595. Износ стакана.Характер износа
+            [
+                'defect_id' => '1595',
+                'name' => 'Износ',
+            ],
+            [
+                'defect_id' => '1595',
+                'name' => 'Слом',
+            ],
+            [
+                'defect_id' => '1595',
+                'name' => 'Смятие',
+            ],
+            [
+                'defect_id' => '1595',
+                'name' => 'Промыв',
+            ],
+            // 1596. Износ стакана.Степень износа
+            [
+                'defect_id' => '1596',
+                'name' => '0-10%',
+                'visibility_defect_id' => '1595',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1596',
+                'name' => '10-30%',
+                'visibility_defect_id' => '1595',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1596',
+                'name' => '30-50%',
+                'visibility_defect_id' => '1595',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1596',
+                'name' => '50-70%',
+                'visibility_defect_id' => '1595',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1596',
+                'name' => '70%-90%',
+                'visibility_defect_id' => '1595',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1596',
+                'name' => '100%',
+                'visibility_defect_id' => '1595',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1596',
+                'name' => 'Сквозной',
+                'visibility_defect_id' => '1595',
+                'visibility_defect_value' => 'Промыв'
+            ],
+            [
+                'defect_id' => '1596',
+                'name' => 'Несквозной',
+                'visibility_defect_id' => '1595',
+                'visibility_defect_value' => 'Промыв'
+            ],
+            // 1598. Засорение.Степень перекрытия проточных каналов
+            [
+                'defect_id' => '1598',
+                'name' => 'Частичное',
+            ],
+            [
+                'defect_id' => '1598',
+                'name' => 'Около 50%',
+            ],
+            [
+                'defect_id' => '1598',
+                'name' => 'Полное',
+            ],
+            // 1599. Засорение.Тип засорения
+            [
+                'defect_id' => '1599',
+                'name' => 'Механические примеси',
+            ],
+            [
+                'defect_id' => '1599',
+                'name' => 'Твердые отложения',
+            ],
+            [
+                'defect_id' => '1599',
+                'name' => 'Посторонние включения',
+            ],
+            [
+                'defect_id' => '1599',
+                'name' => 'АСПО',
+            ],
+            [
+                'defect_id' => '1599',
+                'name' => 'Проппант',
+            ],
+            // 1607. Дефект уплотнительного кольца. Вид дефекта
+            [
+                'defect_id' => '1607',
+                'name' => 'Затвердели',
+            ],
+            [
+                'defect_id' => '1607',
+                'name' => 'Деформированы',
+            ],
+            [
+                'defect_id' => '1607',
+                'name' => 'Срезаны',
+            ],
+            [
+                'defect_id' => '1607',
+                'name' => 'Прикипели',
+            ],
+            // 156.Проставок
+            // 1610. Износ.Характер износа
+            [
+                'defect_id' => '1610',
+                'name' => 'Износ',
+            ],
+            [
+                'defect_id' => '1610',
+                'name' => 'Слом',
+            ],
+            [
+                'defect_id' => '1610',
+                'name' => 'Смятие',
+            ],
+            [
+                'defect_id' => '1610',
+                'name' => 'Промыв',
+            ],
+            // 1611. Износ.Степень износа
+            [
+                'defect_id' => '1611',
+                'name' => '0-10%',
+                'visibility_defect_id' => '1610',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1611',
+                'name' => '10-30%',
+                'visibility_defect_id' => '1610',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1611',
+                'name' => '30-50%',
+                'visibility_defect_id' => '1610',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1611',
+                'name' => '50-70%',
+                'visibility_defect_id' => '1610',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1611',
+                'name' => '70%-90%',
+                'visibility_defect_id' => '1610',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1611',
+                'name' => '100%',
+                'visibility_defect_id' => '1610',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1611',
+                'name' => 'Сквозной',
+                'visibility_defect_id' => '1610',
+                'visibility_defect_value' => 'Промыв'
+            ],
+            [
+                'defect_id' => '1611',
+                'name' => 'Несквозной',
+                'visibility_defect_id' => '1610',
+                'visibility_defect_value' => 'Промыв'
+            ],
+            // 1624. Засорение.Степень перекрытия проточных каналов
+            [
+                'defect_id' => '1624',
+                'name' => 'Частичное',
+            ],
+            [
+                'defect_id' => '1624',
+                'name' => 'Около 50%',
+            ],
+            [
+                'defect_id' => '1624',
+                'name' => 'Полное',
+            ],
+            // 1625. Засорение.Тип засорения
+            [
+                'defect_id' => '1625',
+                'name' => 'Механические примеси',
+            ],
+            [
+                'defect_id' => '1625',
+                'name' => 'Твердые отложения',
+            ],
+            [
+                'defect_id' => '1625',
+                'name' => 'Посторонние включения',
+            ],
+            [
+                'defect_id' => '1625',
+                'name' => 'АСПО',
+            ],
+            [
+                'defect_id' => '1625',
+                'name' => 'Проппант',
+            ],
+            // 1628. Засорение.Степень перекрытия проточных каналов
+            [
+                'defect_id' => '1628',
+                'name' => 'Частичное',
+            ],
+            [
+                'defect_id' => '1628',
+                'name' => 'Около 50%',
+            ],
+            [
+                'defect_id' => '1628',
+                'name' => 'Полное',
+            ],
+            // 1629. Засорение.Тип засорения
+            [
+                'defect_id' => '1629',
+                'name' => 'Механические примеси',
+            ],
+            [
+                'defect_id' => '1629',
+                'name' => 'Твердые отложения',
+            ],
+            [
+                'defect_id' => '1629',
+                'name' => 'Посторонние включения',
+            ],
+            [
+                'defect_id' => '1629',
+                'name' => 'АСПО',
+            ],
+            [
+                'defect_id' => '1629',
+                'name' => 'Проппант',
+            ],
+            // 1636. Дефект уплотнительного кольца. Вид дефекта
+            [
+                'defect_id' => '1636',
+                'name' => 'Затвердели',
+            ],
+            [
+                'defect_id' => '1636',
+                'name' => 'Деформированы',
+            ],
+            [
+                'defect_id' => '1636',
+                'name' => 'Срезаны',
+            ],
+            [
+                'defect_id' => '1636',
+                'name' => 'Прикипели',
+            ],
+            // 1639. Износ.Характер износа
+            [
+                'defect_id' => '1639',
+                'name' => 'Износ',
+            ],
+            [
+                'defect_id' => '1639',
+                'name' => 'Слом',
+            ],
+            [
+                'defect_id' => '1639',
+                'name' => 'Трещина',
+            ],
+            // 1640. Износ.Тип износа
+            [
+                'defect_id' => '1640',
+                'name' => 'Односторонний',
+                'visibility_defect_id' => '1639',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1640',
+                'name' => 'Радиальный',
+                'visibility_defect_id' => '1639',
+                'visibility_defect_value' => 'Износ'
+            ],
+            // 1641. Износ.Степень износа
+            [
+                'defect_id' => '1641',
+                'name' => '0-10%',
+                'visibility_defect_id' => '1639',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1641',
+                'name' => '10-30%',
+                'visibility_defect_id' => '1639',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1641',
+                'name' => '30-50%',
+                'visibility_defect_id' => '1639',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1641',
+                'name' => '50-70%',
+                'visibility_defect_id' => '1639',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1641',
+                'name' => '70%-90%',
+                'visibility_defect_id' => '1639',
+                'visibility_defect_value' => 'Износ'
+            ],
+            [
+                'defect_id' => '1641',
+                'name' => '100%',
+                'visibility_defect_id' => '1639',
+                'visibility_defect_value' => 'Износ'
+            ],
+            // 1647. Износ.Место износа
+            [
+                'defect_id' => '1647',
+                'name' => 'По наружной поверхности',
+            ],
+            [
+                'defect_id' => '1647',
+                'name' => 'По внутренней поверхности',
+            ],
+            // 1694. Отсчет от
+            [
+                'defect_id' => '1694',
+                'name' => 'Верха',
+            ],
+            [
+                'defect_id' => '1694',
+                'name' => 'Низа',
+            ],
+            // 1699. Отсчет от
+            [
+                'defect_id' => '1699',
+                'name' => 'Верха',
+            ],
+            [
+                'defect_id' => '1699',
+                'name' => 'Низа',
+            ],
         ];
 
         foreach ($data as $item) {

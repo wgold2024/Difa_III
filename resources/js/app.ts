@@ -8,6 +8,12 @@ import router from './router';
 import { ToastService } from "primevue";
 import ConfirmationService from 'primevue/confirmationservice';
 
+const appDiv = document.getElementById('app');
+
+const appConfig = {
+    titleLogo: appDiv ? appDiv.dataset.appTitleLogo || '' : '',
+    logo: appDiv ? appDiv.dataset.appLogo || '' : ''
+};
 
 const currentPath = window.location.pathname;
 if (currentPath.startsWith('/api/') ||
@@ -57,6 +63,7 @@ if (currentPath.startsWith('/api/') ||
             observer.observe(el);
         }
     });
+    app.provide('appConfig', appConfig)
     app.mount('#app');
 }
 

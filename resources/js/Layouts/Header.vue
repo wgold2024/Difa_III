@@ -16,7 +16,7 @@
 
 
         <div class="flex items-center px-4 py-0 h-full">
-            <div v-if="user.id == 1">
+            <div v-if="user !== null && user.id == 1">
                 <router-link to="/mmvb" class="m-mobile_hide mr-3">
                     <Button  icon="pi pi-money-bill" outlined class="m-mobile_font mr-3"/>
                 </router-link>

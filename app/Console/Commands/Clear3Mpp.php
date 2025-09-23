@@ -6,14 +6,14 @@ use App\Models\Defect;
 use App\Models\DefectValue;
 use Illuminate\Console\Command;
 
-class ClearAgh extends Command
+class Clear3Mpp extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:clear-agh';
+    protected $signature = 'app:clear-mpp';
 
     /**
      * The console command description.
@@ -27,7 +27,6 @@ class ClearAgh extends Command
      */
     public function handle()
     {
-        $defect4AghSeeder = Defect::whereBetween('id', [1500, 1999])->delete();
-//        $defectValue4AghSeeder = DefectValue::whereBetween('id', [1500, 1599])->delete(); // авто - каскадное удаление
+        $defect4AghSeeder = Defect::whereBetween('id', [1000, 1499])->delete();
     }
 }
