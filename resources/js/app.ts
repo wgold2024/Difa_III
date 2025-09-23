@@ -8,12 +8,12 @@ import router from './router';
 import { ToastService } from "primevue";
 import ConfirmationService from 'primevue/confirmationservice';
 
-const appDiv = document.getElementById('app')
+const appDiv = document.getElementById('app');
 
 const appConfig = {
-    titleLogo: appDiv.dataset.appTitleLogo || '',
-    logo: appDiv.dataset.appLogo || ''
-}
+    titleLogo: appDiv ? appDiv.dataset.appTitleLogo || '' : '',
+    logo: appDiv ? appDiv.dataset.appLogo || '' : ''
+};
 
 const currentPath = window.location.pathname;
 if (currentPath.startsWith('/api/') ||

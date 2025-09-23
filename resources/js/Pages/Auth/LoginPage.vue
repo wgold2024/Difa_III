@@ -18,8 +18,8 @@
 <!--            <img src="../../img/test-logo.svg" class="m-mobile_logo mt-20 max-w-lg mb-9" alt="Логотип">-->
 <!--            <div class="m-mobile_font block font-medium font-bold text-base mb-10">Приложение для тестирования</div>-->
 
-            <img :src="appConfig.logo" class="m-mobile_logo mt-20 max-w-lg" alt="Логотип">
-            <div class="m-mobile_font block text-600 font-medium text-base mb-10">
+            <img :src="appConfig.logo" class="m-mobile_logo mt-20 max-w-lg mb-5" alt="Логотип">
+            <div class="m-mobile_font block text-600 font-medium text-xl mb-5">
                 {{ appConfig.titleLogo }}
             </div>
 
