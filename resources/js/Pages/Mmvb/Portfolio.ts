@@ -34,6 +34,7 @@ export default class Portfolio {
         {
             name: 'Simple R',
             nameRus: 'Simple R',
+            desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
             data: [
                 { security: 'IMOEXF', base: 50 },
                 { security: 'ОФЗ 29009', base: 50 },
@@ -42,6 +43,7 @@ export default class Portfolio {
         {
             name: 'Max R',
             nameRus: 'Max R',
+            desc: 'desc Max R',
             data: [
                 { security: 'IMOEXF', base: 25 },
                 { security: 'SBERF', base: 15 },
@@ -53,6 +55,7 @@ export default class Portfolio {
         {
             name: 'Simple Balanced',
             nameRus: 'Simple Balanc',
+            desc: 'desc Simple Balanc',
             data: [
                 { security: 'IMOEXF', base: 25 },
                 { security: 'CNYRUBF', base: 25 },
@@ -63,6 +66,7 @@ export default class Portfolio {
         {
             name: 'Max Balanced',
             nameRus: 'Max Balanc',
+            desc: 'desc Max Balanc',
             data: [
                 { security: 'IMOEXF', base: 12.5 },
                 { security: 'SBERF', base: 7.5 },
@@ -75,6 +79,7 @@ export default class Portfolio {
         },
         {
             name: 'Custom',
+            desc: 'desc Simple R',
             nameRus: 'Пользовательский',
             data: []
         },
@@ -197,23 +202,6 @@ export default class Portfolio {
         }
     }
 
-
-
-
-
-
-
-
-    private portfolio: Security[];
-
-    constructor() {
-    }
-
-
-
-
-
-
     getValueSimpleRubleAuto() {
         let obj = [...this.getValueSimpleRuble()]
         for (const element of obj) {
@@ -221,13 +209,5 @@ export default class Portfolio {
         }
 
         return obj
-    }
-
-    addSecurity(security: Security) {
-        this.portfolio.push(security)
-    }
-
-    getCurrent() {
-        return this.portfolio;
     }
 }

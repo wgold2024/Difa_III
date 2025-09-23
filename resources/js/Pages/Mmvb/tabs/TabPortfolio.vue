@@ -52,24 +52,41 @@
                             <AccordionHeader>{{ portfolio.collection[index].nameRus }}</AccordionHeader>
 <!--                            <AccordionHeader>{{ portfolioData[index].name }}</AccordionHeader>-->
                             <AccordionContent>
-                                <div v-if="portfolio.collection[index].name === 'Custom'" class="flex items-center p-5">
-                                    <div class="text-lg mr-5">Инструмент:</div>
-                                    <div class="mr-10">
-                                        <Select v-model="customSecurity" :options="portfolio.securities" optionLabel="name" optionValue="name"
-                                                style="width: 150px; padding: 0"
-                                        />
-                                    </div>
-                                    <div class="text-lg mr-5">Доля, %:</div>
+                                <div v-if="portfolio.collection[index].name === 'Custom'">
                                     <div>
-                                        <InputText v-model="customPercentage" class="w-1/2" />
-                                    </div>
-                                    <div class="flex">
-                                        <Button outlined label="+" @click="addCustomSecurity" class="mr-1"/>
-                                        <Button outlined label="-" @click="removeCustomSecurity" />
+                                        <div v-if="customError" class="text-red-500 text-center">
+                                            {{ customError }}
+                                        </div>
+                                        <div class="flex items-center justify-around p-5">
+                                            <div class="flex items-center">
+                                                <div class="text-lg mr-5">Инструмент:</div>
+                                                <div class="mr-10">
+                                                    <Select v-model="customSecurity" :options="portfolio.securities" optionLabel="name" optionValue="name"
+                                                            style="width: 150px; padding: 0"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center mr-5">
+                                                <div class="text-lg mr-5">Доля, %:</div>
+                                                <div>
+                                                    <InputNumber
+                                                        v-model="customPercentage"
+                                                        min="1"
+                                                        max="100"
+                                                        :inputStyle="{ width: '100px' }"
+                                                        inputClass="w-full"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div class="flex">
+                                                <Button outlined label="+" @click="addCustomSecurity" class="mr-1"/>
+                                                <Button outlined label="-" @click="removeCustomSecurity" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div v-else>
-                                    <p class="m-0 mb-5">...</p>
+                                    <p class="m-0 mb-5">{{ portfolio.collection[index].desc }}</p>
                                     <div class="mb-3">Базовый</div>
                                     <div class="card mb-5">
                                         <MeterGroup :value="portfolio.getBaseCollection()[index]" />
@@ -117,6 +134,7 @@ import Select from "primevue/select";
 import InputText from "primevue/inputtext";
 import OrganizationChart from 'primevue/organizationchart';
 import DatePicker from "primevue/datepicker";
+import InputNumber from "primevue/inputnumber";
 
 import { values } from "@/Pages/Mmvb/data";
 import { ref, computed, onMounted, nextTick } from "vue";
@@ -133,6 +151,7 @@ const amount = ref<number>(1000000)
 const risk = ref<number>(0)
 const customSecurity = ref<SecurityFuturesNames | SecurityOfzNames | null>(null)
 const customPercentage = ref<number>(0)
+const customError = ref<string>('')
 
 const getLevels = async () => {
     await portfolio.value.getLevels(startDate.value);
@@ -142,17 +161,31 @@ const getLevels = async () => {
 };
 
 const addCustomSecurity = () => {
+    if (customSecurity.value === null) {
+        customError.value = 'Выберите инструмент'
+        return
+    }
+
+    if (customPercentage.value === 0) {
+        customError.value = 'Введите долю'
+        return
+    }
+
+    customError.value = ''
+
     const obj: PortfolioCollectionElementData = {
         security: customSecurity.value,
         base: customPercentage.value
     }
 
-    if (obj.security === null || obj.base === 0) return
-
     portfolio.value.addCustomSecurity(obj)
 }
 const removeCustomSecurity = () => {
     portfolio.value.removeCustomSecurity(customSecurity.value)
+}
+
+const updateAccordion = () => {
+    customError.value = ''
 }
 
 

@@ -81,6 +81,7 @@ export interface PortfolioCollectionElementData {
 export interface PortfolioCollectionElement {
     name: string,
     nameRus: string,
+    desc: string,
     data: PortfolioCollectionElementData[]
 }
 
