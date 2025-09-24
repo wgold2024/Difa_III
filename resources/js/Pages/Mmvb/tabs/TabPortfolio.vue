@@ -35,7 +35,7 @@
             <div class="flex justify-center items-center px-5 mb-5">
                 <div class="text-lg mr-5">Cумма:</div>
                 <div class="mr-10">
-                    <InputText v-model="amount" class="" />
+                    <InputNumber v-model="amount" :min=1000 :max=1000000000 :inputStyle="{ width: '140px' }" inputClass="w-full" />
                 </div>
                 <div class="text-lg mr-5">Степень риска:</div>
                 <div class="">
@@ -47,7 +47,6 @@
             <div class="text-center text-xl mt-10">Выберите портфель</div>
                 <Accordion @update:value="updateAccordion">
                     <div v-for="(portfolioData, index) in portfolio.getCollection()" :key="index">
-
                         <AccordionPanel :value="portfolio.collection[index].name">
                             <AccordionHeader>{{ portfolio.collection[index].nameRus }}</AccordionHeader>
 <!--                            <AccordionHeader>{{ portfolioData[index].name }}</AccordionHeader>-->
@@ -69,13 +68,7 @@
                                             <div class="flex items-center mr-5">
                                                 <div class="text-lg mr-5">Доля, %:</div>
                                                 <div>
-                                                    <InputNumber
-                                                        v-model="customPercentage"
-                                                        min="1"
-                                                        max="100"
-                                                        :inputStyle="{ width: '100px' }"
-                                                        inputClass="w-full"
-                                                    />
+                                                    <InputNumber v-model="customPercentage" :min=1 :max=100 :inputStyle="{ width: '100px' }" inputClass="w-full" />
                                                 </div>
                                             </div>
                                             <div class="flex">
@@ -147,11 +140,45 @@ import {PortfolioCollectionElementData, SecurityFuturesNames, SecurityOfzNames} 
 const portfolio = ref(new Portfolio())
 const startDate = ref<Date>(new Date('2024-01-01'));
 const isCounted = ref<Boolean>(false)
-const amount = ref<number>(1000000)
+const amount = ref<number>(1000000000)
 const risk = ref<number>(0)
 const customSecurity = ref<SecurityFuturesNames | SecurityOfzNames | null>(null)
 const customPercentage = ref<number>(0)
 const customError = ref<string>('')
+const data = ref({
+    key: '0',
+    type: 'security',
+    styleClass: '!bg-gray-200 text-white rounded-xl',
+    data: {
+        icon: 'pi-shopping-bag',
+        name: 'Portfolio',
+        style: `padding-top: 10px; width: 200px`
+    },
+    children: [
+        // {
+        //     key: '0_0',
+        //     type: 'security',
+        //     styleClass: '!bg-gray-100 rounded-xl w-full',
+        //     data: {
+        //         name: 'pump',
+        //         title: '60%',
+        //         style: `background-color: ${securityColor.imoexf}; width: 200px`
+        //     },
+        //     children: [
+        //         {
+        //             label: 'Sales',
+        //             styleClass: '!bg-purple-100 text-white rounded-xl'
+        //         },
+        //         {
+        //             label: 'Marketing',
+        //             styleClass: '!bg-purple-100 text-white rounded-xl'
+        //         }
+        //     ]
+        // }
+
+    ]
+});
+
 
 const getLevels = async () => {
     await portfolio.value.getLevels(startDate.value);
@@ -178,9 +205,17 @@ const addCustomSecurity = () => {
         base: customPercentage.value
     }
 
-    portfolio.value.addCustomSecurity(obj)
+    const result = portfolio.value.addCustomSecurity(obj)
+    if (result > 100) {
+        customError.value = 'Превышено общее значение доли 100 %'
+    } else if (result === -1) {
+        customError.value = 'Такой инструмент уже выбран'
+    } else {
+        customError.value = ''
+    }
 }
 const removeCustomSecurity = () => {
+    if (customSecurity.value === null) return
     portfolio.value.removeCustomSecurity(customSecurity.value)
 }
 

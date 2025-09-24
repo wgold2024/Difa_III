@@ -30,7 +30,7 @@ export default class Portfolio {
         { name: '4: > 80 %', value: 100 },
     ]
 
-    private collection: PortfolioCollectionElement[] = [
+    public collection: PortfolioCollectionElement[] = [
         {
             name: 'Simple R',
             nameRus: 'Simple R',
@@ -85,31 +85,13 @@ export default class Portfolio {
         },
     ]
 
-    addCustomSecurity(data: PortfolioCollectionElementData) {
-        const customPorfolio = this.collection.find(res => res.name === 'Custom')
-        if (customPorfolio) {
-            customPorfolio.data.push(data)
-        }
-    }
 
-    removeCustomSecurity(security: SecurityFuturesNames | SecurityOfzNames) {
-        const customPorfolio = this.collection.find(res => res.name === 'Custom')
-        if (customPorfolio) {
-            const index = customPorfolio.data.findIndex(item => item.security === security);
-
-            if (index !== -1) {
-                customPorfolio.data.splice(index, 1);
-            }
-        }
-    }
-
-
-    getValueSimpleRuble() {
-        return [
-            { name: 'IMOEXF', color: securityColor.imoexf, value: 50, valueCurrent: 20, type: 'futures' },
-            { name: 'SU29009RMFS6', color: securityColor.su29009rmfs6, value: 50, valueCurrent: 50, type: 'ofz' },
-        ];
-    }
+    // getValueSimpleRuble() {
+    //     return [
+    //         { name: 'IMOEXF', color: securityColor.imoexf, value: 50, valueCurrent: 20, type: 'futures' },
+    //         { name: 'SU29009RMFS6', color: securityColor.su29009rmfs6, value: 50, valueCurrent: 50, type: 'ofz' },
+    //     ];
+    // }
     getCollection(): PortfolioForMeter[][] {
         const baseData = this.getBaseCollection();
         baseData.forEach((portfolio, index) => {
@@ -202,12 +184,44 @@ export default class Portfolio {
         }
     }
 
-    getValueSimpleRubleAuto() {
-        let obj = [...this.getValueSimpleRuble()]
-        for (const element of obj) {
-            element.value = 40
+    addCustomSecurity(data: PortfolioCollectionElementData) {
+        const customPorfolio = this.collection.find(res => res.name === 'Custom')
+
+
+
+        if (customPorfolio) {
+            const result = customPorfolio.data.find(res => res.security === data.security)
+            if (result !== undefined) {
+                return -1
+            }
+            let summa = customPorfolio.data.reduce((acc, res) => acc + Number(res.base), 0)
+            summa += Number(data.base)
+            if (summa > 100) {
+                return summa
+            }
+            customPorfolio.data.push(data)
         }
 
-        return obj
+        return 0
     }
+
+    removeCustomSecurity(security: SecurityFuturesNames | SecurityOfzNames) {
+        const customPorfolio = this.collection.find(res => res.name === 'Custom')
+        if (customPorfolio) {
+            const index = customPorfolio.data.findIndex(item => item.security === security);
+
+            if (index !== -1) {
+                customPorfolio.data.splice(index, 1);
+            }
+        }
+    }
+
+    // getValueSimpleRubleAuto() {
+    //     let obj = [...this.getValueSimpleRuble()]
+    //     for (const element of obj) {
+    //         element.value = 40
+    //     }
+    //
+    //     return obj
+    // }
 }
