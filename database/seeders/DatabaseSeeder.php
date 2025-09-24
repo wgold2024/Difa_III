@@ -44,4 +44,5 @@ class DatabaseSeeder extends Seeder
 
 // Очистка
 // php artisan app:clear-groups
+// php artisan app:clear-mpp
 // php artisan app:clear-agh

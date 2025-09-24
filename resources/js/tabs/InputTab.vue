@@ -272,12 +272,7 @@ const store = () => {
     );
 });
 
-
-
-
 watchEffect(() => {
-    console.log('inputError', inputError.value);
-
     let error: boolean = false;
     (Object.keys(inputError.value) as Array<keyof InputError>).forEach((key) => {
         if (

@@ -329,8 +329,6 @@ const getGroupName = (groupId: number) => {
 };
 
 const filteredOptions = (item: Value[]) => {
-    console.log('item', item)
-    console.log('details', props.details)
     return item.filter(res =>
         res.visibility_defect_id === 0 ||
         res.visibility_defect_value === defectDataMap.value[res.visibility_defect_id] )
