@@ -6,6 +6,7 @@ use App\Http\Controllers\API\DefectDataController;
 use App\Http\Controllers\API\EspController;
 use App\Http\Controllers\API\GroupController;
 use App\Http\Controllers\API\InputController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,10 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::post('ai-image', [AiController::class, 'checkImage']);
     Route::post('ai-train', [AiController::class, 'train']);
     Route::get('/defect-group', [GroupController::class, 'index']);
+
+    Route::prefix('admin')->group(function () {
+        Route::resource('users', UserController::class);
+    });
 });
 
 Route::get('/test', function (Request $request) {

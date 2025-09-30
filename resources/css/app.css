@@ -49,8 +49,18 @@
 
 :root {
     --p-button-outlined-secondary-border-color: #6474A9 !important;
+    --p-button-outlined-primary-border-color: var(--custom-first-color) !important;
+    --p-button-outlined-primary-color: var(--custom-first-color) !important;
+    /*--p-button-primary-background: var(--custom-color) !important;*/
+    /*--p-button-padding-y: 5px !important;*/
+    /*--p-text-color: var(--novomet-dark-blue-1000) !important;*/
     /*--p-button-secondary-border-color: green !important;*/
     /*--p-surface-200: orange !important;*/
+
+    --custom-first-color: var(--novomet-dark-blue-1000);
+    --custom-second-color: var(--novomet-orange-1000);
+    --custom-gray-color: var(--novomet-light-gray-blue-400);
+    --custom-text-color: var(--novomet-black-600);
 }
 
 :root {

@@ -52,7 +52,7 @@ export const AppPreset = definePreset(Aura, {
         components: {
             button: {
                 paddingX: "{my.button.padding.x}",
-                paddingY: "{my.button.padding.y}",
+                paddingY: '10px',
             }
         }
     }

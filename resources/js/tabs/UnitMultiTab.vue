@@ -65,7 +65,7 @@ import { useToast } from 'primevue/usetoast';
 
 const props = defineProps({
     unit: {
-        type: String as PropType<'Input' | 'Pump' | 'Motor' | 'Mpp' | 'Agh'>,
+        type: String as PropType<'Input' | 'Pump' | 'Motor' | 'Mpp' | 'Agh' | 'Gs'>,
         required: true
     },
     imagePath: {
@@ -103,6 +103,7 @@ const espData = ref<EspData>({
     Motor: [],
     Mpp: [],
     Agh: [],
+    Gs: [],
 });
 
 const route = useRoute()
@@ -259,6 +260,12 @@ const show = () => {
 .single-mode :deep(.p-tablist-active-bar) {
     background-color: transparent;
 }
+
+.single-mode :deep(.p-tablist-tab-list) {
+    border-color: transparent;
+}
+
+
 
 </style>
 

@@ -20,6 +20,10 @@
                 <Button  icon="pi pi-microchip-ai" outlined class="m-mobile_font mr-3"/>
             </router-link>
 
+            <router-link to="/admin" class="m-mobile_hide mr-3">
+                <Button  icon="pi pi-key" outlined class="m-mobile_font mr-3"/>
+            </router-link>
+
             <Button  label="Скачать д/планшета" @click="getApk()" icon="pi pi-android" outlined class="m-mobile_font mr-3"/>
             <Button  label="Info" icon="pi pi-info-circle" outlined class="m-mobile_hide mr-3" />
 

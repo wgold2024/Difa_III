@@ -8,6 +8,7 @@ import StatisticsPage from "@/Pages/StatisticsPage.vue";
 import HomePage from "@/Pages/Auth/HomePage.vue";
 import ActTabsPage from "@/Pages/TabsPage.vue";
 import AiPage from "@/Pages/AiPage.vue";
+import AdminPage from "@/Pages/AdminPage.vue";
 
 import useAuth from '@/composables/useAuth.js'
 
@@ -60,6 +61,12 @@ const routes = [
                 name: 'ai',
                 path: '/ai',
                 component: AiPage,
+                meta: { requiresAuth: true }
+            },
+            {
+                name: 'admin',
+                path: '/admin',
+                component: AdminPage,
                 meta: { requiresAuth: true }
             },
         ]

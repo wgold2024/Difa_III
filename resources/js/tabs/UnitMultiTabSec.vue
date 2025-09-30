@@ -228,7 +228,7 @@ import {
     Image, DefectGroup
 } from "@/types";
 import Galleria from 'primevue/galleria';
-import { PhotoService } from "@/servicies/PhotoService";
+import { PhotoService } from "@/service/PhotoService";
 
 import Fieldset from 'primevue/fieldset';
 import axios from "axios";
@@ -252,7 +252,7 @@ const props = defineProps<{
     sectionNumber: number;
     sectionData: SectionData[] | null;
     defectGroups: DefectGroup[];
-    unit: 'Input' | 'Pump' | 'Motor' | 'Mpp' | 'Agh';
+    unit: 'Input' | 'Pump' | 'Motor' | 'Mpp' | 'Agh' | 'Gs';
 }>();
 
 

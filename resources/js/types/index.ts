@@ -123,6 +123,7 @@ export interface EspData {
     Motor: SectionData[];
     Mpp: SectionData[];
     Agh: SectionData[];
+    Gs: SectionData[];
 }
 
 export interface SectionData {
@@ -144,6 +145,31 @@ export interface DefectGroup {
     id: number;
     name: string;
 }
+
+// Админка
+export interface Entity {
+    name: string;
+    nameRus: string;
+    nameRusAdd: string;
+    api: string;
+    active: boolean;
+}
+
+export interface ColumnsEntity {
+    id?: number | string;
+    [key: string]: any;
+}
+
+export interface ColumnTable {
+    field: string;
+    header: string;
+    sortable: boolean;
+    required: boolean;
+    tableVisibility: boolean;
+    formVisibility: boolean;
+    data?: any; // может быть undefined
+}
+
 
 
 
