@@ -6,7 +6,9 @@ use App\Http\Controllers\API\DefectDataController;
 use App\Http\Controllers\API\EspController;
 use App\Http\Controllers\API\GroupController;
 use App\Http\Controllers\API\InputController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\API\SessionController;
+use App\Http\Controllers\API\UserActivityController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +27,11 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
 
     Route::prefix('admin')->group(function () {
         Route::resource('users', UserController::class);
+        Route::get('sessions', [SessionController::class, 'index']);
+        Route::get('user-activities', [UserActivityController::class, 'index']);
     });
+
+
 });
 
 Route::get('/test', function (Request $request) {

@@ -153,6 +153,7 @@ export interface Entity {
     nameRusAdd: string;
     api: string;
     active: boolean;
+    crud: boolean;
 }
 
 export interface ColumnsEntity {
@@ -164,6 +165,8 @@ export interface ColumnTable {
     field: string;
     header: string;
     sortable: boolean;
+    sortDirection: string;
+    sorted: boolean;
     required: boolean;
     tableVisibility: boolean;
     formVisibility: boolean;

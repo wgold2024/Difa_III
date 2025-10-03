@@ -6,14 +6,14 @@
                     Панель администратора
                 </span>
                 <div class="flex flex-col">
-                    <Button v-for="(entity, index) in entities" :key="index" class="m-button mb-1" :class="{ 'm-button_active': entity.active }" outlined @click="getEntity(entity.api)">{{ entity.nameRus }}</Button>
+                    <Button v-for="(entity, index) in entities" :key="index" class="m-button mb-1" :class="{ 'm-button_active': entity.active }" outlined @click="setEntity(entity.api)">{{ entity.nameRus }}</Button>
                 </div>
             </SplitterPanel>
 
             <SplitterPanel class="flex justify-center overflow-auto py-2" :size="85" :minSize="10">
                 <div class="w-full">
                         <Toolbar class="w-[96%] ml-[2%] mb-2">
-                            <template #start>
+                            <template v-if="activeEntity.crud" #start>
                                 <Button label="Добавить" icon="pi pi-plus" class="m-button-new mr-2" @click="addNew" />
                                 <Button label="Изменить" icon="pi pi-pencil" class="mr-2" outlined @click="editRecord" :disabled="!(selectedData?.length === 1)" />
                                 <Button label="Удалить" icon="pi pi-trash" severity="danger" variant="outlined" @click="deleteDatumDialog = true" :disabled="!selectedData || !selectedData.length" />
@@ -44,10 +44,10 @@
                         :rowsPerPageOptions="[6, 12, 18, 24, 48, 96]"
                         paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
                         currentPageReportTemplate="Всего записей: {totalRecords}"
-                        sortField="id"
-                        :sortOrder="1"
+                        :sortField="sort.field"
+                        :sortOrder="sort.direction"
                     >
-                        <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
+                        <Column v-if="activeEntity.crud" selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
                         <Column v-for="(item, index) in columnsTable.filter(res => res.tableVisibility)" :key="item.field || index" :field="item.field" :header="item.header" :sortable="item.sortable"></Column>
                     </DataTable>
 
@@ -134,9 +134,11 @@ import router from "@/router";
 const { authenticated, user } = useAuth()
 
 const entities = ref<Entity[]>([
-    { name: 'user-group', nameRus: 'Группы', nameRusAdd: 'группы', api: 'user-group', active: false },
-    { name: 'role', nameRus: 'Роли', nameRusAdd: 'роли' , api: 'role',  active: false },
-    { name: 'user', nameRus: 'Пользователи', nameRusAdd: 'пользователя', api: 'users',  active: false },
+    { name: 'user-group', nameRus: 'Группы', nameRusAdd: 'группы', api: 'user-group', active: false, crud: true },
+    // { name: 'role', nameRus: 'Роли', nameRusAdd: 'роли' , api: 'role',  active: false, crud: true },
+    { name: 'user', nameRus: 'Пользователи', nameRusAdd: 'пользователя', api: 'users',  active: false, crud: true },
+    { name: 'session', nameRus: 'Активность', nameRusAdd: 'сессию', api: 'sessions',  active: false, crud: false },
+    { name: 'user-activity', nameRus: 'История', nameRusAdd: '', api: 'user-activities',  active: false, crud: false },
 ])
 
 const dt = ref();
@@ -160,19 +162,24 @@ const isFormChanged = computed(() => {
     return columnsTable.value.some(col => col.data !== originalData.value[col.field])
 })
 
+const sort = computed(() => {
+    return {
+        'field': columnsTable.value.find(res => res.sorted)?.field || 'id',
+        'direction': columnsTable.value.find(res => res.sorted)?.sortDirection === 'desc' ? -1 : 1,
+    }
+})
+
 onMounted(() => {
-    getUsers()
 
     // Установка отображаетмой сущности по умолчанию
-    const entityUser = entities.value.find(res => res.name === 'user')
-    if (entityUser) entityUser.active = true
+    setEntity('user-activities')
 })
 
 const filters = ref({
     'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
 });
 
-const getEntity = (api: string) => {
+const setEntity = (api: string) => {
     const entity = entities.value.find(res => res.api === api)
     if (!entity) return
     for (const entity of entities.value) {
@@ -180,20 +187,19 @@ const getEntity = (api: string) => {
     }
     entity.active = true
 
-    axios.get(`/api/admin/${api}`)
+    getEntity()
+}
+
+const getEntity = () => {
+    dataTable.value = null
+    columnsTable.value = []
+
+    axios.get(`/api/admin/${activeEntity.value.api}`)
         .then(res => {
             columnsTable.value = res.data.columns;
             dataTable.value = res.data.data;
         })
 };
-
-const getUsers = () => {
-    axios.get('/api/admin/users')
-        .then(res => {
-            columnsTable.value = res.data.columns
-            dataTable.value = res.data.data;
-        })
-}
 
 const addNew = () => {
     mode.value = 'new'
@@ -301,7 +307,7 @@ const deleteData = async () => {
             selectedData.value = null;
             deleteInfo.value = null;
             deleteDatumDialog.value = false;
-            getUsers();
+            getEntity()
         }, 1000)
     } catch (err) {
         console.error(err);
@@ -323,7 +329,7 @@ const hideDialog = () => {
                 console.error('Ошибка при logout:', err)
             })
     } else {
-        getUsers()
+        getEntity()
         dataDialog.value = false
         isSaveSuccess.value = false
         selectedData.value = null
@@ -402,6 +408,10 @@ const hideDialog = () => {
     margin-top: 15px;
     width: 110%;
     border: 1px solid var(--custom-gray-color) !important;
+}
+
+:deep(.p-toolbar) {
+   border: none;
 }
 
 </style>
