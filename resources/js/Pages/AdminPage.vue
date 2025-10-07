@@ -19,12 +19,24 @@
                                 <Button label="Удалить" icon="pi pi-trash" severity="danger" variant="outlined" @click="deleteDatumDialog = true" :disabled="!selectedData || !selectedData.length" />
                             </template>
 
+                            <template #suffix>
+                                <InputIcon class="cursor-pointer" @click="strictSearch = !strictSearch">
+                                    <i
+                                        :class="strictSearch ? 'pi pi-equals cursor-pointer' : 'pi pi-arrow-right cursor-pointer'"
+                                    />
+                                </InputIcon>
+                            </template>
+
+
                             <template #end>
                                 <IconField>
                                     <InputIcon>
                                         <i class="pi pi-search" />
                                     </InputIcon>
-                                    <InputText v-model="filters['global'].value" placeholder="Search..." />
+                                    <InputText v-model="filters['global'].value" class="font-bold placeholder:font-normal" placeholder="Search..." />
+                                    <InputIcon class="cursor-pointer" @click="deleteSearchString">
+                                        <i class="pi pi-times" />
+                                    </InputIcon>
                                 </IconField>
                             </template>
                         </Toolbar>
@@ -48,7 +60,25 @@
                         :sortOrder="sort.direction"
                     >
                         <Column v-if="activeEntity.crud" selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-                        <Column v-for="(item, index) in columnsTable.filter(res => res.tableVisibility)" :key="item.field || index" :field="item.field" :header="item.header" :sortable="item.sortable"></Column>
+                        <Column v-for="(item, index) in columnsTable.filter(res => res.tableVisibility)" :key="item.field || index" field="table_search" :header="item.header" :sortable="item.sortable">
+                            <template #body="{ data }">
+                                <div v-if="Array.isArray(data[item.field])">
+                                    <div v-for="item in data[item.field]" :key="item.id">
+<!--                                        {{ item.breadcrumb_string }}-->
+                                        <Breadcrumb :model="item.breadcrumb">
+                                            <template #item="{ item }">
+                                                <a href="javascript:void(0)" @click="onBreadcrumbClick(item)">
+                                                    {{ item.label }}
+                                                </a>
+                                            </template>
+                                        </Breadcrumb>
+                                    </div>
+                                </div>
+                                <div v-else>
+                                    {{ data[item.field] }}
+                                </div>
+                            </template>
+                        </Column>
                     </DataTable>
 
                     <Dialog v-model:visible="dataDialog" :style="{ width: '450px' }" :header="'Данные ' + activeEntity?.nameRusAdd || ''" :modal="true" @hide="hideDialog">
@@ -109,8 +139,6 @@
     </div>
 </template>
 
-
-
 <script lang="ts" setup>
 import Button from "primevue/button";
 import Splitter from 'primevue/splitter';
@@ -122,6 +150,8 @@ import InputText from 'primevue/inputtext';
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Dialog from 'primevue/dialog'
+import Breadcrumb from 'primevue/breadcrumb';
+
 
 import { FilterMatchMode } from '@primevue/core/api';
 
@@ -134,7 +164,7 @@ import router from "@/router";
 const { authenticated, user } = useAuth()
 
 const entities = ref<Entity[]>([
-    { name: 'user-group', nameRus: 'Группы', nameRusAdd: 'группы', api: 'user-group', active: false, crud: true },
+    { name: 'user-group', nameRus: 'Группы', nameRusAdd: 'группы', api: 'user-groups', active: false, crud: true },
     // { name: 'role', nameRus: 'Роли', nameRusAdd: 'роли' , api: 'role',  active: false, crud: true },
     { name: 'user', nameRus: 'Пользователи', nameRusAdd: 'пользователя', api: 'users',  active: false, crud: true },
     { name: 'session', nameRus: 'Активность', nameRusAdd: 'сессию', api: 'sessions',  active: false, crud: false },
@@ -172,7 +202,7 @@ const sort = computed(() => {
 onMounted(() => {
 
     // Установка отображаетмой сущности по умолчанию
-    setEntity('user-activities')
+    setEntity('users')
 })
 
 const filters = ref({
@@ -198,6 +228,7 @@ const getEntity = () => {
         .then(res => {
             columnsTable.value = res.data.columns;
             dataTable.value = res.data.data;
+            console.log(res);
         })
 };
 
@@ -206,7 +237,7 @@ const addNew = () => {
 
     // Очистка полей формы
     columnsTable.value.forEach((item) => {
-        item.data = ''
+        // item.data = ''
     })
     dataError.value = []
 
@@ -336,6 +367,14 @@ const hideDialog = () => {
     }
 }
 
+const onBreadcrumbClick = (crumb) => {
+    filters.value['global'].value = crumb.label;
+};
+
+const deleteSearchString = () => {
+    filters.value['global'].value = null;
+};
+
 </script>
 
 <style scoped>
@@ -412,6 +451,15 @@ const hideDialog = () => {
 
 :deep(.p-toolbar) {
    border: none;
+}
+
+:deep(.p-breadcrumb.p-component) {
+    background-color: transparent;
+    padding: 0;
+}
+
+:deep(.p-breadcrumb-item-link) {
+    cursor: default;
 }
 
 </style>

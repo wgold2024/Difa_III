@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(UserGroupSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(DetailSeeder::class);
         $this->call(GroupSeeder::class);
@@ -27,6 +28,7 @@ class DatabaseSeeder extends Seeder
     }
 }
 
+// php artisan db:seed --class=UserGroupSeeder --force
 // php artisan db:seed --class=UserSeeder --force
 // php artisan db:seed --class=DetailSeeder --force
 // php artisan db:seed --class=GroupSeeder --force

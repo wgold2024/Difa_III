@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\UserGroup;
+use App\Models\UserGroupPivot;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -15,19 +17,19 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $superUser = User::create([
-            'id' => 10000,
-            'name' => 'Super User',
-            'email' => 'super@test.com',
-            'password' => Hash::make('12345678'),
-        ]);
-
-
-        Role::create([
-            'name' => 'super-user',
-        ]);
-
-        $superUser->assignRole('super-user');
+//        $superUser = User::create([
+//            'id' => 10000,
+//            'name' => 'Super User',
+//            'email' => 'super@test.com',
+//            'password' => Hash::make('12345678'),
+//        ]);
+//
+//
+//        Role::create([
+//            'name' => 'super-user',
+//        ]);
+//
+//        $superUser->assignRole('super-user');
 
 
         User::create([
@@ -137,6 +139,9 @@ class UserSeeder extends Seeder
             'password' => Hash::make('ddw98F*YHii2'),
         ]);
 
+        $groupNovomet = UserGroup::where('name', 'АО "Новомет-Пермь"')->first();
+        $groupNovomet->users()->attach([1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15]);
+
         // ОП Новомет-Ноябрьск
         User::create([
             'id' => 16,
@@ -158,6 +163,9 @@ class UserSeeder extends Seeder
             'email' => 'Perevedentsev.DA@gazprom-neft.ru',
             'password' => Hash::make('kljdUJ&67f!'),
         ]);
+
+        $groupNoyabrsk = UserGroup::where('name', 'Ноябрьск')->first();
+        $groupNoyabrsk->users()->attach([16, 17, 18]);
         // ---
 
         // ОП Новомет-Нефтеюганск
@@ -181,6 +189,9 @@ class UserSeeder extends Seeder
             'email' => 'Vladimir.Ryzhov@novometgroup.com',
             'password' => Hash::make('oiKj87YH6tg'),
         ]);
+
+        $groupNoyabrsk = UserGroup::where('name', 'Нефтеюганск')->first();
+        $groupNoyabrsk->users()->attach([19, 20, 21]);
         // ---
 
         // ОП Новомет-Стрежевой 26.03.25
@@ -208,6 +219,9 @@ class UserSeeder extends Seeder
             'email' => 'Tatiana.Popova@novometgroup.com',
             'password' => Hash::make('o(898IjYHtg'),
         ]);
+
+        $groupNoyabrsk = UserGroup::where('name', 'Стрежевой')->first();
+        $groupNoyabrsk->users()->attach([22, 23, 24, 25]);
         // ---
 
         // ОП Новомет-Нижневартовск 28.03.25
@@ -223,6 +237,9 @@ class UserSeeder extends Seeder
             'email' => 'Aleksandr.Perebinos@novomet.ru',
             'password' => Hash::make('o(89555sHtg'),
         ]);
+
+        $groupNoyabrsk = UserGroup::where('name', 'Нижневартовск')->first();
+        $groupNoyabrsk->users()->attach([26, 27]);
         // ---
 
         // ОП Новомет-Юг 28.03.25
@@ -244,6 +261,9 @@ class UserSeeder extends Seeder
             'email' => 'Stanislav.Aleksandrov@novometgroup.com',
             'password' => Hash::make('ew98IjYHtg@'),
         ]);
+
+        $groupNoyabrsk = UserGroup::where('name', 'Юг')->first();
+        $groupNoyabrsk->users()->attach([28, 29, 30]);
         // ---
     }
 }

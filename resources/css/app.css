@@ -45,6 +45,7 @@
     --p-button-padding-y: 0.6rem !important;
     --p-select-padding-y: 0.6rem !important;
     --p-inputtext-padding-y: 0.6rem !important;
+    --p-breadcrumb-gap: 0.2rem !important;
 }
 
 :root {

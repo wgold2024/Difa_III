@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('session_id', 255)->nullable()->index();
-            $table->foreign('session_id')->references('id')->on('sessions')->onDelete('cascade');
+            $table->foreign('session_id')->references('id')->on('sessions');
 
             $table->foreignId('user_id')->index()->constrained('users')->onDelete('cascade');
             $table->string('ip_address')->nullable();

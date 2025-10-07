@@ -48,6 +48,12 @@ class User extends Authenticatable
         ];
     }
 
+    public function groups()
+    {
+        return $this->belongsToMany(UserGroup::class, 'user_group', 'user_id', 'group_id')
+            ->withTimestamps();
+    }
+
     protected static function booted()
     {
         static::updating(function ($user) {

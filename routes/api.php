@@ -9,6 +9,7 @@ use App\Http\Controllers\API\InputController;
 use App\Http\Controllers\API\SessionController;
 use App\Http\Controllers\API\UserActivityController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\UserGroupController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,9 +30,8 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
         Route::resource('users', UserController::class);
         Route::get('sessions', [SessionController::class, 'index']);
         Route::get('user-activities', [UserActivityController::class, 'index']);
+        Route::resource('user-groups', UserGroupController::class);
     });
-
-
 });
 
 Route::get('/test', function (Request $request) {

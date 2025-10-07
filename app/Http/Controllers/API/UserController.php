@@ -21,6 +21,7 @@ class UserController extends Controller
         return response()->json([
             'columns' => [
                 ['field' => 'id', 'header' => 'id', 'sortable' => true, 'required' => false, 'tableVisibility' => true, 'formVisibility' => false, 'data' => '2000'],
+                ['field' => 'groups', 'header' => 'Группа(ы)', 'sortable' => true, 'required' => true, 'tableVisibility' => true, 'formVisibility' => true, 'data' => 'Test'],
                 ['field' => 'name', 'header' => 'Имя', 'sortable' => true, 'required' => true, 'tableVisibility' => true, 'formVisibility' => true, 'data' => 'Test'],
                 ['field' => 'email', 'header' => 'E-mail', 'sortable' => true, 'required' => true, 'tableVisibility' => true, 'formVisibility' => true, 'data' => 'test@test.test'],
                 ['field' => 'password_changed', 'header' => 'Пароль изменен', 'sortable' => true, 'required' => false, 'tableVisibility' => true, 'formVisibility' => false],
